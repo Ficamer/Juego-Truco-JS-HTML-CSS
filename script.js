@@ -1,20 +1,51 @@
-let mazo =[];
-let manoJugador = [];
-let envidoJugador = 0;
-let manoComputadora = [];
-let envidoComputadora = 0;
-let valorAnterior = [];
-let envido = false;
-let realEnvido = false;
-let faltaEnvido = false;
-let puntosJugador = 0;
-let puntosComputadora = 0;
-let ronda = 0;
-let contador = 0;
-let salir = true;
-let salir2 = true;
-//CREAR MAZO
-const crearMazo = () => {
+//Elementos traidos del index
+const manoJugadorHTML = document.querySelector('.mano-jugador');
+const manoComputadoraHTML = document.querySelector('.mano-computadora');
+const centroMesa = document.querySelector('.centro-mesa');
+const centroMesaLadoComputadora = document.querySelector('.centro-mesa-lado-computadora');
+const centroMesaLadoJugador = document.querySelector('.centro-mesa-lado-jugador');
+
+// Mazos
+let mazo = [];
+let mazoComputadora = [];
+let copiaMazoComputadora = [];
+let mazoJugador = [];
+let copiaMazoJugador = [];
+let copiaMazo;
+
+//Tantos
+let tantosComputadora = 0;
+let tantosJugador = 0;
+
+//Envido, truco, etc.
+let estaRealizandoDialogoEnvidoTruco = false;
+
+//Numero de ronda y rondas ganadas por cada jugador.
+let numeroRonda = 0;
+let rondasGanadasJugador = 0;
+let rondasGanadasComputadora = 0;
+
+//Indices para IDs de cartas
+let indiceJugador = 0;
+let indiceComputadora = 3;
+
+//Botones
+const botonEnvido = document.getElementById("boton-envido");
+const botonTruco = document.getElementById("boton-truco");
+const botonReal = document.getElementById("boton-real");
+const botonNoQuiero = document.getElementById("boton-noQuiero");
+
+//Dialogos
+const dialogoJugador = document.querySelector('.dialogo-jugador');
+const dialogoComputadora = document.querySelector('.dialogo-computadora');
+
+//Booleanos
+let seCantoEnvido = false;
+let cartaHabilitada = true;
+
+
+//Armar mazo
+const armarMazo = () => { 
     for(let i=1;i<=12;i++){
         if (i===8 || i===9){ //Si i es 8 o 9, continuar a la siguiente iteracion y no cargar esa carta
             continue;
@@ -24,454 +55,480 @@ const crearMazo = () => {
         mazo.push({palo: "Copas",numero: i,src: `img/${i}Copas.png`,dorso: 'img/Dorso.png'});
         mazo.push({palo: "Oro",numero: i,src: `img/${i}Oro.png`,dorso: 'img/Dorso.png'});
     }
-};
+}
 
-//MEZCLAR MAZO
-const mezclarMazo = (array)=>{
-    for (var i = array.length - 1; i > 0; i--) { //Recorro el arreglo
+//Mezclar mazo
+const mezclarMazo = ()=>{
+    for (var i = mazo.length - 1; i > 0; i--) { //Recorro el arreglo
         var j = Math.floor(Math.random() * (i + 1)); //Genero un entero aleatorio
-        var valorArreglo = array[i]; //Tomo un valor del arreglo con el indice i
-        array[i] = array[j]; //Reemplazo el valor del arreglo el indice actual por el de uno en una posicion aleatoria
-        array[j] = valorArreglo; //Reemplazo la posicion j del arrelgo pro el valor del arreglo que guarde.
+        var valorMazo = mazo[i]; //Tomo un valor del arreglo con el indice i
+        mazo[i] = mazo[j]; //Reemplazo el valor del arreglo el indice actual por el de uno en una posicion aleatoria
+        mazo[j] = valorMazo; //Reemplazo la posicion j del arrelgo pro el valor del arreglo que guarde.
     }
+
+    copiaMazo = mazo;
 };
 
-//REPARTIR CARTAS
-const repartirCartas = ()=>{
-    if (manoJugador.length < 3) {
-        let valorDesapilar = [];
-    //REPARTIR CARTAS DEL TOPE DEL MAZO
-    for(let j = mazo.length-6;j<mazo.length;j++){ //Desde las 3 posiciones anteriores al tama;o del mazo
-        if (j>=mazo.length-3){
-            manoJugador.push(mazo[j]);  //Cargo las 3 cartas del tope
-        }
-        if (j>=mazo.length-6 && j<mazo.length-3) {
-            manoComputadora.push(mazo[j]);
-        }
-        //DEBO DESAPILAR ESAS 3 CARTAS DEL MAZO
-        valorDesapilar.push(j);
-    }
-//DESAPILAR CARTAS, QUITAR.
-    for (let k = 0;k<valorDesapilar.length;k++){
-        mazo.pop(valorDesapilar[k]);
-    }
-    console.log("Mano jugador: ")
-    console.log(manoJugador);
-    console.log("Mano Compu: ")
-    console.log(manoComputadora);
-    console.log(mazo);
-
-    //CARGAR CARTAS AL HTML
-
-    for(let z=0;z<3;z++){
-        const carta = document.querySelector(`#carta${z}`);
-        carta.innerHTML = ""; //CON ESTO BORRO TODO LO QUE SE INYECTO ANTES
-        const cartaHtml = document.createElement("div");
-        const imagen = document.createElement("img");
-        imagen.src = manoJugador[z].src;
-        imagen.style.width = "100%";
-        imagen.style.height = "100%";
-        cartaHtml.classList.add("cartas");
-        cartaHtml.appendChild(imagen); //Inserto nodo imagen en el div de la cartaHtml
-        carta.appendChild(cartaHtml); //Inserto nodo de la carta creada en el div del html
-        }
-    }
-    //CARGAR CARTAS COMPUTADORA
-    for (let x=0;x<3;x++){
-            const cartaComp = document.querySelector(`#cartaC${x}`);
-            cartaComp.innerHTML = ""; //CON ESTO BORRO TODO LO QUE SE INYECTO ANTES
-            const cartaCompHtml = document.createElement("div");
-            const imagenC = document.createElement("img");
-            imagenC.src = manoComputadora[x].dorso;
-            imagenC.classList.add("imagenC");
-            imagenC.id =`C${x}`;
-            imagenC.style.width = "100%";
-            imagenC.style.height = "100%";
-            cartaCompHtml.classList.add("cartasCompu");
-            cartaCompHtml.appendChild(imagenC); //Inserto nodo imagen en el div de la cartaHtml
-            cartaComp.appendChild(cartaCompHtml); //Inserto nodo de la carta creada en el div del html
-    }
-};
-
-//CARTAS EN MESA
-const colocarCartas = ()=> {
-    for (let b=1;b<=3;b++){
-        const limpiarMesa= document.querySelector(`#cartaJugadorN${b}`); //Limpio posiciones en las que este la carta del jugador
-        limpiarMesa.innerHTML = "";
-        const limpiarMesaCartasCompu = document.querySelector(`#cartaComputadora${b}`);
-        limpiarMesaCartasCompu.innerHTML = "";
-    }
-
-    for (let n=0;n<3;n++) {
-        let cartasEnManoJugador = document.querySelector(`#carta${n}`);
-        cartasEnManoJugador.style.display="flex"; //Recupero la visibilidad de la carta al comenzar un juego nuevo.
-        let cartasEnManoComputadora = document.querySelector(`#cartaC${n}`);
-        cartasEnManoComputadora.style.display="flex"; //Recupero la visibilidad de la carta al comenzar un juego nuevo.
-        
-
-        cartasEnManoJugador.onclick = ()=> {
-            let sound = new Audio('sonido.mp3');
-            sound.play();
-            ronda = 0; //RESETEO LA RONDA HASTA HACER INTELIGENCIA SEGUN LA RONDA
-            contador++; //PARA IR RECORRIENDO LAS POSICIONES
-            console.log(contador);
-            let espacioCartaJugadorMesa = document.querySelector(`#cartaJugadorN${contador}`);
-            espacioCartaJugadorMesa.innerHTML = cartasEnManoJugador.innerHTML; //COPIO LA CARTA EN LA MESA
-            espacioCartaJugadorMesa.style.animation = "rotacion 1s";
-            cartasEnManoJugador.style.display="none"; //Quito la visibilidad de la carta de la mano
-            console.log(valorAnterior);
-            //JUGANDO VS PC //CREO QUE DEBERIA HACERLO CON ARRAYS
-            const espacioCartaComputadoraMesa  = document.querySelector(`#cartaComputadora${contador}`);
-
-            for (let x=0;x<manoComputadora.length;x++){ //RECORRO LAS CARTAS DE LA COMPUTADORA
-
-        //PRIMER RONDA
-            //CARTA JUGADOR MENOR QUE ALGUNA DE LAS DE LA COMPUTADORA
-                if((manoJugador[n].numero <= manoComputadora[x].numero) && (ronda==0 && x!=valorAnterior[0] && x!=valorAnterior[1])){ //COMPARO LA CARTA DEL JUGADOR QUE HIZO CLICK CON TODAS LAS DE LA COMPU
-                    const id = document.querySelector(`#C${x}`); // PARA CAMBIAR EL DORSO POR LA PARTE FRONTAL
-                    let cartasEnManoComputadora = document.querySelector(`#cartaC${x}`);
-                    setTimeout(()=>{
-                        id.src = manoComputadora[x].src;
-                        cartasEnManoComputadora.style.display="none"; //Quito la visibilidad de la carta de la mano de la PC.      
-                        espacioCartaComputadoraMesa.innerHTML = cartasEnManoComputadora.innerHTML;},1500); //COPIO LA CARTA EN LA MESA
-                    
-                    espacioCartaComputadoraMesa.style.animation = "rotacion2 1s";
-                    espacioCartaComputadoraMesa.style.animationDelay = "1.5s";
-                    valorAnterior.push(x);
-                    ronda++; //Si se cumplio la condicion, al hacer ronda++ evito a que si otra carta la cumple, se de vuelta.
-                    puntosComputadora++;
-                    agregarPuntos();
-                } 
-                
-            //CARTA JUGADOR MAYOR QUE ALGUNA DE LAS DE LA COMPUTADORA 
-                if((manoJugador[n].numero > manoComputadora[x].numero) && (ronda==0 && x!=valorAnterior[0])){                     //COMPARO LA CARTA DEL JUGADOR QUE HIZO CLICK CON TODAS LAS DE LA COMPU
-                    console.log("hola");
-                    
-                    if (manoComputadora[x].numero<=manoComputadora[0].numero && manoComputadora[x].numero<manoComputadora[1].numero && manoComputadora[x].numero<manoComputadora[2].numero) {
-                        const id = document.querySelector(`#C${x}`); 
-                        let cartasEnManoComputadora = document.querySelector(`#cartaC${x}`);
-                        setTimeout(()=>{
-                            id.src = manoComputadora[x].src;
-                            cartasEnManoComputadora.style.display="none"; //Quito la visibilidad de la carta de la mano de la PC.      
-                            espacioCartaComputadoraMesa.innerHTML = cartasEnManoComputadora.innerHTML;},1500); //COPIO LA CARTA EN LA MESA
-                        espacioCartaComputadoraMesa.style.animation = "rotacion2 1s";
-                        espacioCartaComputadoraMesa.style.animationDelay = "1.5s";
-                        valorAnterior.push(x);
-                        ronda++; 
-                        puntosJugador++;
-                        agregarPuntos();
-                    }
-                    if (manoComputadora[x].numero<manoComputadora[0].numero && manoComputadora[x].numero<=manoComputadora[1].numero && manoComputadora[x].numero<manoComputadora[2].numero) {
-                        const id = document.querySelector(`#C${x}`); 
-                        let cartasEnManoComputadora = document.querySelector(`#cartaC${x}`);
-                        setTimeout(()=>{
-                            id.src = manoComputadora[x].src;
-                            cartasEnManoComputadora.style.display="none"; //Quito la visibilidad de la carta de la mano de la PC.      
-                            espacioCartaComputadoraMesa.innerHTML = cartasEnManoComputadora.innerHTML;},1500); //COPIO LA CARTA EN LA MESA
-                        
-                        espacioCartaComputadoraMesa.style.animation = "rotacion2 1s";
-                        espacioCartaComputadoraMesa.style.animationDelay = "1.5s"; 
-                        valorAnterior.push(x);
-                        ronda++; 
-                        puntosJugador++;
-                        agregarPuntos();
-                    }
-                    if (manoComputadora[x].numero<manoComputadora[0].numero && manoComputadora[x].numero<manoComputadora[1].numero && manoComputadora[x].numero<=manoComputadora[2].numero) {
-                        const id = document.querySelector(`#C${x}`); 
-                        let cartasEnManoComputadora = document.querySelector(`#cartaC${x}`);
-                        setTimeout(()=>{
-                            id.src = manoComputadora[x].src;
-                            cartasEnManoComputadora.style.display="none"; //Quito la visibilidad de la carta de la mano de la PC.      
-                            espacioCartaComputadoraMesa.innerHTML = cartasEnManoComputadora.innerHTML;},1500); //COPIO LA CARTA EN LA MESA
-                        
-                        espacioCartaComputadoraMesa.style.animation = "rotacion2 1s";
-                        espacioCartaComputadoraMesa.style.animationDelay = "1.5s";
-                        valorAnterior.push(x);
-                        ronda++; 
-                        puntosJugador++;
-                        agregarPuntos();
-                    }
-                    if (manoComputadora[x].numero<manoComputadora[0].numero && manoComputadora[x].numero<manoComputadora[1].numero && manoComputadora[x].numero<=manoComputadora[2].numero) {
-                        const id = document.querySelector(`#C${x}`); 
-                        let cartasEnManoComputadora = document.querySelector(`#cartaC${x}`);
-                        setTimeout(()=>{
-                            id.src = manoComputadora[x].src;
-                            cartasEnManoComputadora.style.display="none"; //Quito la visibilidad de la carta de la mano de la PC.      
-                            espacioCartaComputadoraMesa.innerHTML = cartasEnManoComputadora.innerHTML;},1500); //COPIO LA CARTA EN LA MESA
-                        
-                        espacioCartaComputadoraMesa.style.animation = "rotacion2 1s";
-                        espacioCartaComputadoraMesa.style.animationDelay = "1.5s";
-                        valorAnterior.push(x);
-                        ronda++; 
-                        puntosJugador++;
-                        agregarPuntos();
-                    }                             
-            }
-        }
-
-        
+//Repartir cartas Jugador
+const repartirCartasJugador = () => {
+    let contador = 0;
+    for(let i=39;i>=37;i--){ //Recorro las ultimas 3 cartas 
+        contador++;
+        mazoJugador.push({...copiaMazo[i],id: ""+contador});
+        //Agregar logica para quitar cartas del mazo
+        copiaMazoJugador = mazoJugador;
     }
 }
-};
-const agregarPuntos = ()=>{
-    const puntosPC = document.querySelector("#puntosComputadora");
-    const puntosJ = document.querySelector("#puntosJugador");
-    puntosPC.innerHTML = ""+puntosComputadora;
-    puntosJ.innerHTML = ""+puntosJugador;
-};
 
-//INICIAR JUEGO
-crearMazo();
-mezclarMazo(mazo);
-repartirCartas();
-agregarPuntos();
-colocarCartas();
-
-
-
-//ACCIONES DE BOTONES
-const clickNoQuiero = document.querySelector("#noquiero");
-clickNoQuiero.onclick = () => {  
-    const dialogo = document.querySelector(".texto");
-    dialogo.innerHTML = "";
-    dialogo.style.display="flex";
-    const dialogoH1 = document.createElement("h1");
-    dialogoH1.innerHTML = "No quiero...";
-    dialogo.appendChild(dialogoH1);
-
-    setTimeout(function quitarCuadroDialogo(){ //funcion para quitar el cuadro de dialogo segun el tiempo transcurrido
-        dialogo.innerHTML = "";
-        dialogo.style.display="none";
-    },2000); //2 SEGUNDOS
-
-    mazo =[];
-    manoJugador = [];
-    manoComputadora = [];
-    valorAnterior = [];
-    contador = 0;
-    ronda = 0;
-    envidoComputadora = 0;
-    envidoJugador = 0;
-
-    crearMazo();
-    mezclarMazo(mazo);
-    repartirCartas();
-    agregarPuntos();
-    colocarCartas();
-};
-
-const clickEnvido= document.querySelector("#envido");
-clickEnvido.onclick = () => {  
-    const dialogo = document.querySelector(".texto");
-    dialogo.innerHTML = "";
-    dialogo.style.display="flex";
-    const dialogoH1 = document.createElement("h1");
-    dialogoH1.innerHTML = "Envido!!";
-    dialogo.appendChild(dialogoH1);
-
-    setTimeout(function quitarCuadroDialogo(){ //funcion para quitar el cuadro de dialogo segun el tiempo transcurrido
-        dialogo.innerHTML = "";
-        dialogo.style.display="none";
-    },2000); //2 SEGUNDOS
-    envido = true;
-                //SI SE CANTO ENVIDO
-    if (envido) {
-    //DETERMINAR TANTOS DE COMPUTADORA
-    if(salir2){
-    for (let u=0;u<manoComputadora.length;u++){ //Recorro las cartas 
-        for (let i=0;i<manoComputadora.length;i++){ //Comparo la carta actual con las demas
-            if (manoComputadora[u].palo === manoComputadora[i].palo){ //Si coincide el palo, sumarlas.
-                if (manoComputadora[u].numero <=7 && manoComputadora[i].numero<=7) { //Si son menores o iguales que 7  
-                    envidoComputadora = manoComputadora[u].numero + manoComputadora[u].numero + 20;
-                    salir2=false;
-                    continue;
-                }
-                if (manoComputadora[u].numero >=10 && manoComputadora[i].numero>=10) { //Si son mayores o iguales que 10
-                     envidoComputadora = 20;
-                     salir2=false;
-                     continue;
-                }
-                 if (manoComputadora[u].numero >=10 && manoComputadora[i].numero<=7) { 
-                    envidoComputadora = 20 + manoComputadora[i].numero;
-                    salir2=false;
-                    continue;
-                }
-                if (manoComputadora[u].numero <=7 && manoComputadora[i].numero>=10) { 
-                    envidoComputadora = 20 + manoComputadora[u].numero;
-                    salir2=false;
-                    continue;
-                }
-                }
-        }                      
-        }
+//Repartir cartas computadora
+const repartirCartasComputadora = () => {
+    let contador = 3;
+    for(let i=36;i>=34;i--){ 
+        contador++;
+        mazoComputadora.push({...copiaMazo[i],id: ""+contador});
+        //Agregar logica para quitar cartas del mazo
+        copiaMazoComputadora = mazoComputadora;
     }
-    //DETERMINAR TANTOS JUGADOR
-    if(salir){
-     for (let f=0;f<manoJugador.length;f++){ //Recorro las cartas 
-        for (let d=0;d<manoJugador.length;d++){ //Comparo la carta actual con las demas
-            if (manoJugador[f].palo === manoJugador[d].palo){ //Si coincide el palo, sumarlas.
-                if (manoJugador[f].numero <=7 && manoJugador[d].numero<=7) { //Si son menores o iguales que 7  
-                        envidoJugador = manoJugador[f].numero + manoJugador[d].numero + 20;
-                        salir=false;
-                        break;
+}
+
+//Renderizar cartas Jugador y Computadora
+
+const renderizarCartas = ({src,dorso}, index, esComputadora = false)=>{
+    const imagenSrc = esComputadora ? dorso : src;
+    const id = esComputadora ? ++indiceComputadora : ++indiceJugador;
+    const cartasDe = esComputadora ? "cartas-computadora" : "cartas-jugador";
+
+    return `<div class="carta ${cartasDe}" id="${id}"><img src="${imagenSrc}"></img></div>`;
+}
+
+const manoJugador = ()=>{
+    const manoJugador = copiaMazoJugador.map((carta,index)=>{return renderizarCartas(carta,index)}).join('');
+    manoJugadorHTML.innerHTML = manoJugador;
+}
+
+const manoComputadora = ()=>{
+    const manoComputadora = copiaMazoComputadora.map((carta,index)=>{return renderizarCartas(carta,index,true)}).join('');
+    manoComputadoraHTML.innerHTML = manoComputadora;
+}
+const sonidoCartas = () =>{
+    console.log(cartaHabilitada)
+    if (!cartaHabilitada) {
+        return; // Si las cartas no estan habilitadas, no reproducimos el sonido
+    }
+    let sound = new Audio('tirarCarta.mp3');
+    sound.play();
+}
+
+const quitarListenersCartasEnMesa = ()=>{
+    let cartasMesa = centroMesaLadoJugador.querySelectorAll('div');
+    cartasMesa.forEach((carta)=>{
+        carta.removeEventListener('click',sonidoCartas);
+        carta.removeEventListener('click',colocarCartaJugadorEnMesa);}
+    );
+}
+
+const colocarCartaJugadorEnMesa = (event) =>{
+
+    if(!cartaHabilitada) return;
+
+    cartaHabilitada = false;
+
+    numeroRonda++;
+    console.log(numeroRonda);
+
+    const cartaId = event.currentTarget.id;
+
+
+    if(!estaRealizandoDialogoEnvidoTruco) {
+        copiaMazoJugador = mazoJugador.filter((carta) =>{
+        
+                //Agrega la carta en la mesa;
+                if(carta.id==cartaId){
+                    const elementoAMover = document.getElementById(`${cartaId}`)
+                    elementoAMover.style.animation = "moverse .5s";
+         
+                    centroMesaLadoJugador.appendChild(elementoAMover);
+   
+                    
+                    return false; //Quita la carta que coincide con el id.
+                }else {
+                    return true; // Deja las cartas que no coincidan con el id
+                }
+            }
+        );
+        console.log(numeroRonda);
+        console.log(mazoComputadora);
+        ronda("normal");
+    }
+    //Quita la carta que coincide con el id de la carta seleccionada del array de la mano del jugador.
+
+
+    //Vuelvo a asignar la funcionalidad a las cartas (ya que se pierde al usar appendChild y mover un elemento)
+
+    setTimeout(()=>{quitarListenersCartasEnMesa()},250);
+
+    // Habilitar los clics nuevamente después de 2 segundos
+    setTimeout(() => {
+        cartaHabilitada = true;
+    }, 1500); // 2 segundos
+}
+
+const colocarCartaComputadoraEnMesa = (id) =>{
+
+    if(!estaRealizandoDialogoEnvidoTruco) {
+        mazoComputadora = mazoComputadora.filter((carta) =>{
+        
+                //Agrega la carta en la mesa;
+                if(carta.id==id){
+                    const elementoAMover = document.getElementById(`${id}`)
+                    elementoAMover.style.animation = "moverseComputadora .5s";
+                
+                    centroMesaLadoComputadora.appendChild(elementoAMover); 
+
+                    return false; //Quita la carta que coincide con el id.
+                }else {
+                    return true; // Deja las cartas que no coincidan con el id
+                }
+            }
+        );
+    }
+    //Quita la carta que coincide con el id de la carta seleccionada del array de la mano del jugador.
+}
+
+const clickCartasJugador = ()=>{ 
+    const cartasJugador = document.querySelectorAll('.cartas-jugador');
+    cartasJugador.forEach( (carta) =>{ 
+        carta.addEventListener('click', sonidoCartas);
+        carta.addEventListener('click',colocarCartaJugadorEnMesa);
+    });
+}
+
+const sumarTantos = (carta1,carta2)=>{
+    if(carta1<10 && carta2<10) {
+        return 20+carta1+carta2;
+    }else if(carta1>=10 && carta2<10){
+        return 20+carta2;
+    }else if(carta1<10 && carta2>=10){
+        return 20+carta1;
+    }else {
+        return 20;
+    }
+}
+
+const ganadorEnvido = ()=>{
+    if(tantosComputadora>tantosJugador) {
+        return "computadora";
+    }else if(tantosComputadora === tantosJugador) {
+        return "jugador";
+    }else {
+        return "jugador";
+    }
+}
+
+const dialogo = (quien,texto) =>{
+    if(quien == "jugador") {
+        dialogoJugador.style.display="flex";
+        dialogoJugador.innerHTML = `<p>${texto}</p>`
+        dialogoJugador.style.animation = "aparicion 1s forwards"; 
+
+        setTimeout(()=>{ //funcion para quitar el cuadro de dialogo segun el tiempo transcurrido
+            dialogoJugador.innerHTML = "";
+            dialogoJugador.style.display="none";
+        },2000);
+    }
+
+    if(quien=="computadora"){
+        dialogoComputadora.style.display="flex";
+        dialogoComputadora.innerHTML = `<p>${texto}</p>`
+        dialogoComputadora.style.animation = "aparicion 1s forwards"; 
+
+        setTimeout(()=>{ //funcion para quitar el cuadro de dialogo segun el tiempo transcurrido
+            dialogoComputadora.innerHTML = "";
+            dialogoComputadora.style.display="none";
+        },2000);
+    }
+}
+
+const ronda = (estadoRonda) => {
+
+    switch (estadoRonda) {
+        
+        case "envido":
+            if(numeroRonda == 0 || numeroRonda == 1) {
+                if(!seCantoEnvido){
+                    seCantoEnvido = true;
+                    estaRealizandoDialogoEnvidoTruco = true;
+                    dialogo("jugador","Envidoo!")
+                    //Calculo tantos de jugador
+                    let hayCartasDelMismoPaloJugador = false;
+    
+                    for (let indice=0; indice<mazoJugador.length;indice++) { //Recorro todas las cartas
+                        for(let i = 0;i<mazoJugador.length;i++){
+                            if(indice === i) {
+                                continue;
+                            }
+                            if(mazoJugador[indice].palo === mazoJugador[i].palo) {        
+                                hayCartasDelMismoPaloJugador = true;
+                                tantosJugador = sumarTantos(mazoJugador[indice].numero,mazoJugador[i].numero);
+                                break;
+                            }
+                        }
                     }
-                if (manoJugador[f].numero >=10 && manoJugador[d].numero>=10) { //Si son mayores o iguales que 10
-                        envidoJugador = 20;
-                        salir=false;
-                        break;
+        
+                    //Si no encontro coincidencias dejo el valor del tanto mas alto
+                    if(hayCartasDelMismoPaloJugador === false){
+                        let primerValor = mazoJugador[0].numero;
+                        for(let k=1;k<mazoJugador.length;k++) {
+                            if(primerValor < mazoJugador[k].numero ){
+                                primerValor = mazoJugador[k].numero;
+                            }
+                        }
+                        tantosJugador = primerValor;   
                     }
-                 if (manoJugador[f].numero >=10 && manoJugador[d].numero<=7) { 
-                        envidoJugador = 20 + manoJugador[d].numero;
-                        salir=false;
-                        break;
+    
+                
+                    //Calculo tantos de  computadora
+                    let hayCartasDelMismoPaloComputadora = false;
+    
+                    for (let indice=0; indice<mazoComputadora.length;indice++) { //Recorro todas las cartas
+                        for(let i = 0;i<mazoComputadora.length;i++){
+                            if(indice === i) {
+                                continue;
+                            }
+                            if(mazoComputadora[indice].palo === mazoComputadora[i].palo) {     
+                                hayCartasDelMismoPaloComputadora = true;   
+                                tantosComputadora = sumarTantos(mazoComputadora[indice].numero,mazoComputadora[i].numero);
+                                break;
+                            }
+                        }
+                    }  
+                    
+                    //Si no encontro coincidencias dejo el valor del tanto mas alto
+                    if(hayCartasDelMismoPaloComputadora === false){
+                        let primerValor = mazoComputadora[0].numero;
+                        for(let k=1;k<mazoComputadora.length;k++) {
+                            if(primerValor < mazoComputadora[k].numero ){
+                                primerValor = mazoComputadora[k].numero;
+                            }
+                        }
+                        tantosComputadora = primerValor;   
                     }
-                if (manoJugador[f].numero<=7 && manoJugador[d].numero>=10) { 
-                         envidoJugador = 20 + manoJugador[f].numero;
-                         salir=false;
-                         break;
+    
+                    //Logica básica para aceptar o no envido
+    
+                    if(tantosComputadora >= 27){
+
+                        let tantosComputadoraActual = tantosComputadora;
+                        let tantosJugadorActual = tantosJugador;
+
+                        setTimeout(()=>{dialogo("computadora","Quieroo!" + " " + tantosComputadoraActual)},1500);
+                        let ganador = ganadorEnvido();
+        
+                        if (ganador==="computadora") {
+                            
+                            setTimeout(()=>{dialogo("jugador","Son buenas.")},3000);
+                            setTimeout(()=>{
+                                dialogo("computadora","Jaja! Que facil.")
+                                estaRealizandoDialogoEnvidoTruco = false;
+                            },4000);
+
+                            //reset de tantos
+                            tantosJugador = 0;
+                            tantosComputadora = 0;
+                        }
+                        if (ganador === "jugador"){
+                            setTimeout(()=>{dialogo("jugador","" + tantosJugadorActual)},3000);
+                            setTimeout(()=>{ 
+                                dialogo("computadora","Son buenas.")
+                                estaRealizandoDialogoEnvidoTruco = false;
+                            },3500);
+                            console.log("Ganador Jugador")
+
+                            //FALTA LOGICA AGREGAR LOS PUNTOS ANTES DE RESETEAR
+
+                            //reset de tantos
+                            tantosJugador = 0;
+                            tantosComputadora = 0;
+                        }
+
+                        }else {
+                            setTimeout(()=>{
+                                dialogo("computadora","No quiero.")
+                                estaRealizandoDialogoEnvidoTruco = false;
+                            },2000);   
+                        }
+                        break;
+                }else {
+                    break;
+                }
+            }else {
+                break;
+            }
+
+        case "normal":
+
+            //HAY QUE COLOCAR EL COMPARADOR EN CADA RONDAAAAAAAAAAAAAA
+            
+            //Logica computadora para tirar cartas por ronda.
+            let cartasJugadorEnMesa = centroMesaLadoJugador.querySelectorAll('div'); //Me traigo todos los div dentro del centro de mesa lado jugador.
+
+            console.log("Numero de ronda: " + numeroRonda);
+            if(numeroRonda == 1) {
+
+                 for(let cartaComputadora of mazoComputadora){
+
+                    //Busco la carta del mazo del jugador que coincida con el ID de la carta que esta en la mesa
+                    let cartaJugador = mazoJugador.find( carta => carta.id == cartasJugadorEnMesa[0].id);
+
+                    //Comparo el valor de la carta que esta en la mesa con las del mazo de la computadora
+                    if(cartaComputadora.numero > cartaJugador.numero) {
+                        setTimeout(()=>{
+                            colocarCartaComputadoraEnMesa(cartaComputadora.id)
+                            let cartaComputadoraEnMesa = centroMesaLadoComputadora.querySelectorAll('div');
+                            let cartaImg = cartaComputadoraEnMesa[0].querySelector('img');
+                            console.log(cartaImg);
+                            cartaImg.src = `${cartaComputadora.src}`;
+
+                        },1000);
+                        break; //Para que solo coloque una (NO ESTARIA ELIGIENDO LA MAS EFICIENTE)
+                    }else { //ESTOY EVITANDO LA LOGICA DE QUE TENGA UNA CARTA QUE SEA IGUAL A LA DE LA MESA.
+
+                        //Hago que tire la primera que tenga, aca deberia dar la logica para que tire la mas chiquita que tenga.
+                        setTimeout(()=>{
+                            colocarCartaComputadoraEnMesa(cartaComputadora.id)
+                            let cartaComputadoraEnMesa = centroMesaLadoComputadora.querySelectorAll('div');
+                            let cartaImg = cartaComputadoraEnMesa[0].querySelector('img');
+                            console.log(cartaImg);
+                            cartaImg.src = `${cartaComputadora.src}`;
+
+                        },1000);
+                        break;
                     }
                 }
             }
-                       
-        } 
-    }              
-    };
 
-    console.log(envidoComputadora);
-    console.log(envidoJugador);
+            if(numeroRonda == 2) {
 
-    if (envidoJugador<envidoComputadora) {
-        salir=true;
-        salir2=true;
-        const dialogo2 = document.querySelector(".texto2");
-             setTimeout(()=>{ 
-                dialogo.innerHTML = "";
-                dialogo.style.display="flex";
-                const dialogoH2 = document.createElement("h1");
-                dialogoH2.innerHTML = ""+envidoJugador;
-                dialogo.appendChild(dialogoH2);
-                const dialogo2 = document.querySelector(".texto2");
-            },1000);
+                for(let cartaComputadora of mazoComputadora){
 
-            setTimeout(()=>{ 
-                dialogo2.innerHTML = "";
-                dialogo2.style.display="flex";
-                const dialogoH2 = document.createElement("h1");
-                dialogoH2.innerHTML = ""+envidoComputadora;
-                dialogo2.appendChild(dialogoH2);
-            },2000);
+                   //Busco la carta del mazo del jugador que coincida con el ID de la carta que esta en la mesa
+                   let cartaJugador = mazoJugador.find( carta => carta.id == cartasJugadorEnMesa[1].id);
 
-            setTimeout(()=>{ 
-                dialogo.innerHTML = "";
-                dialogo.style.display="flex";
-                const dialogoH3 = document.createElement("h1");
-                dialogoH3.innerHTML = "Son buenas.";
-                dialogo.appendChild(dialogoH3);
-            },4000); 
+                   //Comparo el valor de la carta que esta en la mesa con las del mazo de la computadora
+                   if(cartaComputadora.numero > cartaJugador.numero) {
+                       setTimeout(()=>{
+                           colocarCartaComputadoraEnMesa(cartaComputadora.id)
+                           let cartaComputadoraEnMesa = centroMesaLadoComputadora.querySelectorAll('div');
+                           let cartaImg = cartaComputadoraEnMesa[1].querySelector('img');
+                           console.log(cartaImg);
+                           cartaImg.src = `${cartaComputadora.src}`;
 
-            setTimeout(()=>{ 
-                dialogo.innerHTML = "";
-                dialogo.style.display="none";
-                dialogo2.innerHTML = "";
-                dialogo2.style.display="none";
-            },5000); 
-            puntosJugador+=2;
-            setTimeout(()=>{ 
-                agregarPuntos();
-            },5500); 
-    };
+                       },1000);
+                       break; //Para que solo coloque una (NO ESTARIA ELIGIENDO LA MAS EFICIENTE)
+                   }else { //ESTOY EVITANDO LA LOGICA DE QUE TENGA UNA CARTA QUE SEA IGUAL A LA DE LA MESA.
 
-    if (envidoJugador>envidoComputadora) {
-        salir=true;
-        salir2=true;
-        const dialogo = document.querySelector(".texto");
-        const dialogo2 = document.querySelector(".texto2");
-        setTimeout(()=>{ 
-            dialogo.innerHTML = "";
-            dialogo.style.display="flex";
-            const dialogoH1 = document.createElement("h1");
-            dialogoH1.innerHTML = ""+envidoJugador;
-            dialogo.appendChild(dialogoH1);
-        },2000); //2 SEGUNDOS
+                       //Hago que tire la primera que tenga, aca deberia dar la logica para que tire la mas chiquita que tenga.
+                       setTimeout(()=>{
+                           colocarCartaComputadoraEnMesa(cartaComputadora.id)
+                           let cartaComputadoraEnMesa = centroMesaLadoComputadora.querySelectorAll('div');
+                           let cartaImg = cartaComputadoraEnMesa[1].querySelector('img');
+                           console.log(cartaImg);
+                           cartaImg.src = `${cartaComputadora.src}`;
 
-        setTimeout(()=>{ 
-            dialogo2.innerHTML = "";
-            dialogo2.style.display="flex";
-            const dialogoH2 = document.createElement("h1");
-            dialogoH2.innerHTML = ""+envidoComputadora;
-            dialogo2.appendChild(dialogoH2);
-        },3000);
+                       },1000);
+                       break;
+                   }
+               }
+           }
 
-        setTimeout(()=>{ 
-            dialogo2.innerHTML = "";
-            dialogo2.style.display="flex";
-            const dialogoH5 = document.createElement("h1");
-            dialogoH5.innerHTML = "Son buenas.";
-            dialogo2.appendChild(dialogoH5);
-        },4000);
-        setTimeout(()=>{ 
-            dialogo.innerHTML = "";
-            dialogo.style.display="none";
-            dialogo2.innerHTML = "";
-            dialogo2.style.display="none";
-        },6000); 
-        puntosJugador+=2;
-        setTimeout(()=>{ 
-            agregarPuntos();
-        },5500); 
-    };
-    
-const clickRealEnvido = document.querySelector("#realEnvido");
-clickRealEnvido.onclick = () => {  
-    const dialogo = document.querySelector(".texto");
-    dialogo.innerHTML = "";
-    dialogo.style.display="flex";
-    const dialogoH1 = document.createElement("h1");
-    dialogoH1.innerHTML = "Real envido!!";
-    dialogo.appendChild(dialogoH1);
+           if(numeroRonda == 3) {
 
-    setTimeout(function quitarCuadroDialogo(){ //funcion para quitar el cuadro de dialogo segun el tiempo transcurrido
-        dialogo.innerHTML = "";
-        dialogo.style.display="none";
-    },2000); //2 SEGUNDOS
-    };
-};
+            for(let cartaComputadora of mazoComputadora){
 
-const clickFaltaEnvido = document.querySelector("#faltaEnvido");
-clickFaltaEnvido.onclick = () => {  
-    const dialogo = document.querySelector(".texto");
-    dialogo.innerHTML = "";
-    dialogo.style.display="flex";
-    const dialogoH1 = document.createElement("h1");
-    dialogoH1.innerHTML = "Falta envido!!";
-    dialogo.appendChild(dialogoH1);
+               //Busco la carta del mazo del jugador que coincida con el ID de la carta que esta en la mesa
+               let cartaJugador = mazoJugador.find( carta => carta.id == cartasJugadorEnMesa[2].id);
 
-    setTimeout(function quitarCuadroDialogo(){ //funcion para quitar el cuadro de dialogo segun el tiempo transcurrido
-        dialogo.innerHTML = "";
-        dialogo.style.display="none";
-    },2000); //2 SEGUNDOS
-};
-const clickTruco = document.querySelector("#truco");
-clickTruco.onclick = () => {  
-    const dialogo = document.querySelector(".texto");
-    dialogo.innerHTML = "";
-    dialogo.style.display="flex";
-    const dialogoH1 = document.createElement("h1");
-    dialogoH1.innerHTML = "Truco carajo!";
-    dialogo.appendChild(dialogoH1);
+               //Comparo el valor de la carta que esta en la mesa con las del mazo de la computadora
+               if(cartaComputadora.numero > cartaJugador.numero) {
+                   setTimeout(()=>{
+                       colocarCartaComputadoraEnMesa(cartaComputadora.id)
+                       let cartaComputadoraEnMesa = centroMesaLadoComputadora.querySelectorAll('div');
+                       let cartaImg = cartaComputadoraEnMesa[2].querySelector('img');
+                       console.log(cartaImg);
+                       cartaImg.src = `${cartaComputadora.src}`;
 
-    setTimeout(function quitarCuadroDialogo(){ //funcion para quitar el cuadro de dialogo segun el tiempo transcurrido
-        dialogo.innerHTML = "";
-        dialogo.style.display="none";
-    },2000); //2 SEGUNDOS
-};
+                   },1000);
+                   break; //Para que solo coloque una (NO ESTARIA ELIGIENDO LA MAS EFICIENTE)
+               }else { //ESTOY EVITANDO LA LOGICA DE QUE TENGA UNA CARTA QUE SEA IGUAL A LA DE LA MESA.
 
-//MUSICA 
-const botonMusica = document.querySelector(".musica");
+                   //Hago que tire la primera que tenga, aca deberia dar la logica para que tire la mas chiquita que tenga.
+                   setTimeout(()=>{
+                       colocarCartaComputadoraEnMesa(cartaComputadora.id)
+                       let cartaComputadoraEnMesa = centroMesaLadoComputadora.querySelectorAll('div');
+                       let cartaImg = cartaComputadoraEnMesa[2].querySelector('img');
+                       console.log(cartaImg);
+                       cartaImg.src = `${cartaComputadora.src}`;
 
-botonMusica.addEventListener('click',()=>{
-    let sound = new Audio('sonidofondo.mp3');
-    sound.loop = true;
-    sound.play();
-});
+                   },1000);
+                   break;
+               }
+           }
+       }
 
+
+
+        case "truco" :
+
+    }
+}
+
+const comparadorDeCartas = ()=>{
+    const cartasJugadorEnMesa = centroMesaLadoJugador.querySelectorAll('div'); //Me traigo todos los div dentro del centro de mesa lado jugador.
+    const cartasComputadoraEnMesa = centroMesaLadoComputadora.querySelectorAll('div'); //Me traigo todos los div dentro del centro de mesa lado jugador.
+
+    if(numeroRonda == 1) {
+        if(cartasJugadorEnMesa[0] > cartasComputadoraEnMesa[0]){
+
+        }else if(cartasJugadorEnMesa[0] < cartasComputadoraEnMesa[0]) {
+
+        }else { //Son iguales.
+
+        }
+    }
+
+    if(numeroRonda == 2) {
+        if(cartasJugadorEnMesa[1] > cartasComputadoraEnMesa[1]){
+
+        }else if(cartasJugadorEnMesa[1] < cartasComputadoraEnMesa[1]) {
+
+        }else { //Son iguales.
+
+        }
+    }
+
+    if(numeroRonda == 3) {
+        if(cartasJugadorEnMesa[2] > cartasComputadoraEnMesa[2]){
+
+        }else if(cartasJugadorEnMesa[2] < cartasComputadoraEnMesa[2]) {
+
+        }else { //Son iguales.
+
+        }  
+    }
+}
+
+
+const init = ()=> {
+    armarMazo();
+    mezclarMazo();
+    repartirCartasJugador();
+    repartirCartasComputadora();
+    manoJugador();
+    manoComputadora();
+    clickCartasJugador();
+}
+
+init();
+
+
+botonEnvido.addEventListener('click', () => ronda("envido"));
