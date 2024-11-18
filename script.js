@@ -98,7 +98,7 @@ const renderizarCartas = ({src,dorso}, index, esComputadora = false)=>{
     const id = esComputadora ? ++indiceComputadora : ++indiceJugador;
     const cartasDe = esComputadora ? "cartas-computadora" : "cartas-jugador";
 
-    return `<div class="carta ${cartasDe}" id="${id}"><img src="${imagenSrc}"></img></div>`;
+    return `<div class="carta ${cartasDe}" data-name="${id}" id="carta${id}"><img src="${imagenSrc}"></img></div>`;
 }
 
 const manoJugador = ()=>{
@@ -136,15 +136,14 @@ const colocarCartaJugadorEnMesa = (event) =>{
     numeroRonda++;
     console.log(numeroRonda);
 
-    const cartaId = event.currentTarget.id;
+    const cartaDataName= event.currentTarget.getAttribute('data-name');
 
 
     if(!estaRealizandoDialogoEnvidoTruco) {
         copiaMazoJugador = mazoJugador.filter((carta) =>{
-        
                 //Agrega la carta en la mesa;
-                if(carta.id==cartaId){
-                    const elementoAMover = document.getElementById(`${cartaId}`)
+                if(carta.id==cartaDataName){
+                    const elementoAMover = document.querySelector(`[data-name="${cartaDataName}"]`);
                     elementoAMover.style.animation = "moverse .5s";
          
                     centroMesaLadoJugador.appendChild(elementoAMover);
@@ -172,15 +171,16 @@ const colocarCartaJugadorEnMesa = (event) =>{
         cartaHabilitada = true;
     }, 1500); // 2 segundos
 }
-
+// SOLUCIONAR PROBLEMA DE DATA-NAME E ID
 const colocarCartaComputadoraEnMesa = (id) =>{
+    console.log(id);
 
     if(!estaRealizandoDialogoEnvidoTruco) {
         mazoComputadora = mazoComputadora.filter((carta) =>{
         
                 //Agrega la carta en la mesa;
                 if(carta.id==id){
-                    const elementoAMover = document.getElementById(`${id}`)
+                    const elementoAMover = document.getElementById(`carta${id}`)
                     elementoAMover.style.animation = "moverseComputadora .5s";
                 
                     centroMesaLadoComputadora.appendChild(elementoAMover); 
@@ -378,9 +378,12 @@ const ronda = (estadoRonda) => {
                  for(let cartaComputadora of mazoComputadora){
 
                     //Busco la carta del mazo del jugador que coincida con el ID de la carta que esta en la mesa
-                    let cartaJugador = mazoJugador.find( carta => carta.id == cartasJugadorEnMesa[0].id);
+                    let cartaJugador = mazoJugador.find( carta => `carta${carta.id}` == cartasJugadorEnMesa[0].id);
+                    console.log(cartasJugadorEnMesa[0].id);
+                    console.log(cartaJugador);
 
                     //Comparo el valor de la carta que esta en la mesa con las del mazo de la computadora
+                    
                     if(cartaComputadora.numero > cartaJugador.numero) {
                         setTimeout(()=>{
                             colocarCartaComputadoraEnMesa(cartaComputadora.id)
@@ -412,7 +415,7 @@ const ronda = (estadoRonda) => {
                 for(let cartaComputadora of mazoComputadora){
 
                    //Busco la carta del mazo del jugador que coincida con el ID de la carta que esta en la mesa
-                   let cartaJugador = mazoJugador.find( carta => carta.id == cartasJugadorEnMesa[1].id);
+                   let cartaJugador = mazoJugador.find( carta => `carta${carta.id}` == cartasJugadorEnMesa[1].id);
 
                    //Comparo el valor de la carta que esta en la mesa con las del mazo de la computadora
                    if(cartaComputadora.numero > cartaJugador.numero) {
@@ -446,7 +449,7 @@ const ronda = (estadoRonda) => {
             for(let cartaComputadora of mazoComputadora){
 
                //Busco la carta del mazo del jugador que coincida con el ID de la carta que esta en la mesa
-               let cartaJugador = mazoJugador.find( carta => carta.id == cartasJugadorEnMesa[2].id);
+               let cartaJugador = mazoJugador.find( carta => `carta${carta.id}` == cartasJugadorEnMesa[2].id);
 
                //Comparo el valor de la carta que esta en la mesa con las del mazo de la computadora
                if(cartaComputadora.numero > cartaJugador.numero) {
