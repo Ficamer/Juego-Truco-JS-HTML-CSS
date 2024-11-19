@@ -44,6 +44,10 @@ let seCantoEnvido = false;
 let seCantoTruco = false;
 let cartaHabilitada = true;
 
+//Puntos
+let puntosJugador = 0;
+let puntosComputadora = 0;
+
 const armarMazo = () => { 
     for(let i=1;i<=12;i++){
         if (i===8 || i===9){ //Si i es 8 o 9, continuar a la siguiente iteracion y no cargar esa carta

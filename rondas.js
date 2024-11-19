@@ -1,4 +1,21 @@
+let htmlPuntosJugador = document.querySelector('.puntos-jugador');
+let htmlPuntosComputadora = document.querySelector('.puntos-computadora');
 //Lógica basica para que la computadora tire cartas.
+
+const agregarPuntosEnvido = (jugador,quizo)=>{
+    if(quizo){
+        if(jugador=="computadora"){
+            htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
+             <p>${puntosComputadora+2}</p>` 
+        }else {
+            htmlPuntosJugador.innerHTML = `<p>Jugador</p>
+             <p>${puntosJugador+2}</p>` 
+        }
+    }else {
+        htmlPuntosJugador.innerHTML = `<p>Jugador</p>
+        <p>${puntosJugador+1}</p>` 
+    }
+}
 
 const ronda = (estadoRonda) => {
 
@@ -78,11 +95,11 @@ const ronda = (estadoRonda) => {
                         let ganador = ganadorEnvido();
         
                         if (ganador==="computadora") {
-                            
                             setTimeout(()=>{dialogo("jugador","Son buenas.")},3000);
                             setTimeout(()=>{
                                 dialogo("computadora","Jaja! Que facil.")
                                 estaRealizandoDialogoEnvidoTruco = false;
+                                agregarPuntosEnvido(ganador,true);
                             },4000);
 
                             //reset de tantos
@@ -95,6 +112,7 @@ const ronda = (estadoRonda) => {
                             setTimeout(()=>{ 
                                 dialogo("computadora","Son buenas.")
                                 estaRealizandoDialogoEnvidoTruco = false;
+                                agregarPuntosEnvido(ganador,true);
                             },3500);
                             console.log("Ganador Jugador")
 
@@ -107,10 +125,12 @@ const ronda = (estadoRonda) => {
 
                         }else {
                             setTimeout(()=>{
+                                let ganador = ganadorEnvido();
                                 dialogo("computadora","No quiero.")
                                 console.log("Agregar un punto a Jugador por tanto no querido")
                                 estaRealizandoDialogoEnvidoTruco = false;
-                            },2000);   
+                                agregarPuntosEnvido(ganador,false);
+                            },2000);     
                         }
                         break;
                 }else {
