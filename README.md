@@ -4,4 +4,4 @@ Funcionalidades activas:
 - Colocar cartas en mesa
 - Computadora coloca carta segun la tirada por el jugador.
 
-![image](https://github.com/user-attachments/assets/d0a94a53-53f2-4813-9547-544c43c472af)
+![truco proyecto](https://github.com/user-attachments/assets/5d7605bf-45d6-44b0-9afb-5fa24e7355a2)
