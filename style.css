@@ -316,28 +316,46 @@ body {
         height:5px;
     }
     .mano-computadora {
-        top:50px;
+        top:35px;
+        height:175px;
     }
     .mano-jugador {
-        bottom:50px;
-     
+        bottom:25px;
+        height:175px;
     }
     .carta {
         width:100px;
         height:135px;
     }
+
+    .cartas-computadora {
+        width:80px;
+        height:115px;
+    }
+    .centro-mesa-lado-computadora .cartas-computadora {
+        width:100px;
+        height:135px;
+    }
+    
+    .centro-mesa-lado-computadora {
+        align-items:center;
+        height:130px;
+    }
+    .centro-mesa-lado-jugador {
+        align-items:center;
+        height:130px;
+    }
+
     .botonera-jugador {
         display:flex;
         justify-content: center;
         height:55px;
-
         position:absolute;
         width:100%;
         bottom:15px;
         left:0;
     }
     .contenedor-botones {
-
         width:95%;
         flex-direction: row;
         justify-content: center;
@@ -351,7 +369,7 @@ body {
     #foto-jugador {
         position:absolute;
         left:0;
-        bottom:55px;
+        bottom:75px;
         width: 100px;
         height:auto;
     }
@@ -360,5 +378,18 @@ body {
         align-items:center;
         justify-content: center;
         height:5px;
+    }
+    .dialogo-jugador {
+        width:85px;
+        height:35px;
+        left:10px;
+        top:-25px;
+    }
+
+    .dialogo-computadora {
+        width:85px;
+        height:35px;
+        left:10px;
+        bottom:-25px;
     }
 }
