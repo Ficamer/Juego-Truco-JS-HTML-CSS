@@ -41,10 +41,9 @@ const dialogoComputadora = document.querySelector('.dialogo-computadora');
 
 //Booleanos
 let seCantoEnvido = false;
+let seCantoTruco = false;
 let cartaHabilitada = true;
 
-
-//Armar mazo
 const armarMazo = () => { 
     for(let i=1;i<=12;i++){
         if (i===8 || i===9){ //Si i es 8 o 9, continuar a la siguiente iteracion y no cargar esa carta
@@ -57,7 +56,6 @@ const armarMazo = () => {
     }
 }
 
-//Mezclar mazo
 const mezclarMazo = ()=>{
     for (var i = mazo.length - 1; i > 0; i--) { //Recorro el arreglo
         var j = Math.floor(Math.random() * (i + 1)); //Genero un entero aleatorio
@@ -69,7 +67,6 @@ const mezclarMazo = ()=>{
     copiaMazo = mazo;
 };
 
-//Repartir cartas Jugador
 const repartirCartasJugador = () => {
     let contador = 0;
     for(let i=39;i>=37;i--){ //Recorro las ultimas 3 cartas 
@@ -80,7 +77,6 @@ const repartirCartasJugador = () => {
     }
 }
 
-//Repartir cartas computadora
 const repartirCartasComputadora = () => {
     let contador = 3;
     for(let i=36;i>=34;i--){ 
@@ -90,8 +86,6 @@ const repartirCartasComputadora = () => {
         copiaMazoComputadora = mazoComputadora;
     }
 }
-
-//Renderizar cartas Jugador y Computadora
 
 const renderizarCartas = ({src,dorso}, index, esComputadora = false)=>{
     const imagenSrc = esComputadora ? dorso : src;
@@ -111,7 +105,6 @@ const manoComputadora = ()=>{
     manoComputadoraHTML.innerHTML = manoComputadora;
 }
 const sonidoCartas = () =>{
-    console.log(cartaHabilitada)
     if (!cartaHabilitada) {
         return; // Si las cartas no estan habilitadas, no reproducimos el sonido
     }
@@ -134,7 +127,6 @@ const colocarCartaJugadorEnMesa = (event) =>{
     cartaHabilitada = false;
 
     numeroRonda++;
-    console.log(numeroRonda);
 
     const cartaDataName= event.currentTarget.getAttribute('data-name');
 
@@ -155,8 +147,7 @@ const colocarCartaJugadorEnMesa = (event) =>{
                 }
             }
         );
-        console.log(numeroRonda);
-        console.log(mazoComputadora);
+
         ronda("normal");
     }
     //Quita la carta que coincide con el id de la carta seleccionada del array de la mano del jugador.
@@ -173,7 +164,6 @@ const colocarCartaJugadorEnMesa = (event) =>{
 }
 // SOLUCIONAR PROBLEMA DE DATA-NAME E ID
 const colocarCartaComputadoraEnMesa = (id) =>{
-    console.log(id);
 
     if(!estaRealizandoDialogoEnvidoTruco) {
         mazoComputadora = mazoComputadora.filter((carta) =>{
@@ -229,7 +219,7 @@ const dialogo = (quien,texto) =>{
     if(quien == "jugador") {
         dialogoJugador.style.display="flex";
         dialogoJugador.innerHTML = `<p>${texto}</p>`
-        dialogoJugador.style.animation = "aparicion 1s forwards"; 
+        dialogoJugador.style.animation = "aparicion .5s forwards"; 
 
         setTimeout(()=>{ //funcion para quitar el cuadro de dialogo segun el tiempo transcurrido
             dialogoJugador.innerHTML = "";
@@ -240,248 +230,12 @@ const dialogo = (quien,texto) =>{
     if(quien=="computadora"){
         dialogoComputadora.style.display="flex";
         dialogoComputadora.innerHTML = `<p>${texto}</p>`
-        dialogoComputadora.style.animation = "aparicion 1s forwards"; 
+        dialogoComputadora.style.animation = "aparicion .5s forwards"; 
 
         setTimeout(()=>{ //funcion para quitar el cuadro de dialogo segun el tiempo transcurrido
             dialogoComputadora.innerHTML = "";
             dialogoComputadora.style.display="none";
         },2000);
-    }
-}
-
-const ronda = (estadoRonda) => {
-
-    switch (estadoRonda) {
-        
-        case "envido":
-            if(numeroRonda == 0 || numeroRonda == 1) {
-                if(!seCantoEnvido){
-                    seCantoEnvido = true;
-                    estaRealizandoDialogoEnvidoTruco = true;
-                    dialogo("jugador","Envidoo!")
-                    //Calculo tantos de jugador
-                    let hayCartasDelMismoPaloJugador = false;
-    
-                    for (let indice=0; indice<mazoJugador.length;indice++) { //Recorro todas las cartas
-                        for(let i = 0;i<mazoJugador.length;i++){
-                            if(indice === i) {
-                                continue;
-                            }
-                            if(mazoJugador[indice].palo === mazoJugador[i].palo) {        
-                                hayCartasDelMismoPaloJugador = true;
-                                tantosJugador = sumarTantos(mazoJugador[indice].numero,mazoJugador[i].numero);
-                                break;
-                            }
-                        }
-                    }
-        
-                    //Si no encontro coincidencias dejo el valor del tanto mas alto
-                    if(hayCartasDelMismoPaloJugador === false){
-                        let primerValor = mazoJugador[0].numero;
-                        for(let k=1;k<mazoJugador.length;k++) {
-                            if(primerValor < mazoJugador[k].numero ){
-                                primerValor = mazoJugador[k].numero;
-                            }
-                        }
-                        tantosJugador = primerValor;   
-                    }
-    
-                
-                    //Calculo tantos de  computadora
-                    let hayCartasDelMismoPaloComputadora = false;
-    
-                    for (let indice=0; indice<mazoComputadora.length;indice++) { //Recorro todas las cartas
-                        for(let i = 0;i<mazoComputadora.length;i++){
-                            if(indice === i) {
-                                continue;
-                            }
-                            if(mazoComputadora[indice].palo === mazoComputadora[i].palo) {     
-                                hayCartasDelMismoPaloComputadora = true;   
-                                tantosComputadora = sumarTantos(mazoComputadora[indice].numero,mazoComputadora[i].numero);
-                                break;
-                            }
-                        }
-                    }  
-                    
-                    //Si no encontro coincidencias dejo el valor del tanto mas alto
-                    if(hayCartasDelMismoPaloComputadora === false){
-                        let primerValor = mazoComputadora[0].numero;
-                        for(let k=1;k<mazoComputadora.length;k++) {
-                            if(primerValor < mazoComputadora[k].numero ){
-                                primerValor = mazoComputadora[k].numero;
-                            }
-                        }
-                        tantosComputadora = primerValor;   
-                    }
-    
-                    //Logica básica para aceptar o no envido
-    
-                    if(tantosComputadora >= 27){
-
-                        let tantosComputadoraActual = tantosComputadora;
-                        let tantosJugadorActual = tantosJugador;
-
-                        setTimeout(()=>{dialogo("computadora","Quieroo!" + " " + tantosComputadoraActual)},1500);
-                        let ganador = ganadorEnvido();
-        
-                        if (ganador==="computadora") {
-                            
-                            setTimeout(()=>{dialogo("jugador","Son buenas.")},3000);
-                            setTimeout(()=>{
-                                dialogo("computadora","Jaja! Que facil.")
-                                estaRealizandoDialogoEnvidoTruco = false;
-                            },4000);
-
-                            //reset de tantos
-                            tantosJugador = 0;
-                            tantosComputadora = 0;
-                        }
-                        if (ganador === "jugador"){
-                            setTimeout(()=>{dialogo("jugador","" + tantosJugadorActual)},3000);
-                            setTimeout(()=>{ 
-                                dialogo("computadora","Son buenas.")
-                                estaRealizandoDialogoEnvidoTruco = false;
-                            },3500);
-                            console.log("Ganador Jugador")
-
-                            //FALTA LOGICA AGREGAR LOS PUNTOS ANTES DE RESETEAR
-
-                            //reset de tantos
-                            tantosJugador = 0;
-                            tantosComputadora = 0;
-                        }
-
-                        }else {
-                            setTimeout(()=>{
-                                dialogo("computadora","No quiero.")
-                                estaRealizandoDialogoEnvidoTruco = false;
-                            },2000);   
-                        }
-                        break;
-                }else {
-                    break;
-                }
-            }else {
-                break;
-            }
-
-        case "normal":
-
-            //HAY QUE COLOCAR EL COMPARADOR EN CADA RONDAAAAAAAAAAAAAA
-            
-            //Logica computadora para tirar cartas por ronda.
-            let cartasJugadorEnMesa = centroMesaLadoJugador.querySelectorAll('div'); //Me traigo todos los div dentro del centro de mesa lado jugador.
-
-            console.log("Numero de ronda: " + numeroRonda);
-            if(numeroRonda == 1) {
-
-                 for(let cartaComputadora of mazoComputadora){
-
-                    //Busco la carta del mazo del jugador que coincida con el ID de la carta que esta en la mesa
-                    let cartaJugador = mazoJugador.find( carta => `carta${carta.id}` == cartasJugadorEnMesa[0].id);
-                    console.log(cartasJugadorEnMesa[0].id);
-                    console.log(cartaJugador);
-
-                    //Comparo el valor de la carta que esta en la mesa con las del mazo de la computadora
-                    
-                    if(cartaComputadora.numero > cartaJugador.numero) {
-                        setTimeout(()=>{
-                            colocarCartaComputadoraEnMesa(cartaComputadora.id)
-                            let cartaComputadoraEnMesa = centroMesaLadoComputadora.querySelectorAll('div');
-                            let cartaImg = cartaComputadoraEnMesa[0].querySelector('img');
-                            console.log(cartaImg);
-                            cartaImg.src = `${cartaComputadora.src}`;
-
-                        },1000);
-                        break; //Para que solo coloque una (NO ESTARIA ELIGIENDO LA MAS EFICIENTE)
-                    }else { //ESTOY EVITANDO LA LOGICA DE QUE TENGA UNA CARTA QUE SEA IGUAL A LA DE LA MESA.
-
-                        //Hago que tire la primera que tenga, aca deberia dar la logica para que tire la mas chiquita que tenga.
-                        setTimeout(()=>{
-                            colocarCartaComputadoraEnMesa(cartaComputadora.id)
-                            let cartaComputadoraEnMesa = centroMesaLadoComputadora.querySelectorAll('div');
-                            let cartaImg = cartaComputadoraEnMesa[0].querySelector('img');
-                            console.log(cartaImg);
-                            cartaImg.src = `${cartaComputadora.src}`;
-
-                        },1000);
-                        break;
-                    }
-                }
-            }
-
-            if(numeroRonda == 2) {
-
-                for(let cartaComputadora of mazoComputadora){
-
-                   //Busco la carta del mazo del jugador que coincida con el ID de la carta que esta en la mesa
-                   let cartaJugador = mazoJugador.find( carta => `carta${carta.id}` == cartasJugadorEnMesa[1].id);
-
-                   //Comparo el valor de la carta que esta en la mesa con las del mazo de la computadora
-                   if(cartaComputadora.numero > cartaJugador.numero) {
-                       setTimeout(()=>{
-                           colocarCartaComputadoraEnMesa(cartaComputadora.id)
-                           let cartaComputadoraEnMesa = centroMesaLadoComputadora.querySelectorAll('div');
-                           let cartaImg = cartaComputadoraEnMesa[1].querySelector('img');
-                           console.log(cartaImg);
-                           cartaImg.src = `${cartaComputadora.src}`;
-
-                       },1000);
-                       break; //Para que solo coloque una (NO ESTARIA ELIGIENDO LA MAS EFICIENTE)
-                   }else { //ESTOY EVITANDO LA LOGICA DE QUE TENGA UNA CARTA QUE SEA IGUAL A LA DE LA MESA.
-
-                       //Hago que tire la primera que tenga, aca deberia dar la logica para que tire la mas chiquita que tenga.
-                       setTimeout(()=>{
-                           colocarCartaComputadoraEnMesa(cartaComputadora.id)
-                           let cartaComputadoraEnMesa = centroMesaLadoComputadora.querySelectorAll('div');
-                           let cartaImg = cartaComputadoraEnMesa[1].querySelector('img');
-                           console.log(cartaImg);
-                           cartaImg.src = `${cartaComputadora.src}`;
-
-                       },1000);
-                       break;
-                   }
-               }
-           }
-
-           if(numeroRonda == 3) {
-
-            for(let cartaComputadora of mazoComputadora){
-
-               //Busco la carta del mazo del jugador que coincida con el ID de la carta que esta en la mesa
-               let cartaJugador = mazoJugador.find( carta => `carta${carta.id}` == cartasJugadorEnMesa[2].id);
-
-               //Comparo el valor de la carta que esta en la mesa con las del mazo de la computadora
-               if(cartaComputadora.numero > cartaJugador.numero) {
-                   setTimeout(()=>{
-                       colocarCartaComputadoraEnMesa(cartaComputadora.id)
-                       let cartaComputadoraEnMesa = centroMesaLadoComputadora.querySelectorAll('div');
-                       let cartaImg = cartaComputadoraEnMesa[2].querySelector('img');
-                       console.log(cartaImg);
-                       cartaImg.src = `${cartaComputadora.src}`;
-
-                   },1000);
-                   break; //Para que solo coloque una (NO ESTARIA ELIGIENDO LA MAS EFICIENTE)
-               }else { //ESTOY EVITANDO LA LOGICA DE QUE TENGA UNA CARTA QUE SEA IGUAL A LA DE LA MESA.
-
-                   //Hago que tire la primera que tenga, aca deberia dar la logica para que tire la mas chiquita que tenga.
-                   setTimeout(()=>{
-                       colocarCartaComputadoraEnMesa(cartaComputadora.id)
-                       let cartaComputadoraEnMesa = centroMesaLadoComputadora.querySelectorAll('div');
-                       let cartaImg = cartaComputadoraEnMesa[2].querySelector('img');
-                       console.log(cartaImg);
-                       cartaImg.src = `${cartaComputadora.src}`;
-
-                   },1000);
-                   break;
-               }
-           }
-       }
-
-
-
-        case "truco" :
-
     }
 }
 
@@ -519,7 +273,6 @@ const comparadorDeCartas = ()=>{
         }  
     }
 }
-
 
 const init = ()=> {
     armarMazo();
