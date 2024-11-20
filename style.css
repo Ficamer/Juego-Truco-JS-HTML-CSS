@@ -107,7 +107,8 @@ body {
 }
 .contenedor-botones button {
     cursor:pointer;
-    width:150px;
+    width:158px;
+    height: 35px;
     border:3px solid rgb(141, 103, 52);
     padding:5px;
     z-index:10;
@@ -252,7 +253,22 @@ body {
     margin-right: -35px;  /* Ajusta el valor negativo según lo cerca que quieras los elementos */
 }
 
+.contenedor-boton-envido {
+    height:36px;
+    width:158px;
+    gap:3px;
+    position:relative;
+    display:flex;
+    flex-direction: row;
+}
 
+.boton-envido-activo {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    width:35px;
+}
 
 
 @keyframes moverse {
@@ -357,6 +373,7 @@ body {
     }
     .contenedor-botones {
         width:95%;
+        height:50px;
         flex-direction: row;
         justify-content: center;
         align-items:center;
@@ -366,6 +383,19 @@ body {
         width:85px;
         height:50px;
     }
+    .contenedor-boton-envido {
+        top:-54px;
+        height:159px;
+        width:85px;
+        gap:3px;
+        position:relative;
+        display:flex;
+        flex-direction: column-reverse;
+    }
+    .boton-envido-activo {
+        font-size:13px;
+    }
+
     #foto-jugador {
         position:absolute;
         left:0;

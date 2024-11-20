@@ -24,6 +24,7 @@ let estaRealizandoDialogoEnvidoTruco = false;
 let numeroRonda = 0;
 let rondasGanadasJugador = 0;
 let rondasGanadasComputadora = 0;
+let termino = false;
 
 //Indices para IDs de cartas
 let indiceJugador = 0;
@@ -47,6 +48,10 @@ let cartaHabilitada = true;
 //Puntos
 let puntosJugador = 0;
 let puntosComputadora = 0;
+
+//Bandera para hacer visibles los botones de envido
+let botonesEnvidoVisibles = false;
+
 
 const armarMazo = () => { 
     for(let i=1;i<=12;i++){
@@ -135,7 +140,7 @@ const colocarCartaJugadorEnMesa = (event) =>{
     const cartaDataName= event.currentTarget.getAttribute('data-name');
 
 
-    if(!estaRealizandoDialogoEnvidoTruco) {
+    if(!estaRealizandoDialogoEnvidoTruco && !termino) {
         copiaMazoJugador = mazoJugador.filter((carta) =>{
                 //Agrega la carta en la mesa;
                 if(carta.id==cartaDataName){
@@ -154,9 +159,6 @@ const colocarCartaJugadorEnMesa = (event) =>{
 
         ronda("normal");
     }
-    //Quita la carta que coincide con el id de la carta seleccionada del array de la mano del jugador.
-
-
     //Vuelvo a asignar la funcionalidad a las cartas (ya que se pierde al usar appendChild y mover un elemento)
 
     setTimeout(()=>{quitarListenersCartasEnMesa()},250);
@@ -166,10 +168,11 @@ const colocarCartaJugadorEnMesa = (event) =>{
         cartaHabilitada = true;
     }, 1500); // 2 segundos
 }
-// SOLUCIONAR PROBLEMA DE DATA-NAME E ID
+
 const colocarCartaComputadoraEnMesa = (id) =>{
 
-    if(!estaRealizandoDialogoEnvidoTruco) {
+    if(!estaRealizandoDialogoEnvidoTruco || !termino) {
+
         mazoComputadora = mazoComputadora.filter((carta) =>{
         
                 //Agrega la carta en la mesa;
@@ -186,7 +189,8 @@ const colocarCartaComputadoraEnMesa = (id) =>{
             }
         );
     }
-    //Quita la carta que coincide con el id de la carta seleccionada del array de la mano del jugador.
+    console.log(mazoComputadora);
+    console.log(copiaMazoComputadora);
 }
 
 const clickCartasJugador = ()=>{ 
@@ -243,41 +247,6 @@ const dialogo = (quien,texto) =>{
     }
 }
 
-const comparadorDeCartas = ()=>{
-    const cartasJugadorEnMesa = centroMesaLadoJugador.querySelectorAll('div'); //Me traigo todos los div dentro del centro de mesa lado jugador.
-    const cartasComputadoraEnMesa = centroMesaLadoComputadora.querySelectorAll('div'); //Me traigo todos los div dentro del centro de mesa lado jugador.
-
-    if(numeroRonda == 1) {
-        if(cartasJugadorEnMesa[0] > cartasComputadoraEnMesa[0]){
-
-        }else if(cartasJugadorEnMesa[0] < cartasComputadoraEnMesa[0]) {
-
-        }else { //Son iguales.
-
-        }
-    }
-
-    if(numeroRonda == 2) {
-        if(cartasJugadorEnMesa[1] > cartasComputadoraEnMesa[1]){
-
-        }else if(cartasJugadorEnMesa[1] < cartasComputadoraEnMesa[1]) {
-
-        }else { //Son iguales.
-
-        }
-    }
-
-    if(numeroRonda == 3) {
-        if(cartasJugadorEnMesa[2] > cartasComputadoraEnMesa[2]){
-
-        }else if(cartasJugadorEnMesa[2] < cartasComputadoraEnMesa[2]) {
-
-        }else { //Son iguales.
-
-        }  
-    }
-}
-
 const init = ()=> {
     armarMazo();
     mezclarMazo();
@@ -288,7 +257,67 @@ const init = ()=> {
     clickCartasJugador();
 }
 
+const resetear = ()=> {
+    centroMesaLadoComputadora.innerHTML = "";
+    centroMesaLadoJugador.innerHTML = "";
+    manoJugadorHTML.innerHTML = "";
+    manoComputadoraHTML.innerHTML = "";
+    numeroRonda = 0;
+    rondasGanadasJugador = 0;
+    rondasGanadasComputadora = 0;
+    termino = false;
+    mazoComputadora = [];
+    mazoJugador = [];
+    indiceJugador = 0;
+    indiceComputadora = 3;
+    seCantoEnvido = false;
+    seCantoTruco = false;
+    mezclarMazo();
+    repartirCartasJugador();
+    repartirCartasComputadora();
+    manoJugador();
+    manoComputadora();
+    clickCartasJugador();
+}
+
 init();
 
+//Logica boton envido
+let contenedorBotonEnvido = document.querySelector('.contenedor-boton-envido');
+botonEnvido.addEventListener('click', () =>{
 
-botonEnvido.addEventListener('click', () => ronda("envido"));
+    if(botonesEnvidoVisibles===false){
+        //Creo el boton real, appendchild no acepta backticks para crear html
+        const botonReal = document.createElement("button");
+        botonReal.textContent =  "Real envido";
+        botonReal.id = "boton-real";
+
+        const botonFalta = document.createElement("button");
+        botonFalta.textContent =  "Falta envido";
+        botonFalta.id = "boton-falta";
+
+       
+        contenedorBotonEnvido.appendChild(botonReal);
+        contenedorBotonEnvido.appendChild(botonFalta);
+        
+        
+        const cambiarEstilosBotones = contenedorBotonEnvido.querySelectorAll('button');
+        cambiarEstilosBotones.forEach((boton)=> {boton.classList.add('boton-envido-activo')});
+    
+        botonesEnvidoVisibles = true;
+    }else { //Si ya se agregaron los botones;
+        ronda("envido");
+
+        //Quito los otros botones.
+        contenedorBotonEnvido.removeChild(document.getElementById('boton-falta'));
+        contenedorBotonEnvido.removeChild(document.getElementById('boton-real'));
+
+        botonesEnvidoVisibles = false;
+    }
+});
+
+
+
+botonTruco.addEventListener('click',()=>{
+    aceptarTrucoComputadora();
+})

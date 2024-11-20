@@ -1,6 +1,34 @@
 let htmlPuntosJugador = document.querySelector('.puntos-jugador');
 let htmlPuntosComputadora = document.querySelector('.puntos-computadora');
+
+
+//Verificar quien gano y agregado de puntos
+const verificacionGanador = ()=>{
+    if(rondasGanadasComputadora==2){
+        setTimeout(()=>{
+             termino=true;
+                agregarPuntosRonda("computadora",seCantoTruco,true)},1500);
+            setTimeout(()=>{resetear()},3500);         
+    }
+    if(rondasGanadasJugador==2){
+             setTimeout(()=>{
+            termino=true;
+            agregarPuntosRonda("jugador",seCantoTruco,true)},1500);
+        setTimeout(()=>{resetear()},3500);
+    }
+
+}
 //Lógica basica para que la computadora tire cartas.
+
+const esUnaNegra = (cartaValor)=>{
+	const cartasNegrasValores = [10,11,12];
+	for(let cartaNegraValor of cartasNegrasValores){
+        if(cartaValor == cartaNegraValor){
+			return true;
+		}
+	}
+	return false;
+}
 
 const agregarPuntosEnvido = (jugador,quizo)=>{
     if(quizo){
@@ -17,8 +45,337 @@ const agregarPuntosEnvido = (jugador,quizo)=>{
     }
 }
 
-const ronda = (estadoRonda) => {
+const agregarPuntosRonda = (jugador,seCantoTruco,seAcepto)=>{
+    if(seCantoTruco) {
+        if(seAcepto) {
+            if(jugador=="computadora"){
+                puntosComputadora +=2;
+                htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
+                    <p>${puntosComputadora}</p>` 
+            }else {
+                puntosJugador +=2;
+                htmlPuntosJugador.innerHTML = `<p>Jugador</p>
+                    <p>${puntosJugador}</p>` 
+            }
+        }else {
+            if(jugador=="computadora"){
+                puntosComputadora +=1;
+                htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
+                    <p>${puntosComputadora}</p>` 
+            }else {
+                puntosJugador +=1;
+                htmlPuntosJugador.innerHTML = `<p>Jugador</p>
+                    <p>${puntosJugador}</p>` 
+            } 
+        }
+        
+    }
 
+    if(seCantoTruco == false) {
+        if(jugador=="computadora"){
+            puntosComputadora++;
+            htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
+                <p>${puntosComputadora}</p>` 
+        }else {
+            puntosJugador++;
+            htmlPuntosJugador.innerHTML = `<p>Jugador</p>
+                <p>${puntosJugador}</p>` 
+        }
+    }
+
+}
+
+const colocarCartaComputadoraConDelay = (indiceCarta,cartaComputadora) => {
+    setTimeout(()=>{
+        colocarCartaComputadoraEnMesa(cartaComputadora.id)
+        let cartaComputadoraEnMesa = centroMesaLadoComputadora.querySelectorAll('div');
+        let cartaImg = cartaComputadoraEnMesa[indiceCarta].querySelector('img');
+        cartaImg.src = `${cartaComputadora.src}`;
+    },1000);
+}
+
+const logicaRonda = (numeroRonda) =>{
+    let cartasJugadorEnMesa = centroMesaLadoJugador.querySelectorAll('div'); //Me traigo todos los div dentro del centro de mesa lado jugador.
+
+    console.log("----Numero de ronda: " + numeroRonda +"----");
+
+    console.log(centroMesaLadoComputadora);
+
+    //Busco la carta del mazo del jugador que coincida con el ID de la carta que esta en la mesa
+    let cartaJugador = mazoJugador.find( carta => `carta${carta.id}` == cartasJugadorEnMesa[numeroRonda-1].id);
+    console.log("Carta jugador en mesa: " + cartaJugador.numero + " " + cartaJugador.palo);    
+
+    let seEncontroCarta = false;
+
+    //Recorro las cartas del mazo de la computadora
+    for(let cartaComputadora of copiaMazoComputadora){
+
+        //Si la carta del jugador es una negra
+        if(esUnaNegra(cartaJugador.numero)) {
+
+            //Si la carta de la pc es una negra
+            if(esUnaNegra(cartaComputadora.numero)){
+
+                //Es mayor que la del jugador
+                if(cartaComputadora.numero > cartaJugador.numero) {
+                    seEncontroCarta = true;
+                    colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                    console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                    rondasGanadasComputadora++;
+                    break;
+                }
+            }
+
+            //Si la carta de la pc es un falso
+            if(cartaComputadora.numero == 1){
+                if(cartaComputadora.palo == "Oro" || cartaComputadora.palo == "Copas") {
+                    seEncontroCarta = true;
+                    colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                    console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                    rondasGanadasComputadora++;
+                    break;
+                }
+            }
+
+            //Si la carta de la pc es un 2
+            if(cartaComputadora ==2) {
+                seEncontroCarta = true;
+                colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                rondasGanadasComputadora++;
+                break;
+            }
+
+            //Si la carta de la computadora es un 3
+            if(cartaComputadora.numero == 3){
+                console.log("me invoque");
+                seEncontroCarta = true;
+                colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                rondasGanadasComputadora++;
+                break;
+            }
+
+            //Si la carta de la computadora es un 7 de espada o oro
+            if(cartaComputadora.numero == 7){
+                if(cartaComputadora.palo == "Espada" || cartaComputadora.palo == "Oro"){
+                    seEncontroCarta = true;
+                    colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                    console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                    rondasGanadasComputadora++;
+                    break;
+                }
+            }
+        }
+
+        //Si la carta del jugador no es una negra
+        if(!esUnaNegra(cartaJugador.numero)) {
+
+                //Si la carta del jugador es un 7 
+                if(cartaJugador.numero == 7){
+
+                    //Si la carta de la pc tambien es un 7
+                    if(cartaComputadora.numero == 7){
+
+                        //Si la carta del jugador es un 7 de basto y la de la pc un 7 de espada
+                        if(cartaJugador.palo == "Oro" && cartaComputadora.palo == "Espada"){
+                            seEncontroCarta = true;
+                            colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                            console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                            rondasGanadasComputadora++;
+                            break;
+                        }
+
+                        //Si la carta del jugador es un 7 de espada y la de la pc un 7 de basto, tiro cualquier otra carta
+                        if(cartaJugador.palo == "Espada" && cartaComputadora.palo == "Oro"){
+                            seEncontroCarta = true;
+                            colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                            console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                            rondasGanadasJugador++;
+                            break;
+                        }
+                    }
+
+                    //Si la carta de la computadora es un 1
+                    if(cartaComputadora.numero == 1){
+
+                        //Si es un ancho de espada o basto
+                        if(cartaComputadora.palo == "Espada" || cartaComputadora.palo == "Basto") {
+                            seEncontroCarta = true;
+                            colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                            console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                            rondasGanadasComputadora++;
+                            break;
+                        }
+                    }
+                }
+            
+                //Si la carta del jugador es un 3
+                if(cartaJugador.numero == 3){
+
+                    //Si la carta de la computadora es un 7 de espada o oro
+                    if(cartaComputadora.palo == "Espada" || cartaComputadora.palo == "Oro"){
+                        seEncontroCarta = true;
+                        colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                        console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                        rondasGanadasComputadora++;
+                        break;
+                    }
+                
+                    //Si la carta de la computadora es un 1
+                    if(cartaComputadora.numero == 1){
+
+                        //Si es un ancho de espada o basto
+                        if(cartaComputadora.palo == "Espada" || cartaComputadora.palo == "Basto") {
+                            seEncontroCarta = true;
+                            colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                            console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                            rondasGanadasComputadora++;
+                            break;
+                        }
+                    }
+                }
+
+                //Si la carta del jugador es un 2
+                if(cartaJugador.numero == 2){
+
+                    //Si la carta de la computadora es un 3
+                    if(cartaComputadora.numero == 3){
+                        seEncontroCarta = true;
+                        colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                        console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                        rondasGanadasComputadora++;
+                        break;
+                    }
+
+                    //Si la carta de la computadora es un 7 de espada o oro
+                    if(cartaComputadora.palo == "Espada" || cartaComputadora.palo == "Oro"){
+                        seEncontroCarta = true;
+                        colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                        console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                        rondasGanadasComputadora++;
+                        break;
+                    }
+                    
+                    //Si la carta de la computadora es un 1
+
+                    if(cartaComputadora.numero == 1){
+                            seEncontroCarta = true;
+                            colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                            console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                            rondasGanadasComputadora++;
+                            break;
+                    }
+
+                }
+
+                //Si la carta del jugador es un 1
+                if(cartaJugador.numero == 1) {
+                    if(cartaJugador.palo = "Basto"){
+                        if(cartaComputadora.palo == "Espada") {
+                            seEncontroCarta = true;
+                            colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                            console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                            rondasGanadasComputadora++;
+                            break;
+                        }
+                    }
+
+                //Si la carta del jugador es un falso
+                if(cartaJugador.palo=="Copas" || cartaJugador.palo=="Oro") {
+
+                    //Si la carta de la computadora es un 2
+                    if(cartaComputadora == 2){
+                        seEncontroCarta = true;
+                        colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                        console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                        rondasGanadasComputadora++;
+                        break;
+                    }
+
+                    //Si la carta de la computadora es un 3
+                    if(cartaComputadora==3){
+                        seEncontroCarta = true;
+                        colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                        console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                        rondasGanadasComputadora++;
+                        break;
+                    }
+
+                    //Si la carta de la computadora es un 7 oro o espada
+                    if(cartaComputadora == 7) {
+                        if(cartaComputadora.palo=="oro"){
+                            seEncontroCarta = true;
+                            colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                            console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                            rondasGanadasComputadora++;
+                            break;
+                        }
+                        if(cartaComputadora.palo=="Espada"){
+                                seEncontroCarta = true;
+                                colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                                console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                                rondasGanadasComputadora++;
+                                break;
+                            }
+                    }
+
+                    //Si la carta de la computadora es un 1 o
+                    if(cartaComputadora==1){
+
+                        //Si es un 1 de basto
+                        if(cartaComputadora.palo == "Basto") {
+                            seEncontroCarta = true;
+                            colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                            console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                            rondasGanadasComputadora++;
+                             break;
+                        }
+
+                        //Si es un 1 de espada
+                        if(cartaComputadora.palo == "Espada") {
+                            seEncontroCarta = true;
+                            colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                            console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                            rondasGanadasComputadora++;
+                            break; 
+                        }
+                    }
+
+                }
+            }
+        }
+    }
+
+    //Luego de recorrer todo el for si no encontro carta, elijo la carta mas baja del mazo de la computadora
+
+    if(!seEncontroCarta){
+        console.log("Tirar la mas chiquita");
+
+        let valorMinimo = 13;
+        let cartaValorMasBajoID = 0;
+        let cartaCompu = 0;
+
+        for(let cartaComputadora of mazoComputadora){
+            if(cartaComputadora.numero < valorMinimo){
+                valorMinimo = cartaComputadora.numero;
+                cartaValorMasBajoID  = cartaComputadora.id;
+                cartaCompu = cartaComputadora;
+            } 
+        }
+        colocarCartaComputadoraConDelay(numeroRonda-1,cartaCompu);
+        rondasGanadasJugador++; 
+    }
+
+    console.log(rondasGanadasJugador);
+    console.log(rondasGanadasComputadora);
+    if(numeroRonda>1){
+        verificacionGanador();
+    }
+
+}
+
+const ronda = (estadoRonda) => {
     switch (estadoRonda) {
         
         case "envido":
@@ -116,8 +473,6 @@ const ronda = (estadoRonda) => {
                             },3500);
                             console.log("Ganador Jugador")
 
-                            //FALTA LOGICA AGREGAR LOS PUNTOS ANTES DE RESETEAR
-
                             //reset de tantos
                             tantosJugador = 0;
                             tantosComputadora = 0;
@@ -141,120 +496,37 @@ const ronda = (estadoRonda) => {
             }
 
         case "normal":
+            logicaRonda(numeroRonda);
+    }
+}
 
-            //HAY QUE COLOCAR EL COMPARADOR EN CADA RONDAAAAAAAAAAAAAA
-            
-            //Logica computadora para tirar cartas por ronda.
-            let cartasJugadorEnMesa = centroMesaLadoJugador.querySelectorAll('div'); //Me traigo todos los div dentro del centro de mesa lado jugador.
 
-            if(numeroRonda == 1) {
-                console.log("Numero de ronda: " + numeroRonda);
-                 for(let cartaComputadora of mazoComputadora){
+const aceptarTrucoComputadora = ()=>{
 
-                    //Busco la carta del mazo del jugador que coincida con el ID de la carta que esta en la mesa
-                    let cartaJugador = mazoJugador.find( carta => `carta${carta.id}` == cartasJugadorEnMesa[0].id);
-                    console.log("Carta jugador en mesa: " + cartaJugador.numero + " " + cartaJugador.palo);
+    if(!seCantoTruco && !termino){
+        seCantoTruco = true;
+        estaRealizandoDialogoEnvidoTruco = true;
+        dialogo("jugador","Trucoo!")
 
-                    //Comparo el valor de la carta que esta en la mesa con las del mazo de la computadora
-                    
-                    if(cartaComputadora.numero > cartaJugador.numero) {
-                        setTimeout(()=>{
-                            colocarCartaComputadoraEnMesa(cartaComputadora.id)
-                            let cartaComputadoraEnMesa = centroMesaLadoComputadora.querySelectorAll('div');
-                            let cartaImg = cartaComputadoraEnMesa[0].querySelector('img');
-                            cartaImg.src = `${cartaComputadora.src}`;
-
-                        },1000);
-                        console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
-                        break; //Para que solo coloque una (NO ESTARIA ELIGIENDO LA MAS EFICIENTE)
-                    }else { //ESTOY EVITANDO LA LOGICA DE QUE TENGA UNA CARTA QUE SEA IGUAL A LA DE LA MESA.
-
-                        //Hago que tire la primera que tenga, aca deberia dar la logica para que tire la mas chiquita que tenga.
-                        setTimeout(()=>{
-                            colocarCartaComputadoraEnMesa(cartaComputadora.id)
-                            let cartaComputadoraEnMesa = centroMesaLadoComputadora.querySelectorAll('div');
-                            let cartaImg = cartaComputadoraEnMesa[0].querySelector('img');
-                            cartaImg.src = `${cartaComputadora.src}`;
-
-                        },1000);
-                        console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
-                        break;
-                    }
-                }
+        if(rondasGanadasComputadora == 1) {
+            setTimeout(()=>{
+                dialogo("computadora","Quiero carajo!")
+                estaRealizandoDialogoEnvidoTruco = false;
+            },1500);
+        }else {
+            if(Math.random() < 0.50) { //Prob del 50% de que quiera si no gano una ronda
+                setTimeout(()=>{
+                    dialogo("computadora","Quiero carajo!")
+                    estaRealizandoDialogoEnvidoTruco = false;
+                },1500);
+            }else {
+                setTimeout(()=>{
+                    dialogo("computadora","No quiero :(")
+                    estaRealizandoDialogoEnvidoTruco = false;
+                },1500);
+                setTimeout(()=>{agregarPuntosRonda("jugador",seCantoTruco,false)},2500);
+                setTimeout(()=>{resetear()},3500);     
             }
-
-            if(numeroRonda == 2) {
-                console.log("Numero de ronda: 2");
-               
-                for(let cartaComputadora of mazoComputadora){
-                    
-                   //Busco la carta del mazo del jugador que coincida con el ID de la carta que esta en la mesa
-                   let cartaJugador = mazoJugador.find( carta => `carta${carta.id}` == cartasJugadorEnMesa[1].id);
-                   console.log("Carta jugador en mesa: " + cartaJugador.numero + " " + cartaJugador.palo);
-
-                   //Comparo el valor de la carta que esta en la mesa con las del mazo de la computadora
-                   if(cartaComputadora.numero > cartaJugador.numero) {
-                       setTimeout(()=>{
-                           colocarCartaComputadoraEnMesa(cartaComputadora.id)
-                           let cartaComputadoraEnMesa = centroMesaLadoComputadora.querySelectorAll('div');
-                           let cartaImg = cartaComputadoraEnMesa[1].querySelector('img');
-                           cartaImg.src = `${cartaComputadora.src}`;
-
-                       },1000);
-                       console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
-                       break; //Para que solo coloque una (NO ESTARIA ELIGIENDO LA MAS EFICIENTE)
-                   }else { //ESTOY EVITANDO LA LOGICA DE QUE TENGA UNA CARTA QUE SEA IGUAL A LA DE LA MESA.
-
-                       //Hago que tire la primera que tenga, aca deberia dar la logica para que tire la mas chiquita que tenga.
-                       setTimeout(()=>{
-                           colocarCartaComputadoraEnMesa(cartaComputadora.id)
-                           let cartaComputadoraEnMesa = centroMesaLadoComputadora.querySelectorAll('div');
-                           let cartaImg = cartaComputadoraEnMesa[1].querySelector('img');
-                           cartaImg.src = `${cartaComputadora.src}`;
-
-                       },1000);
-                       console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
-                       break;
-                   }
-               }
-           }
-
-           if(numeroRonda == 3) {
-            console.log("Numero de ronda: 3");
-            for(let cartaComputadora of mazoComputadora){
-
-               //Busco la carta del mazo del jugador que coincida con el ID de la carta que esta en la mesa
-               let cartaJugador = mazoJugador.find( carta => `carta${carta.id}` == cartasJugadorEnMesa[2].id);
-               console.log("Carta jugador en mesa: " + cartaJugador.numero + " " + cartaJugador.palo);
-
-               //Comparo el valor de la carta que esta en la mesa con las del mazo de la computadora
-               if(cartaComputadora.numero > cartaJugador.numero) {
-                   setTimeout(()=>{
-                       colocarCartaComputadoraEnMesa(cartaComputadora.id)
-                       let cartaComputadoraEnMesa = centroMesaLadoComputadora.querySelectorAll('div');
-                       let cartaImg = cartaComputadoraEnMesa[2].querySelector('img');
-                       cartaImg.src = `${cartaComputadora.src}`;
-
-                   },1000);
-                   console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
-                   break; //Para que solo coloque una (NO ESTARIA ELIGIENDO LA MAS EFICIENTE)
-               }else { //ESTOY EVITANDO LA LOGICA DE QUE TENGA UNA CARTA QUE SEA IGUAL A LA DE LA MESA.
-
-                   //Hago que tire la primera que tenga, aca deberia dar la logica para que tire la mas chiquita que tenga.
-                   setTimeout(()=>{
-                       colocarCartaComputadoraEnMesa(cartaComputadora.id)
-                       let cartaComputadoraEnMesa = centroMesaLadoComputadora.querySelectorAll('div');
-                       let cartaImg = cartaComputadoraEnMesa[2].querySelector('img');
-                       cartaImg.src = `${cartaComputadora.src}`;
-
-                   },1000);
-                   console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
-                   break;
-               }
-           }
-       }
-
-        case "truco" :
-
+        }
     }
 }
