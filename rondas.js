@@ -86,6 +86,7 @@ const agregarPuntosRonda = (jugador,seCantoTruco,seAcepto)=>{
 }
 
 const colocarCartaComputadoraConDelay = (indiceCarta,cartaComputadora) => {
+    console.log("Id carta: "+cartaComputadora.id);
     setTimeout(()=>{
         colocarCartaComputadoraEnMesa(cartaComputadora.id)
         let cartaComputadoraEnMesa = centroMesaLadoComputadora.querySelectorAll('div');
@@ -108,7 +109,7 @@ const logicaRonda = (numeroRonda) =>{
     let seEncontroCarta = false;
 
     //Recorro las cartas del mazo de la computadora
-    for(let cartaComputadora of copiaMazoComputadora){
+    for(let cartaComputadora of mazoComputadora){
 
         //Si la carta del jugador es una negra
         if(esUnaNegra(cartaJugador.numero)) {
@@ -353,10 +354,11 @@ const logicaRonda = (numeroRonda) =>{
         console.log("Tirar la mas chiquita");
 
         let valorMinimo = 13;
-        let cartaValorMasBajoID = 0;
         let cartaCompu = 0;
-
+        console.log("El mazo comput");
+        console.log(mazoComputadora);
         for(let cartaComputadora of mazoComputadora){
+            let cartaValorMasBajoID = 0;
             if(cartaComputadora.numero < valorMinimo){
                 valorMinimo = cartaComputadora.numero;
                 cartaValorMasBajoID  = cartaComputadora.id;
