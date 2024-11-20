@@ -157,7 +157,7 @@ const colocarCartaJugadorEnMesa = (event) =>{
             }
         );
 
-        ronda("normal");
+        ronda("normal","");
     }
     //Vuelvo a asignar la funcionalidad a las cartas (ya que se pierde al usar appendChild y mover un elemento)
 
@@ -305,8 +305,17 @@ botonEnvido.addEventListener('click', () =>{
         cambiarEstilosBotones.forEach((boton)=> {boton.classList.add('boton-envido-activo')});
     
         botonesEnvidoVisibles = true;
+
+        botonReal.addEventListener('click',()=>{
+            ronda("envido", "Real envido");
+        });
+        
+        botonFalta.addEventListener('click',()=>{
+            ronda("envido", "Falta envido");
+        });
+        
     }else { //Si ya se agregaron los botones;
-        ronda("envido");
+        ronda("envido", "Envido");
 
         //Quito los otros botones.
         contenedorBotonEnvido.removeChild(document.getElementById('boton-falta'));
@@ -317,7 +326,15 @@ botonEnvido.addEventListener('click', () =>{
 });
 
 
-
 botonTruco.addEventListener('click',()=>{
     aceptarTrucoComputadora();
+})
+
+botonNoQuiero.addEventListener('click',()=>{
+
+    dialogo("jugador", "No quiero..");
+    puntosComputadora +=1;
+    htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
+        <p>${puntosComputadora}</p>` 
+    resetear();
 })

@@ -30,15 +30,41 @@ const esUnaNegra = (cartaValor)=>{
 	return false;
 }
 
-const agregarPuntosEnvido = (jugador,quizo)=>{
+const agregarPuntosEnvido = (jugador,quizo,tipoEnvido)=>{
     if(quizo){
-        if(jugador=="computadora"){
-            htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
-             <p>${puntosComputadora+2}</p>` 
-        }else {
-            htmlPuntosJugador.innerHTML = `<p>Jugador</p>
-             <p>${puntosJugador+2}</p>` 
+
+        if(tipoEnvido = "Envido") {
+            if(jugador=="computadora"){
+                htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
+                 <p>${puntosComputadora+2}</p>` 
+            }else {
+                htmlPuntosJugador.innerHTML = `<p>Jugador</p>
+                 <p>${puntosJugador+2}</p>` 
+            }
         }
+
+        if(tipoEnvido = "Real envido") {
+            if(jugador=="computadora"){
+                htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
+                 <p>${puntosComputadora+3}</p>` 
+            }else {
+                htmlPuntosJugador.innerHTML = `<p>Jugador</p>
+                 <p>${puntosJugador+3}</p>` 
+            }
+        }
+
+        if(tipoEnvido = "Falta envido") {
+            if(jugador=="computadora"){
+                let puntosParaAgregarPC = 30 - puntosJugador;
+                let puntosParaAgregarJugador = 30 - puntosComputadora;
+                htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
+                 <p>${puntosParaAgregarPC+3}</p>` 
+            }else {
+                htmlPuntosJugador.innerHTML = `<p>Jugador</p>
+                 <p>${puntosParaAgregarJugador+3}</p>` 
+            }
+        }
+
     }else {
         htmlPuntosJugador.innerHTML = `<p>Jugador</p>
         <p>${puntosJugador+1}</p>` 
@@ -377,7 +403,7 @@ const logicaRonda = (numeroRonda) =>{
 
 }
 
-const ronda = (estadoRonda) => {
+const ronda = (estadoRonda,tipoEnvido) => {
     switch (estadoRonda) {
         
         case "envido":
@@ -385,7 +411,7 @@ const ronda = (estadoRonda) => {
                 if(!seCantoEnvido){
                     seCantoEnvido = true;
                     estaRealizandoDialogoEnvidoTruco = true;
-                    dialogo("jugador","Envidoo!")
+                    dialogo("jugador",`${tipoEnvido}!!`)
                     //Calculo tantos de jugador
                     let hayCartasDelMismoPaloJugador = false;
                     
