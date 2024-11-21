@@ -228,7 +228,7 @@ const logicaRonda = (numeroRonda) =>{
                     //Si la carta de la pc tambien es un 7
                     if(cartaComputadora.numero == 7){
 
-                        //Si la carta del jugador es un 7 de basto y la de la pc un 7 de espada
+                        //Si la carta del jugador es un 7 de oro y la de la pc un 7 de espada
                         if(cartaJugador.palo == "Oro" && cartaComputadora.palo == "Espada"){
                             seEncontroCarta = true;
                             colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
@@ -237,26 +237,25 @@ const logicaRonda = (numeroRonda) =>{
                             break;
                         }
 
-                        //Si la carta del jugador es un 7 de espada y la de la pc un 7 de basto, tiro cualquier otra carta
-                        if(cartaJugador.palo == "Espada" && cartaComputadora.palo == "Oro"){
-                            seEncontroCarta = true;
-                            colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
-                            console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
-                            rondasGanadasJugador++;
-                            break;
-                        }
-                    }
+                        //Si la carta de la computadora es un 1
+                        if(cartaComputadora.numero == 1){
 
-                    //Si la carta de la computadora es un 1
-                    if(cartaComputadora.numero == 1){
-
-                        //Si es un ancho de espada o basto
-                        if(cartaComputadora.palo == "Espada" || cartaComputadora.palo == "Basto") {
-                            seEncontroCarta = true;
-                            colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
-                            console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
-                            rondasGanadasComputadora++;
-                            break;
+                            //Si es un ancho de basto
+                            if(cartaComputadora.palo == "Basto") {
+                                seEncontroCarta = true;
+                                colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                                console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                                rondasGanadasComputadora++;
+                                break;
+                            }
+                            //Si es un ancho de espada 
+                            if(cartaComputadora.palo == "Espada") {
+                                seEncontroCarta = true;
+                                colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                                console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                                rondasGanadasComputadora++;
+                                break;
+                            }                        
                         }
                     }
                 }
@@ -264,9 +263,19 @@ const logicaRonda = (numeroRonda) =>{
                 //Si la carta del jugador es un 3
                 if(cartaJugador.numero == 3){
 
-                    //Si la carta de la computadora es un 7 de espada o oro
+                    //Si la carta de la computadora es un 7 
                     if(cartaComputadora.numero == 7){   
-                        if(cartaComputadora.palo == "Espada" || cartaComputadora.palo == "Oro"){
+
+                        //Un 7 de oro
+                        if(cartaComputadora.palo == "Oro"){
+                            seEncontroCarta = true;
+                            colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                            console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                            rondasGanadasComputadora++;
+                            break;
+                        }
+                        //Un 7 de espada
+                        if(cartaComputadora.palo == "Espada"){
                             seEncontroCarta = true;
                             colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
                             console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
@@ -279,14 +288,24 @@ const logicaRonda = (numeroRonda) =>{
                     //Si la carta de la computadora es un 1
                     if(cartaComputadora.numero == 1){
 
-                        //Si es un ancho de espada o basto
-                        if(cartaComputadora.palo == "Espada" || cartaComputadora.palo == "Basto") {
+                        //Si es un ancho de basto
+                        if(cartaComputadora.palo == "Basto") {
                             seEncontroCarta = true;
                             colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
                             console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
                             rondasGanadasComputadora++;
                             break;
                         }
+                        //Si es un ancho de espada
+                        if(cartaComputadora.palo == "Espada") {
+                            seEncontroCarta = true;
+                            colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                            console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                            rondasGanadasComputadora++;
+                            break;
+                        }
+
+
                     }
                 }
 
@@ -302,9 +321,20 @@ const logicaRonda = (numeroRonda) =>{
                         break;
                     }
 
-                    //Si la carta de la computadora es un 7 de espada o oro
+                    //Si la carta de la computadora es un 7
                     if(cartaComputadora.numero == 7){   
-                        if(cartaComputadora.palo == "Espada" || cartaComputadora.palo == "Oro"){
+
+                        //De oro
+                        if(cartaComputadora.palo == "Oro"){
+                            seEncontroCarta = true;
+                            colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                            console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                            rondasGanadasComputadora++;
+                            break;
+                        }
+
+                        //De espada
+                        if(cartaComputadora.palo == "Espada"){
                             seEncontroCarta = true;
                             colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
                             console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
@@ -334,9 +364,16 @@ const logicaRonda = (numeroRonda) =>{
 
                 }
 
-                //Si la carta del jugador es un 1
-                if(cartaJugador.numero == 1) {
-                    if(cartaJugador.palo = "Basto"){
+            //Si la carta del jugador es un 1 de basto
+            if(cartaJugador.numero == 1) {
+
+                //Si la carta del jugador es un 1 de basto
+                if(cartaJugador.palo = "Basto"){
+
+                    //Si la carta es un 1
+                    if(cartaComputadora.numero == 1){
+
+                        //De espada
                         if(cartaComputadora.palo == "Espada") {
                             seEncontroCarta = true;
                             colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
@@ -346,144 +383,75 @@ const logicaRonda = (numeroRonda) =>{
                         }
                     }
 
+                }
+            }
+            //Si la carta de la computadora es un 1 falso
+            if(cartaComputadora.numero == 1){
+
                 //Si la carta del jugador es un falso
-                if(cartaJugador.palo=="Copas" || cartaJugador.palo=="Oro") {
+                 if(cartaJugador.palo=="Copas" || cartaJugador.palo=="Oro") {
 
                     //Si la carta de la computadora es un 2
                     if(cartaComputadora.numero  == 2){
-                        seEncontroCarta = true;
-                        colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
-                        console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
-                        rondasGanadasComputadora++;
-                        break;
-                    }
-
-                    //Si la carta de la computadora es un 3
-                    if(cartaComputadora.numero ==3){
-                        seEncontroCarta = true;
-                        colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
-                        console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
-                        rondasGanadasComputadora++;
-                        break;
-                    }
-
-                    //Si la carta de la computadora es un 7 oro o espada
-                    if(cartaComputadora == 7) {
-                        if(cartaComputadora.palo=="oro"){
-                            seEncontroCarta = true;
-                            colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
-                            console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
-                            rondasGanadasComputadora++;
-                            break;
+                                seEncontroCarta = true;
+                                colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                                console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                                rondasGanadasComputadora++;
+                                break;
                         }
-                        if(cartaComputadora.palo=="Espada"){
+
+                            //Si la carta de la computadora es un 3
+                            if(cartaComputadora.numero ==3){
                                 seEncontroCarta = true;
                                 colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
                                 console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
                                 rondasGanadasComputadora++;
                                 break;
                             }
-                    }
 
-                    //Si la carta de la computadora es un 1 o
-                    if(cartaComputadora==1){
-
-                        //Si es un 1 de basto
-                        if(cartaComputadora.palo == "Basto") {
-                            seEncontroCarta = true;
-                            colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
-                            console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
-                            rondasGanadasComputadora++;
-                             break;
-                        }
-
-                        //Si es un 1 de espada
-                        if(cartaComputadora.palo == "Espada") {
-                            seEncontroCarta = true;
-                            colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
-                            console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
-                            rondasGanadasComputadora++;
-                            break; 
-                        }
-                    }
-
-                }
-            }
-                            //Si la carta del jugador es un 1
-                if(cartaJugador.numero == 1) {
-                    if(cartaJugador.palo = "Basto"){
-                        if(cartaComputadora.palo == "Espada") {
-                            seEncontroCarta = true;
-                            colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
-                            console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
-                            rondasGanadasComputadora++;
-                            break;
-                        }
-                    }
-
-                //Si la carta del jugador es un falso
-                if(cartaJugador.palo=="Copas" || cartaJugador.palo=="Oro") {
-
-                    //Si la carta de la computadora es un 2
-                    if(cartaComputadora.numero == 2){
-                        seEncontroCarta = true;
-                        colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
-                        console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
-                        rondasGanadasComputadora++;
-                        break;
-                    }
-
-                    //Si la carta de la computadora es un 3
-                    if(cartaComputadora.numero==3){
-                        seEncontroCarta = true;
-                        colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
-                        console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
-                        rondasGanadasComputadora++;
-                        break;
-                    }
-
-                    //Si la carta de la computadora es un 7 oro o espada
-                    if(cartaComputadora == 7) {
-                        if(cartaComputadora.palo=="oro"){
-                            seEncontroCarta = true;
-                            colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
-                            console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
-                            rondasGanadasComputadora++;
-                            break;
-                        }
-                        if(cartaComputadora.palo=="Espada"){
-                                seEncontroCarta = true;
-                                colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
-                                console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
-                                rondasGanadasComputadora++;
-                                break;
+                            //Si la carta de la computadora es un 7 oro o espada
+                            if(cartaComputadora == 7) {
+                                if(cartaComputadora.palo=="Oro"){
+                                    seEncontroCarta = true;
+                                    colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                                    console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                                    rondasGanadasComputadora++;
+                                    break;
+                                }
+                                if(cartaComputadora.palo=="Espada"){
+                                        seEncontroCarta = true;
+                                        colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                                        console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                                        rondasGanadasComputadora++;
+                                        break;
+                                    }
                             }
-                    }
 
-                    //Si la carta de la computadora es un 1 o
-                    if(cartaComputadora==1){
+                            //Si la carta de la computadora es un 1 
+                            if(cartaComputadora==1){
 
-                        //Si es un 1 de basto
-                        if(cartaComputadora.palo == "Basto") {
-                            seEncontroCarta = true;
-                            colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
-                            console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
-                            rondasGanadasComputadora++;
-                             break;
+                                //Si es un 1 de basto
+                                if(cartaComputadora.palo == "Basto") {
+                                    seEncontroCarta = true;
+                                    colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                                    console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                                    rondasGanadasComputadora++;
+                                    break;
+                                }
+
+                                //Si es un 1 de espada
+                                if(cartaComputadora.palo == "Espada") {
+                                    seEncontroCarta = true;
+                                    colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                                    console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                                    rondasGanadasComputadora++;
+                                    break; 
+                                }
+                            }
                         }
-
-                        //Si es un 1 de espada
-                        if(cartaComputadora.palo == "Espada") {
-                            seEncontroCarta = true;
-                            colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
-                            console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
-                            rondasGanadasComputadora++;
-                            break; 
-                        }
-                    }
-
-                }
             }
+
+
             //Si la carta del jugador es un 4
             if(cartaJugador.numero == 4) {
 
@@ -664,7 +632,7 @@ const logicaRonda = (numeroRonda) =>{
                             }
                         }
                 }
-                //Si la carta del jugador es un 6
+            //Si la carta del jugador es un 6
             if(cartaJugador.numero == 6) {
 
                 if(esUnaNegra(cartaComputadora.numero)){
@@ -747,12 +715,14 @@ const logicaRonda = (numeroRonda) =>{
     }
 
     //Si las cartas son iguales
-    for(let cartaComputadora of mazoComputadora){
-        if(cartaJugador.numero === cartaComputadora.numero){
-            colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
-            rondasGanadasComputadora++;
-            rondasGanadasJugador++;
-            seEncontroCarta = true;
+    if(!seEncontroCarta){
+        for(let cartaComputadora of mazoComputadora){
+            if(cartaJugador.numero === cartaComputadora.numero){
+                colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                rondasGanadasComputadora++;
+                rondasGanadasJugador++;
+                seEncontroCarta = true;
+            }
         }
     }
     //Luego de recorrer todo el for si no encontro carta, elijo la carta mas baja del mazo de la computadora
