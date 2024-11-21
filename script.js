@@ -297,7 +297,6 @@ botonEnvido.addEventListener('click', () =>{
         botonFalta.textContent =  "Falta envido";
         botonFalta.id = "boton-falta";
 
-       
         contenedorBotonRealFalta.appendChild(botonReal);
         contenedorBotonRealFalta.appendChild(botonFalta);
         
@@ -305,7 +304,10 @@ botonEnvido.addEventListener('click', () =>{
         
         const cambiarEstilosBotones = contenedorBotonEnvido.querySelectorAll('button');
         cambiarEstilosBotones.forEach((boton)=> {boton.classList.add('boton-envido-activo')});
-    
+        
+        if(window.innerWidth<600){
+            botonEnvido.classList.remove('boton-envido-activo');
+        }
         botonesEnvidoVisibles = true;
 
         botonReal.addEventListener('click',()=>{
@@ -313,7 +315,8 @@ botonEnvido.addEventListener('click', () =>{
             //Quito los otros botones.
             contenedorBotonRealFalta.removeChild(document.getElementById('boton-falta'));
             contenedorBotonRealFalta.removeChild(document.getElementById('boton-real'));
-
+            contenedorBotonRealFalta.style.display = "none";
+            botonEnvido.classList.remove('boton-envido-activo');
             botonesEnvidoVisibles = false;
         });
         
@@ -322,6 +325,8 @@ botonEnvido.addEventListener('click', () =>{
             //Quito los otros botones.
             contenedorBotonRealFalta.removeChild(document.getElementById('boton-falta'));
             contenedorBotonRealFalta.removeChild(document.getElementById('boton-real'));
+            contenedorBotonRealFalta.style.display = "none";
+            botonEnvido.classList.remove('boton-envido-activo');
             botonesEnvidoVisibles = false;
         });
         
@@ -331,7 +336,8 @@ botonEnvido.addEventListener('click', () =>{
         //Quito los otros botones.
         contenedorBotonRealFalta.removeChild(document.getElementById('boton-falta'));
         contenedorBotonRealFalta.removeChild(document.getElementById('boton-real'));
-
+        contenedorBotonRealFalta.style.display = "none";
+        botonEnvido.classList.remove('boton-envido-activo');
         botonesEnvidoVisibles = false;
     }
 });

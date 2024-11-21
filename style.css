@@ -171,7 +171,7 @@ body {
 .mesa {
     border:6px solid rgb(141, 103, 52);
     position:relative;
-    width:1050px;
+    width:1000px;
     height:800px;
     background-image: url(img/maderaFondo.webp);
     background-size: cover;
@@ -305,14 +305,6 @@ body {
     display: inline-block; /* Para mantener el botón y los nuevos botones juntos */
 }
 
-.boton-envido-activo {
-    display:flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 10px;
-    width:35px;
-}
-
 .contenedor-foto-botonera {
     position:fixed;
     bottom:0;
@@ -320,7 +312,6 @@ body {
     height:130px;
     display:flex;
     flex-direction:row;
-    background-color:red;
     justify-content: center;
     align-items: center;
     z-index:13;
@@ -332,6 +323,40 @@ body {
     height:325px;
     gap:25px;
     transform:rotateX(60deg) translateY(200px);
+}
+
+.botones-real-falta {
+    position:relative;
+    width:110px;
+    display: none;
+    flex-direction: row; 
+    z-index: 15; 
+    gap:3px;
+}
+
+#boton-envido {
+    position:relative;
+}
+.contenedor-boton-envido {
+    display:flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    gap:3px;
+}
+.boton-envido-activo {
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    width:45px;
+}
+
+#boton-envido.boton-envido-activo {
+    width: 45px;
+    font-size: 11px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 @keyframes moverse {
