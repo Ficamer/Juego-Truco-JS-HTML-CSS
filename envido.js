@@ -1,3 +1,7 @@
+//Tantos
+let tantosComputadora = 0;
+let tantosJugador = 0;
+
 //Booleano de si se canto envido
 let seCantoEnvido = false;
 
@@ -6,6 +10,7 @@ let hayCartasDelMismoPaloJugador = false;
 let hayCartasDelMismoPaloComputadora = false;
 
 const envido = (tipoEnvido) =>{
+    
     if(numeroRonda == 0) {
         if(!seCantoEnvido){
             seCantoEnvido = true;
@@ -31,7 +36,7 @@ const envido = (tipoEnvido) =>{
 
 
             //-------Logica básica  de computadora para aceptar o no envido--------------
-            aceptarEnvidoLogicaComputadora();
+            aceptarEnvidoLogicaComputadora(tipoEnvido);
         }
     }
 }
@@ -100,13 +105,23 @@ const obtenerValorMasAlto = (jugador)=>{
     }
 }
 
-const aceptarEnvidoLogicaComputadora = () =>{
+const ganadorEnvido = ()=>{
+    if(tantosComputadora>tantosJugador) {
+        return "computadora";
+    }else if(tantosComputadora === tantosJugador) {
+        return "jugador"; // "Porque es mano"
+    }else {
+        return "jugador";
+    }
+}
+
+const aceptarEnvidoLogicaComputadora = (tipoEnvido) =>{
+
+    let tantosComputadoraActual = tantosComputadora;
+    let tantosJugadorActual = tantosJugador;
 
     if(tantosComputadora >= 27 || Math.random() < .22) {  //22% DE QUE ACEPTE
     
-        let tantosComputadoraActual = tantosComputadora;
-        let tantosJugadorActual = tantosJugador;
-
         setTimeout(()=>{dialogo("computadora","Quieroo!" + " " + tantosComputadoraActual)},1500);
         let ganador = ganadorEnvido();
 
@@ -134,15 +149,27 @@ const aceptarEnvidoLogicaComputadora = () =>{
 
             //reset de tantos
             resetearTantos();
-        }else {
-            setTimeout(()=>{
-                let ganador = ganadorEnvido();
-                dialogo("computadora","No quiero.")
-                console.log("Agregar un punto a Jugador por tanto no querido")
-                estaRealizandoDialogoEnvidoTruco = false;
-                agregarPuntosEnvido(ganador,false,tipoEnvido);
-            },2000);     
         }
+    }else {
+        setTimeout(()=>{
+            let ganador = ganadorEnvido();
+            dialogo("computadora","No quiero.")
+            console.log("Agregar un punto a Jugador por tanto no querido")
+            estaRealizandoDialogoEnvidoTruco = false;
+            agregarPuntosEnvido(ganador,false,tipoEnvido);
+        },2000);     
+    }
+}
+
+const sumarTantos = (carta1,carta2)=>{
+    if(carta1<10 && carta2<10) {
+        return 20+carta1+carta2;
+    }else if(carta1>=10 && carta2<10){
+        return 20+carta2;
+    }else if(carta1<10 && carta2>=10){
+        return 20+carta1;
+    }else {
+        return 20;
     }
 }
 
@@ -150,3 +177,47 @@ const resetearTantos = ()=>{
     tantosJugador = 0;
     tantosComputadora = 0;
 }
+
+const agregarPuntosEnvido = (jugador,quizo,tipoEnvido)=>{
+    if(quizo){
+
+        if(tipoEnvido == "Envido") {
+            if(jugador=="computadora"){
+                htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
+                 <p>${puntosComputadora+2}</p>` 
+            }else {
+                htmlPuntosJugador.innerHTML = `<p>Jugador</p>
+                 <p>${puntosJugador+2}</p>` 
+            }
+        }
+
+        if(tipoEnvido == "Real envido") {
+            if(jugador=="computadora"){
+                htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
+                 <p>${puntosComputadora+3}</p>` 
+            }else {
+                htmlPuntosJugador.innerHTML = `<p>Jugador</p>
+                 <p>${puntosJugador+3}</p>` 
+            }
+        }
+
+        let puntosParaAgregarPC = 30 - puntosJugador;
+        let puntosParaAgregarJugador = 30 - puntosComputadora;
+
+        if(tipoEnvido == "Falta envido") {
+            if(jugador=="computadora"){
+
+                htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
+                 <p>${puntosParaAgregarPC}</p>` 
+            }else {
+                htmlPuntosJugador.innerHTML = `<p>Jugador</p>
+                 <p>${puntosParaAgregarJugador}</p>` 
+            }
+        }
+
+    }else {
+        htmlPuntosJugador.innerHTML = `<p>Jugador</p>
+        <p>${puntosJugador+1}</p>` 
+    }
+}
+

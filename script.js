@@ -12,10 +12,6 @@ let mazoJugador = [];
 let copiaMazoJugador = [];
 let copiaMazo;
 
-//Tantos
-let tantosComputadora = 0;
-let tantosJugador = 0;
-
 //Booleano para reconocer si se estan procesando los dialogos de envido, truco, etc.
 let estaRealizandoDialogoEnvidoTruco = false;
 
@@ -102,6 +98,7 @@ const manoComputadora = ()=>{
     const manoComputadora = mazoComputadora.map((carta,index)=>{return renderizarCartas(carta,index,true)}).join('');
     manoComputadoraHTML.innerHTML = manoComputadora;
 }
+
 const sonidoCartas = () =>{
     if (!permitirClickCartas) {
         return; // Si las cartas no estan habilitadas, no reproducimos el sonido
@@ -123,9 +120,7 @@ const colocarCartaJugadorEnMesa = (event) =>{
     if(!permitirClickCartas) return;
 
     permitirClickCartas = false;
-
     numeroRonda++;
-
     const cartaDataName= event.currentTarget.getAttribute('data-name');
 
 
@@ -148,8 +143,8 @@ const colocarCartaJugadorEnMesa = (event) =>{
 
         ronda("normal","");
     }
-    //Vuelvo a asignar la funcionalidad a las cartas (ya que se pierde al usar appendChild y mover un elemento)
 
+    //Vuelvo a asignar la funcionalidad a las cartas (ya que se pierde al usar appendChild y mover un elemento)
     setTimeout(()=>{quitarListenersCartasEnMesa()},250);
 
     // Habilitar los clics nuevamente después de 2 segundos
@@ -161,9 +156,7 @@ const colocarCartaJugadorEnMesa = (event) =>{
 const colocarCartaComputadoraEnMesa = (id) =>{
 
     if(!estaRealizandoDialogoEnvidoTruco || !termino) {
-
         mazoComputadora = mazoComputadora.filter((carta) =>{
-        
                 //Agrega la carta en la mesa;
                 if(carta.id==id){
                     const elementoAMover = document.getElementById(`carta${id}`)
@@ -186,28 +179,6 @@ const clickCartasJugador = ()=>{
         carta.addEventListener('click', sonidoCartas);
         carta.addEventListener('click',colocarCartaJugadorEnMesa);
     });
-}
-
-const sumarTantos = (carta1,carta2)=>{
-    if(carta1<10 && carta2<10) {
-        return 20+carta1+carta2;
-    }else if(carta1>=10 && carta2<10){
-        return 20+carta2;
-    }else if(carta1<10 && carta2>=10){
-        return 20+carta1;
-    }else {
-        return 20;
-    }
-}
-
-const ganadorEnvido = ()=>{
-    if(tantosComputadora>tantosJugador) {
-        return "computadora";
-    }else if(tantosComputadora === tantosJugador) {
-        return "jugador";
-    }else {
-        return "jugador";
-    }
 }
 
 const dialogo = (quien,texto) =>{

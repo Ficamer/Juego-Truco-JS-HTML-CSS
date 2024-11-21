@@ -8,8 +8,7 @@ let rondasGanadasJugador = 0;
 let rondasGanadasComputadora = 0;
 let termino = false;
 
-
-//Verificar quien gano y agregado de puntos
+//Verificar quien gano
 const verificacionGanador = ()=>{
     if(rondasGanadasComputadora==2 && rondasGanadasJugador<2){
         setTimeout(()=>{
@@ -37,61 +36,8 @@ const verificacionGanador = ()=>{
     }
 
 }
-//Lógica basica para que la computadora tire cartas.
 
-const esUnaNegra = (cartaValor)=>{
-	const cartasNegrasValores = [10,11,12];
-	for(let cartaNegraValor of cartasNegrasValores){
-        if(cartaValor == cartaNegraValor){
-			return true;
-		}
-	}
-	return false;
-}
-
-const agregarPuntosEnvido = (jugador,quizo,tipoEnvido)=>{
-    if(quizo){
-
-        if(tipoEnvido == "Envido") {
-            if(jugador=="computadora"){
-                htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
-                 <p>${puntosComputadora+2}</p>` 
-            }else {
-                htmlPuntosJugador.innerHTML = `<p>Jugador</p>
-                 <p>${puntosJugador+2}</p>` 
-            }
-        }
-
-        if(tipoEnvido == "Real envido") {
-            if(jugador=="computadora"){
-                htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
-                 <p>${puntosComputadora+3}</p>` 
-            }else {
-                htmlPuntosJugador.innerHTML = `<p>Jugador</p>
-                 <p>${puntosJugador+3}</p>` 
-            }
-        }
-
-        let puntosParaAgregarPC = 30 - puntosJugador;
-        let puntosParaAgregarJugador = 30 - puntosComputadora;
-
-        if(tipoEnvido == "Falta envido") {
-            if(jugador=="computadora"){
-
-                htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
-                 <p>${puntosParaAgregarPC}</p>` 
-            }else {
-                htmlPuntosJugador.innerHTML = `<p>Jugador</p>
-                 <p>${puntosParaAgregarJugador}</p>` 
-            }
-        }
-
-    }else {
-        htmlPuntosJugador.innerHTML = `<p>Jugador</p>
-        <p>${puntosJugador+1}</p>` 
-    }
-}
-
+//Agregar puntos ronda
 const agregarPuntosRonda = (jugador,seCantoTruco,seAcepto)=>{
     if(seCantoTruco) {
         if(seAcepto) {
@@ -132,21 +78,36 @@ const agregarPuntosRonda = (jugador,seCantoTruco,seAcepto)=>{
 
 }
 
-const colocarCartaComputadoraConDelay = (indiceCarta,cartaComputadora) => {
-    setTimeout(()=>{
-        colocarCartaComputadoraEnMesa(cartaComputadora.id)
-        let cartaComputadoraEnMesa = centroMesaLadoComputadora.querySelectorAll('div');
-        let cartaImg = cartaComputadoraEnMesa[indiceCarta].querySelector('img');
-        cartaImg.src = `${cartaComputadora.src}`;
-    },1000);
+//Determinar si la carta es un 10, 11 o 12
+const esUnaNegra = (cartaValor)=>{
+	const cartasNegrasValores = [10,11,12];
+	for(let cartaNegraValor of cartasNegrasValores){
+        if(cartaValor == cartaNegraValor){
+			return true;
+		}
+	}
+	return false;
+}
+
+//Lógica basica para que la computadora tire cartas.
+const ronda = (estadoRonda,tipoEnvido) => {
+    switch (estadoRonda) {
+        case "envido":
+            envido(tipoEnvido);
+            break;
+
+        case "normal":
+            logicaRonda(numeroRonda);
+    }
 }
 
 const logicaRonda = (numeroRonda) =>{
+
+    //Busco la carta del mazo del jugador que coincida con el ID de la carta que esta en la mesa
     let cartasJugadorEnMesa = centroMesaLadoJugador.querySelectorAll('div'); //Me traigo todos los div dentro del centro de mesa lado jugador.
+    let cartaJugador = mazoJugador.find( carta => `carta${carta.id}` == cartasJugadorEnMesa[numeroRonda-1].id);
 
     console.log("----Numero de ronda: " + numeroRonda +"----");
-    //Busco la carta del mazo del jugador que coincida con el ID de la carta que esta en la mesa
-    let cartaJugador = mazoJugador.find( carta => `carta${carta.id}` == cartasJugadorEnMesa[numeroRonda-1].id);
     console.log("Carta jugador en mesa: " + cartaJugador.numero + " " + cartaJugador.palo);    
 
     let seEncontroCarta = false;
@@ -759,18 +720,17 @@ const logicaRonda = (numeroRonda) =>{
 
 }
 
-const ronda = (estadoRonda,tipoEnvido) => {
-    switch (estadoRonda) {
-        case "envido":
-            envido(tipoEnvido);
-            break;
-
-        case "normal":
-            logicaRonda(numeroRonda);
-    }
+//Colocar carta en mesa con cierto tiempo de retardo.
+const colocarCartaComputadoraConDelay = (indiceCarta,cartaComputadora) => {
+    setTimeout(()=>{
+        colocarCartaComputadoraEnMesa(cartaComputadora.id)
+        let cartaComputadoraEnMesa = centroMesaLadoComputadora.querySelectorAll('div');
+        let cartaImg = cartaComputadoraEnMesa[indiceCarta].querySelector('img');
+        cartaImg.src = `${cartaComputadora.src}`;
+    },1000);
 }
 
-
+//Cantar truco
 const cantarTruco = ()=>{
     aceptarTrucoComputadora();
 }
