@@ -132,7 +132,6 @@ const logicaRonda = (numeroRonda) =>{
 
     //Recorro las cartas del mazo de la computadora
     for(let cartaComputadora of mazoComputadora){
-
         //Si la carta del jugador es una negra
         if(esUnaNegra(cartaJugador.numero)) {
 
@@ -735,6 +734,15 @@ const logicaRonda = (numeroRonda) =>{
         }
     }
 
+    //Si las cartas son iguales
+    for(let cartaComputadora of mazoComputadora){
+        if(cartaJugador.numero === cartaComputadora.numero){
+            colocarCartaComputadoraConDelay(numeroRonda-1,cartaCompu);
+            rondasGanadasComputadora++;
+            rondasGanadasJugador++;
+            seEncontroCarta = true;
+        }
+    }
     //Luego de recorrer todo el for si no encontro carta, elijo la carta mas baja del mazo de la computadora
 
     if(!seEncontroCarta){
