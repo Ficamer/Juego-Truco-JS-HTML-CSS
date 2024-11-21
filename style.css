@@ -339,7 +339,6 @@ body {
     transform:rotateX(60deg) translateY(200px);
 }
 
-
 @keyframes moverse {
     from {
         z-index:10;
@@ -508,6 +507,19 @@ body {
         font-size:14px;
     }
     #boton-envido {
+        min-height: 50px;
+    }
+
+    .mano-computadora { 
+
+        height:125px;
+    }
+
+    .boton-real {
+        min-height: 50px;
+    }
+
+    .boton-falta {
         min-height: 50px;
     }
 }
