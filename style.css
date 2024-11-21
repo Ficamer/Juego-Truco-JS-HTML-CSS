@@ -301,13 +301,8 @@ body {
 }
 
 .contenedor-boton-envido {
-    height:36px;
-    max-height:50px;
-    width:158px;
-    gap:3px;
-    position:relative;
-    display:flex;
-    flex-direction: row;
+    position: relative; /* Contenedor relativo para posicionar elementos dentro */
+    display: inline-block; /* Para mantener el botón y los nuevos botones juntos */
 }
 
 .boton-envido-activo {
@@ -460,13 +455,18 @@ body {
         height:50px;
     }
     .contenedor-boton-envido {
-        height:50px;
-        max-height: 159px;
-        width:85px;
+        position: relative; /* Contenedor relativo para posicionar elementos dentro */
+        display: inline-block; /* Para mantener el botón y los nuevos botones juntos */
+    }
+    .botones-real-falta {
+        bottom:100%;
+        position: absolute; /* Posiciona los botones encima del botón original */
+        left: 0; /* Alinea los botones con el botón original */
+        display: none; /* Inicialmente oculto */
+        flex-direction: column; /* Asegura que estén en columna */
+        z-index: 1; /* Asegura que estén por encima de otros elementos */
         gap:3px;
-        position:relative;
-        display:flex;
-        flex-direction: column-reverse;
+        margin-bottom:3px;
     }
     .boton-envido-activo {
         font-size:13px;

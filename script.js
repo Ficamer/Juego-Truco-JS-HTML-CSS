@@ -282,9 +282,12 @@ init();
 
 //Logica boton envido
 let contenedorBotonEnvido = document.querySelector('.contenedor-boton-envido');
+let contenedorBotonRealFalta = document.querySelector('.botones-real-falta');
+
 botonEnvido.addEventListener('click', () =>{
 
     if(botonesEnvidoVisibles===false){
+
         //Creo el boton real, appendchild no acepta backticks para crear html
         const botonReal = document.createElement("button");
         botonReal.textContent =  "Real envido";
@@ -295,9 +298,10 @@ botonEnvido.addEventListener('click', () =>{
         botonFalta.id = "boton-falta";
 
        
-        contenedorBotonEnvido.appendChild(botonReal);
-        contenedorBotonEnvido.appendChild(botonFalta);
+        contenedorBotonRealFalta.appendChild(botonReal);
+        contenedorBotonRealFalta.appendChild(botonFalta);
         
+        contenedorBotonRealFalta.style.display = "flex";
         
         const cambiarEstilosBotones = contenedorBotonEnvido.querySelectorAll('button');
         cambiarEstilosBotones.forEach((boton)=> {boton.classList.add('boton-envido-activo')});
@@ -307,8 +311,8 @@ botonEnvido.addEventListener('click', () =>{
         botonReal.addEventListener('click',()=>{
             ronda("envido", "Real envido");
             //Quito los otros botones.
-            contenedorBotonEnvido.removeChild(document.getElementById('boton-falta'));
-            contenedorBotonEnvido.removeChild(document.getElementById('boton-real'));
+            contenedorBotonRealFalta.removeChild(document.getElementById('boton-falta'));
+            contenedorBotonRealFalta.removeChild(document.getElementById('boton-real'));
 
             botonesEnvidoVisibles = false;
         });
@@ -316,8 +320,8 @@ botonEnvido.addEventListener('click', () =>{
         botonFalta.addEventListener('click',()=>{
             ronda("envido", "Falta envido");
             //Quito los otros botones.
-            contenedorBotonEnvido.removeChild(document.getElementById('boton-falta'));
-            contenedorBotonEnvido.removeChild(document.getElementById('boton-real'));
+            contenedorBotonRealFalta.removeChild(document.getElementById('boton-falta'));
+            contenedorBotonRealFalta.removeChild(document.getElementById('boton-real'));
             botonesEnvidoVisibles = false;
         });
         
@@ -325,8 +329,8 @@ botonEnvido.addEventListener('click', () =>{
         ronda("envido", "Envido");
 
         //Quito los otros botones.
-        contenedorBotonEnvido.removeChild(document.getElementById('boton-falta'));
-        contenedorBotonEnvido.removeChild(document.getElementById('boton-real'));
+        contenedorBotonRealFalta.removeChild(document.getElementById('boton-falta'));
+        contenedorBotonRealFalta.removeChild(document.getElementById('boton-real'));
 
         botonesEnvidoVisibles = false;
     }
