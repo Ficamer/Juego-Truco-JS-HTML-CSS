@@ -9,48 +9,50 @@
 <body>
     <div class="contenedor-mesa">
         <div class="mesa">
-            <div class="puntuacion">
-                <div class="puntos-jugador">
-                    <p>Jugador</p>
-                    <p>0</p>
-                </div>
-                <div class="puntos-computadora">
-                    <p>Computadora</p>
-                    <p>0</p>
-                </div>
-            </div>
-            <div id="foto-computadora">
-                <img src="img/personaje2.webp"></img>
-                <p id="nombre-computadora">Gaucho Juan</p>
-                <div class="dialogo-computadora"></div>
-            </div>
-            <div class="botonera-jugador">
-                <div id="foto-jugador">
-                    <img src="img/personaje1.webp"></img>
-                    <p id="nombre-jugador">Jugador</p>
-                    <div class="dialogo-jugador"></div>
-                </div>
-                <div class="contenedor-botones">
-                    <button id="boton-truco">Truco</button>
-
-                    <div class="contenedor-boton-envido">
-                        <button id="boton-envido">Envido</button>
-                    </div>
-                    <button id="boton-quiero">Quiero</button>
-                    <button id="boton-noQuiero">No quiero</button>
-                </div>
-
-            </div>
             <div class="mano-computadora"></div>
             <div class="centro-mesa">
                 <div class="centro-mesa-lado-computadora"></div>
                 <div class="centro-mesa-lado-jugador"></div>
             </div>
-            <div class="mano-jugador"></div>
+        </div>
+    </div>
+    <div class="mano-jugador"></div>
+    
+    <div class="botonera-jugador">
+        <div class="contenedor-botones">
+            <button id="boton-truco">Truco</button>
+
+            <div class="contenedor-boton-envido">
+                <button id="boton-envido">Envido</button>
+            </div>
+            <button id="boton-quiero">Quiero</button>
+            <button id="boton-noQuiero">No quiero</button>
         </div>
     </div>
 
-    
+    <div id="foto-computadora">
+        <img src="img/personaje2.webp"></img>
+        <p id="nombre-computadora">Gaucho Juan</p>
+        <div class="dialogo-computadora"></div>
+    </div>
+
+    <div id="foto-jugador">
+        <img src="img/personaje1.webp"></img>
+        <p id="nombre-jugador">Jugador</p>
+        <div class="dialogo-jugador"></div>
+    </div>
+
+    <div class="puntuacion">
+        <div class="puntos-jugador">
+            <p>Jugador</p>
+            <p>0</p>
+        </div>
+        <div class="puntos-computadora">
+            <p>Computadora</p>
+            <p>0</p>
+        </div>
+    </div>
+
     <script src="rondas.js"></script> 
     <script src="script.js"></script>
 </body>

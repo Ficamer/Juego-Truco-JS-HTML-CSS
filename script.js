@@ -306,10 +306,19 @@ botonEnvido.addEventListener('click', () =>{
 
         botonReal.addEventListener('click',()=>{
             ronda("envido", "Real envido");
+            //Quito los otros botones.
+            contenedorBotonEnvido.removeChild(document.getElementById('boton-falta'));
+            contenedorBotonEnvido.removeChild(document.getElementById('boton-real'));
+
+            botonesEnvidoVisibles = false;
         });
         
         botonFalta.addEventListener('click',()=>{
             ronda("envido", "Falta envido");
+            //Quito los otros botones.
+            contenedorBotonEnvido.removeChild(document.getElementById('boton-falta'));
+            contenedorBotonEnvido.removeChild(document.getElementById('boton-real'));
+            botonesEnvidoVisibles = false;
         });
         
     }else { //Si ya se agregaron los botones;

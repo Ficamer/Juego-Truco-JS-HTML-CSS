@@ -65,15 +65,17 @@ const agregarPuntosEnvido = (jugador,quizo,tipoEnvido)=>{
             }
         }
 
+        let puntosParaAgregarPC = 30 - puntosJugador;
+        let puntosParaAgregarJugador = 30 - puntosComputadora;
+
         if(tipoEnvido = "Falta envido") {
             if(jugador=="computadora"){
-                let puntosParaAgregarPC = 30 - puntosJugador;
-                let puntosParaAgregarJugador = 30 - puntosComputadora;
+
                 htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
-                 <p>${puntosParaAgregarPC+3}</p>` 
+                 <p>${puntosParaAgregarPC}</p>` 
             }else {
                 htmlPuntosJugador.innerHTML = `<p>Jugador</p>
-                 <p>${puntosParaAgregarJugador+3}</p>` 
+                 <p>${puntosParaAgregarJugador}</p>` 
             }
         }
 
