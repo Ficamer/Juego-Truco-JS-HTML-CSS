@@ -377,7 +377,6 @@ body {
         height:70%;
         max-height:100%;
         max-width: 100%;
-       
     }
     .puntuacion {
         width:200px;
@@ -387,7 +386,7 @@ body {
         transform:translateX(-50%);
     }
     .contenedor-mesa {
-        height:100vh;
+        min-height:100vh;
         width:100%;
         overflow: hidden;
     }
