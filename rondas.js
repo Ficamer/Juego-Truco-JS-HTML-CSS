@@ -569,7 +569,7 @@ const logicaRonda = (numeroRonda) =>{
             //Si la carta del jugador es un 5
             if(cartaJugador.numero == 5) {
 
-                    if(cartaJugador.numero==6){
+                    if(cartaComputadora.numero==6){
                         seEncontroCarta = true;
                         colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
                         console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
