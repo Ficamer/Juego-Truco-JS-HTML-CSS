@@ -484,10 +484,10 @@ const logicaRonda = (numeroRonda) =>{
 
                 }
             }
-                       //Si la carta del jugador es un 4
-                       if(cartaJugador.numero == 4) {
+            //Si la carta del jugador es un 4
+            if(cartaJugador.numero == 4) {
 
-                        if(cartaJugador.numero==5){
+                        if(cartaJugador.computadora==5){
                             seEncontroCarta = true;
                             colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
                             console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
@@ -557,7 +557,7 @@ const logicaRonda = (numeroRonda) =>{
                             }
         
                             //Si la carta de la computadora es un 1 o
-                            if(cartaComputadora==1){
+                            if(cartaComputadora.numero==1){
         
                                 //Si es un 1 de basto
                                 if(cartaComputadora.palo == "Basto") {
@@ -577,7 +577,7 @@ const logicaRonda = (numeroRonda) =>{
                                     break; 
                                 }
                             }
-                    }
+            }
             //Si la carta del jugador es un 5
             if(cartaJugador.numero == 5) {
 
