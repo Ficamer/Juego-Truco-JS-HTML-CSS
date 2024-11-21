@@ -777,17 +777,20 @@ const ronda = (estadoRonda,tipoEnvido) => {
                         }
                     }
                     
-                    console.log("Tantos Jugador: " + tantosJugador);
                     //Si no encontro coincidencias dejo el valor del tanto mas alto
                     if(hayCartasDelMismoPaloJugador === false){
-                        let primerValor = mazoJugador[0].numero;
-                        for(let k=1;k<mazoJugador.length;k++) {
-                            if(primerValor < mazoJugador[k].numero ){
-                                primerValor = mazoJugador[k].numero;
+                        let primerValor = 0;
+                        for(let k=0;k<mazoJugador.length;k++) {
+                            if(!esUnaNegra(mazoJugador[k].numero)){
+                                if(primerValor < mazoJugador[k].numero ){
+                                    primerValor = mazoJugador[k].numero;
+                                }
                             }
                         }
                         tantosJugador = primerValor;   
                     }
+
+                    console.log("Tantos Jugador: " + tantosJugador);
     
                 
                     //Calculo tantos de  computadora
@@ -806,21 +809,23 @@ const ronda = (estadoRonda,tipoEnvido) => {
                         }
                     }  
                     
-                    console.log("Tantos computadora: " + tantosComputadora);
                     //Si no encontro coincidencias dejo el valor del tanto mas alto
                     if(hayCartasDelMismoPaloComputadora === false){
-                        let primerValor = mazoComputadora[0].numero;
-                        for(let k=1;k<mazoComputadora.length;k++) {
-                            if(primerValor < mazoComputadora[k].numero ){
-                                primerValor = mazoComputadora[k].numero;
+                        let primerValor = 0;
+                        for(let k=0;k<mazoComputadora.length;k++) {
+                            if(!esUnaNegra(mazoComputadora[k].numero)){
+                                if(primerValor < mazoComputadora[k].numero ){
+                                    primerValor = mazoComputadora[k].numero;
+                                }
                             }
                         }
                         tantosComputadora = primerValor;   
                     }
-    
+                    
+                    console.log("Tantos computadora: " + tantosComputadora);
                     //Logica básica para aceptar o no envido
     
-                    if(tantosComputadora >= 27){
+                    if(tantosComputadora >= 27 || Math.random() < .22){  //22% DE QUE ACEPTE
 
                         let tantosComputadoraActual = tantosComputadora;
                         let tantosJugadorActual = tantosJugador;
@@ -833,7 +838,7 @@ const ronda = (estadoRonda,tipoEnvido) => {
                             setTimeout(()=>{
                                 dialogo("computadora","Jaja! Que facil.")
                                 estaRealizandoDialogoEnvidoTruco = false;
-                                agregarPuntosEnvido(ganador,true);
+                                agregarPuntosEnvido(ganador,true,tipoEnvido);
                             },4000);
 
                             //reset de tantos
@@ -846,7 +851,7 @@ const ronda = (estadoRonda,tipoEnvido) => {
                             setTimeout(()=>{ 
                                 dialogo("computadora","Son buenas.")
                                 estaRealizandoDialogoEnvidoTruco = false;
-                                agregarPuntosEnvido(ganador,true);
+                                agregarPuntosEnvido(ganador,true,tipoEnvido);
                             },3500);
                             console.log("Ganador Jugador")
 
@@ -861,7 +866,7 @@ const ronda = (estadoRonda,tipoEnvido) => {
                                 dialogo("computadora","No quiero.")
                                 console.log("Agregar un punto a Jugador por tanto no querido")
                                 estaRealizandoDialogoEnvidoTruco = false;
-                                agregarPuntosEnvido(ganador,false);
+                                agregarPuntosEnvido(ganador,false,tipoEnvido);
                             },2000);     
                         }
                         break;
