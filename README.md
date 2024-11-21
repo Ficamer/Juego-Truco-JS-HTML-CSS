@@ -1,7 +1,9 @@
 Funcionalidades activas:
 - Sistema de conteo de puntos
-- Envido
+- Boton Envido, real envido, falta envido.
+- Boton no quiero.
 - Colocar cartas en mesa
-- Computadora coloca carta segun la tirada por el jugador.
+- Computadora coloca carta segun la carta tirada por el jugador.
 
-![truco proyecto](https://github.com/user-attachments/assets/5d7605bf-45d6-44b0-9afb-5fa24e7355a2)
+![image](https://github.com/user-attachments/assets/bbf7e561-d1eb-4d61-88d5-91a2e692f7c8)
+
