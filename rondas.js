@@ -758,8 +758,6 @@ const logicaRonda = (numeroRonda) =>{
     //Luego de recorrer todo el for si no encontro carta, elijo la carta mas baja del mazo de la computadora
 
     if(!seEncontroCarta){
-        console.log("Tirar la mas chiquita");
-
         let valorMinimo = 13;
         let cartaCompu = 0;
         for(let cartaComputadora of mazoComputadora){
@@ -774,8 +772,8 @@ const logicaRonda = (numeroRonda) =>{
         rondasGanadasJugador++; 
     }
 
-    console.log(rondasGanadasJugador);
-    console.log(rondasGanadasComputadora);
+    console.log("Rondas ganadas jugador: " + rondasGanadasJugador);
+    console.log("Rondas ganadas computadora: " + rondasGanadasComputadora);
     if(numeroRonda>=1){
         verificacionGanador();
     }
