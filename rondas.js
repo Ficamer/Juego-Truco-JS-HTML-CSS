@@ -1,5 +1,12 @@
+//DIV Puntuacion
 let htmlPuntosJugador = document.querySelector('.puntos-jugador');
 let htmlPuntosComputadora = document.querySelector('.puntos-computadora');
+
+//Numero de ronda y rondas ganadas por cada jugador.
+let numeroRonda = 0;
+let rondasGanadasJugador = 0;
+let rondasGanadasComputadora = 0;
+let termino = false;
 
 
 //Verificar quien gano y agregado de puntos
@@ -754,128 +761,9 @@ const logicaRonda = (numeroRonda) =>{
 
 const ronda = (estadoRonda,tipoEnvido) => {
     switch (estadoRonda) {
-        
         case "envido":
-            if(numeroRonda == 0) {
-                if(!seCantoEnvido){
-                    seCantoEnvido = true;
-                    estaRealizandoDialogoEnvidoTruco = true;
-                    dialogo("jugador",`${tipoEnvido}!!`)
-                    //Calculo tantos de jugador
-                    let hayCartasDelMismoPaloJugador = false;
-                    
-                    for (let indice=0; indice<mazoJugador.length;indice++) { //Recorro todas las cartas
-                        for(let i = 0;i<mazoJugador.length;i++){
-                            if(indice === i) {
-                                continue;
-                            }
-                            if(mazoJugador[indice].palo === mazoJugador[i].palo) {        
-                                hayCartasDelMismoPaloJugador = true;
-                                tantosJugador = sumarTantos(mazoJugador[indice].numero,mazoJugador[i].numero);
-                                break;
-                            }
-                        }
-                    }
-                    
-                    //Si no encontro coincidencias dejo el valor del tanto mas alto
-                    if(hayCartasDelMismoPaloJugador === false){
-                        let primerValor = 0;
-                        for(let k=0;k<mazoJugador.length;k++) {
-                            if(!esUnaNegra(mazoJugador[k].numero)){
-                                if(primerValor < mazoJugador[k].numero ){
-                                    primerValor = mazoJugador[k].numero;
-                                }
-                            }
-                        }
-                        tantosJugador = primerValor;   
-                    }
-
-                    console.log("Tantos Jugador: " + tantosJugador);
-    
-                
-                    //Calculo tantos de  computadora
-                    let hayCartasDelMismoPaloComputadora = false;
-    
-                    for (let indice=0; indice<mazoComputadora.length;indice++) { //Recorro todas las cartas
-                        for(let i = 0;i<mazoComputadora.length;i++){
-                            if(indice === i) {
-                                continue;
-                            }
-                            if(mazoComputadora[indice].palo === mazoComputadora[i].palo) {     
-                                hayCartasDelMismoPaloComputadora = true;   
-                                tantosComputadora = sumarTantos(mazoComputadora[indice].numero,mazoComputadora[i].numero);
-                                break;
-                            }
-                        }
-                    }  
-                    
-                    //Si no encontro coincidencias dejo el valor del tanto mas alto
-                    if(hayCartasDelMismoPaloComputadora === false){
-                        let primerValor = 0;
-                        for(let k=0;k<mazoComputadora.length;k++) {
-                            if(!esUnaNegra(mazoComputadora[k].numero)){
-                                if(primerValor < mazoComputadora[k].numero ){
-                                    primerValor = mazoComputadora[k].numero;
-                                }
-                            }
-                        }
-                        tantosComputadora = primerValor;   
-                    }
-                    
-                    console.log("Tantos computadora: " + tantosComputadora);
-                    //Logica básica para aceptar o no envido
-    
-                    if(tantosComputadora >= 27 || Math.random() < .22){  //22% DE QUE ACEPTE
-
-                        let tantosComputadoraActual = tantosComputadora;
-                        let tantosJugadorActual = tantosJugador;
-
-                        setTimeout(()=>{dialogo("computadora","Quieroo!" + " " + tantosComputadoraActual)},1500);
-                        let ganador = ganadorEnvido();
-        
-                        if (ganador==="computadora") {
-                            setTimeout(()=>{dialogo("jugador","Son buenas.")},3000);
-                            setTimeout(()=>{
-                                dialogo("computadora","Jaja! Que facil.")
-                                estaRealizandoDialogoEnvidoTruco = false;
-                                agregarPuntosEnvido(ganador,true,tipoEnvido);
-                            },4000);
-
-                            //reset de tantos
-                            tantosJugador = 0;
-                            tantosComputadora = 0;
-                            console.log("Ganador computadora")
-                        }
-                        if (ganador === "jugador"){
-                            setTimeout(()=>{dialogo("jugador","" + tantosJugadorActual)},3000);
-                            setTimeout(()=>{ 
-                                dialogo("computadora","Son buenas.")
-                                estaRealizandoDialogoEnvidoTruco = false;
-                                agregarPuntosEnvido(ganador,true,tipoEnvido);
-                            },3500);
-                            console.log("Ganador Jugador")
-
-                            //reset de tantos
-                            tantosJugador = 0;
-                            tantosComputadora = 0;
-                        }
-
-                        }else {
-                            setTimeout(()=>{
-                                let ganador = ganadorEnvido();
-                                dialogo("computadora","No quiero.")
-                                console.log("Agregar un punto a Jugador por tanto no querido")
-                                estaRealizandoDialogoEnvidoTruco = false;
-                                agregarPuntosEnvido(ganador,false,tipoEnvido);
-                            },2000);     
-                        }
-                        break;
-                }else {
-                    break;
-                }
-            }else {
-                break;
-            }
+            envido(tipoEnvido);
+            break;
 
         case "normal":
             logicaRonda(numeroRonda);
@@ -883,32 +771,6 @@ const ronda = (estadoRonda,tipoEnvido) => {
 }
 
 
-const aceptarTrucoComputadora = ()=>{
-
-    if(!seCantoTruco && !termino){
-        seCantoTruco = true;
-        estaRealizandoDialogoEnvidoTruco = true;
-        dialogo("jugador","Trucoo!")
-
-        if(rondasGanadasComputadora == 1) {
-            setTimeout(()=>{
-                dialogo("computadora","Quiero carajo!")
-                estaRealizandoDialogoEnvidoTruco = false;
-            },1500);
-        }else {
-            if(Math.random() < 0.50) { //Prob del 50% de que quiera si no gano una ronda
-                setTimeout(()=>{
-                    dialogo("computadora","Quiero carajo!")
-                    estaRealizandoDialogoEnvidoTruco = false;
-                },1500);
-            }else {
-                setTimeout(()=>{
-                    dialogo("computadora","No quiero :(")
-                    estaRealizandoDialogoEnvidoTruco = false;
-                },1500);
-                setTimeout(()=>{agregarPuntosRonda("jugador",seCantoTruco,false)},2500);
-                setTimeout(()=>{resetear()},3500);     
-            }
-        }
-    }
+const cantarTruco = ()=>{
+    aceptarTrucoComputadora();
 }

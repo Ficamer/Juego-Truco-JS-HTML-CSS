@@ -16,14 +16,8 @@ let copiaMazo;
 let tantosComputadora = 0;
 let tantosJugador = 0;
 
-//Envido, truco, etc.
+//Booleano para reconocer si se estan procesando los dialogos de envido, truco, etc.
 let estaRealizandoDialogoEnvidoTruco = false;
-
-//Numero de ronda y rondas ganadas por cada jugador.
-let numeroRonda = 0;
-let rondasGanadasJugador = 0;
-let rondasGanadasComputadora = 0;
-let termino = false;
 
 //Indices para IDs de cartas
 let indiceJugador = 0;
@@ -39,10 +33,8 @@ const botonNoQuiero = document.getElementById("boton-noQuiero");
 const dialogoJugador = document.querySelector('.dialogo-jugador');
 const dialogoComputadora = document.querySelector('.dialogo-computadora');
 
-//Booleanos
-let seCantoEnvido = false;
-let seCantoTruco = false;
-let cartaHabilitada = true;
+//Booleano para permitir el click en las cartas
+let permitirClickCartas = true;
 
 //Puntos
 let puntosJugador = 0;
@@ -111,7 +103,7 @@ const manoComputadora = ()=>{
     manoComputadoraHTML.innerHTML = manoComputadora;
 }
 const sonidoCartas = () =>{
-    if (!cartaHabilitada) {
+    if (!permitirClickCartas) {
         return; // Si las cartas no estan habilitadas, no reproducimos el sonido
     }
     let sound = new Audio('tirarCarta.mp3');
@@ -128,9 +120,9 @@ const quitarListenersCartasEnMesa = ()=>{
 
 const colocarCartaJugadorEnMesa = (event) =>{
 
-    if(!cartaHabilitada) return;
+    if(!permitirClickCartas) return;
 
-    cartaHabilitada = false;
+    permitirClickCartas = false;
 
     numeroRonda++;
 
@@ -162,8 +154,8 @@ const colocarCartaJugadorEnMesa = (event) =>{
 
     // Habilitar los clics nuevamente después de 2 segundos
     setTimeout(() => {
-        cartaHabilitada = true;
-    }, 1500); // 2 segundos
+        permitirClickCartas = true;
+    }, 1500); // 1.5 segundos
 }
 
 const colocarCartaComputadoraEnMesa = (id) =>{
@@ -341,7 +333,7 @@ botonEnvido.addEventListener('click', () =>{
 
 
 botonTruco.addEventListener('click',()=>{
-    aceptarTrucoComputadora();
+    cantarTruco();
 })
 
 botonNoQuiero.addEventListener('click',()=>{
