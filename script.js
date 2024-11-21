@@ -189,8 +189,6 @@ const colocarCartaComputadoraEnMesa = (id) =>{
             }
         );
     }
-    console.log(mazoComputadora);
-    console.log(copiaMazoComputadora);
 }
 
 const clickCartasJugador = ()=>{ 
