@@ -4,17 +4,29 @@ let htmlPuntosComputadora = document.querySelector('.puntos-computadora');
 
 //Verificar quien gano y agregado de puntos
 const verificacionGanador = ()=>{
-    if(rondasGanadasComputadora==2){
+    if(rondasGanadasComputadora==2 && rondasGanadasJugador<2){
         setTimeout(()=>{
              termino=true;
                 agregarPuntosRonda("computadora",seCantoTruco,true)},1500);
-            setTimeout(()=>{resetear()},3500);         
+            setTimeout(()=>{resetear()},4000);         
     }
-    if(rondasGanadasJugador==2){
+    if(rondasGanadasJugador==2 && rondasGanadasComputadora<2){
              setTimeout(()=>{
             termino=true;
             agregarPuntosRonda("jugador",seCantoTruco,true)},1500);
-        setTimeout(()=>{resetear()},3500);
+        setTimeout(()=>{resetear()},4000);
+    }
+    if(rondasGanadasComputadora==3 && rondasGanadasJugador==2){
+        setTimeout(()=>{
+            termino=true;
+            agregarPuntosRonda("computadora",seCantoTruco,true)},1500);
+        setTimeout(()=>{resetear()},4000);
+    }
+    if(rondasGanadasComputadora==2 && rondasGanadasJugador==3){
+        setTimeout(()=>{
+            termino=true;
+            agregarPuntosRonda("jugador",seCantoTruco,true)},1500);
+        setTimeout(()=>{resetear()},4000);
     }
 
 }
