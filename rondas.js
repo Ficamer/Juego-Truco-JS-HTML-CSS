@@ -45,7 +45,7 @@ const esUnaNegra = (cartaValor)=>{
 const agregarPuntosEnvido = (jugador,quizo,tipoEnvido)=>{
     if(quizo){
 
-        if(tipoEnvido = "Envido") {
+        if(tipoEnvido == "Envido") {
             if(jugador=="computadora"){
                 htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
                  <p>${puntosComputadora+2}</p>` 
@@ -55,7 +55,7 @@ const agregarPuntosEnvido = (jugador,quizo,tipoEnvido)=>{
             }
         }
 
-        if(tipoEnvido = "Real envido") {
+        if(tipoEnvido == "Real envido") {
             if(jugador=="computadora"){
                 htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
                  <p>${puntosComputadora+3}</p>` 
@@ -68,7 +68,7 @@ const agregarPuntosEnvido = (jugador,quizo,tipoEnvido)=>{
         let puntosParaAgregarPC = 30 - puntosJugador;
         let puntosParaAgregarJugador = 30 - puntosComputadora;
 
-        if(tipoEnvido = "Falta envido") {
+        if(tipoEnvido == "Falta envido") {
             if(jugador=="computadora"){
 
                 htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
@@ -457,7 +457,7 @@ const logicaRonda = (numeroRonda) =>{
             //Si la carta del jugador es un 4
             if(cartaJugador.numero == 4) {
 
-                        if(cartaJugador.computadora==5){
+                        if(cartaComputadora.numero==5){
                             seEncontroCarta = true;
                             colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
                             console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
@@ -465,7 +465,7 @@ const logicaRonda = (numeroRonda) =>{
                             break; 
                         }
 
-                        if(cartaJugador.numero==6){
+                        if(cartaComputadora.numero==6){
                             seEncontroCarta = true;
                             colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
                             console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);

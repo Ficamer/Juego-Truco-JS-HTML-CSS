@@ -8,7 +8,6 @@ const centroMesaLadoJugador = document.querySelector('.centro-mesa-lado-jugador'
 // Mazos
 let mazo = [];
 let mazoComputadora = [];
-let copiaMazoComputadora = [];
 let mazoJugador = [];
 let copiaMazoJugador = [];
 let copiaMazo;
@@ -91,8 +90,6 @@ const repartirCartasComputadora = () => {
     for(let i=36;i>=34;i--){ 
         contador++;
         mazoComputadora.push({...copiaMazo[i],id: ""+contador});
-        //Agregar logica para quitar cartas del mazo
-        copiaMazoComputadora = mazoComputadora;
     }
 }
 
@@ -105,12 +102,12 @@ const renderizarCartas = ({src,dorso}, index, esComputadora = false)=>{
 }
 
 const manoJugador = ()=>{
-    const manoJugador = copiaMazoJugador.map((carta,index)=>{return renderizarCartas(carta,index)}).join('');
+    const manoJugador = mazoJugador.map((carta,index)=>{return renderizarCartas(carta,index)}).join('');
     manoJugadorHTML.innerHTML = manoJugador;
 }
 
 const manoComputadora = ()=>{
-    const manoComputadora = copiaMazoComputadora.map((carta,index)=>{return renderizarCartas(carta,index,true)}).join('');
+    const manoComputadora = mazoComputadora.map((carta,index)=>{return renderizarCartas(carta,index,true)}).join('');
     manoComputadoraHTML.innerHTML = manoComputadora;
 }
 const sonidoCartas = () =>{
