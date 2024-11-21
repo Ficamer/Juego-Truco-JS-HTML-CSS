@@ -737,7 +737,7 @@ const logicaRonda = (numeroRonda) =>{
     //Si las cartas son iguales
     for(let cartaComputadora of mazoComputadora){
         if(cartaJugador.numero === cartaComputadora.numero){
-            colocarCartaComputadoraConDelay(numeroRonda-1,cartaCompu);
+            colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
             rondasGanadasComputadora++;
             rondasGanadasJugador++;
             seEncontroCarta = true;
