@@ -2,6 +2,9 @@ body {
     margin:0;
     padding:0;
     background-color:rgb(36, 33, 33);
+    display:flex;
+    justify-content: center;
+    align-items: center;
 }
 .puntuacion {
 
@@ -190,8 +193,8 @@ body {
     align-items: center;
     width:550px;
     max-width: 550px;
-    min-height: 900px;
-    height:900px;
+    min-height: 800px;
+    height:800px;
     width:100%;
     perspective: 700px; /* Da sensación de profundidad */
     gap:50px;
@@ -235,7 +238,7 @@ body {
 
 .centro-mesa-lado-computadora {
     position:relative;
-    top:30%;
+    top:15%;
     align-items:center;
     min-height:130px;
     height:130px;
@@ -248,7 +251,7 @@ body {
     height:130px;
     width:100%;
     position:relative;
-    top:30%;
+    top:15%;
 }
 
 .mano-jugador {
