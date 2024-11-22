@@ -191,7 +191,7 @@ body {
     width:550px;
     max-width: 550px;
     min-height: 900px;
-    height:100vh;
+    height:900px;
     width:100%;
     perspective: 700px; /* Da sensación de profundidad */
     gap:50px;
@@ -234,7 +234,6 @@ body {
 }
 
 .centro-mesa-lado-computadora {
-    background-color:red;
     position:relative;
     top:30%;
     align-items:center;
@@ -244,7 +243,6 @@ body {
 }
 
 .centro-mesa-lado-jugador{
-    background-color:green;
     align-items:center;
     min-height:130px;
     height:130px;
