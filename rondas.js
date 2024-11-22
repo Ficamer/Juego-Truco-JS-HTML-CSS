@@ -952,16 +952,16 @@ const ganadorRonda = ()=>{
         
     }
     
-    if(cartaComputadoraEnMesa.numero == 4 && cartaComputadoraEnMesa.numero > 4) {
-        return "computadora";
+    if(cartaComputadoraEnMesa.numero == 4 && cartaJugadorEnMesa.numero > 4) {
+        return "jugador";
     }
 
-    if(cartaComputadoraEnMesa.numero == 5 && cartaComputadoraEnMesa.numero > 5) {
-        return "computadora";
+    if(cartaComputadoraEnMesa.numero == 5 && cartaJugadorEnMesa.numero > 5) {
+        return "jugador";
     }
 
-    if(cartaComputadoraEnMesa.numero == 6 && cartaComputadoraEnMesa.numero > 6) {
-        return "computadora";
+    if(cartaComputadoraEnMesa.numero == 6 && cartaJugadorEnMesa.numero > 6) {
+        return "jugador";
     }
 
     if(cartaComputadoraEnMesa.numero == 3){
