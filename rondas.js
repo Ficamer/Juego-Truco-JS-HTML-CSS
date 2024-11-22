@@ -7,6 +7,14 @@ let numeroRonda = 0;
 let rondasGanadasJugador = 0;
 let rondasGanadasComputadora = 0;
 let termino = false;
+let cartaComputadoraEnMesa = null;
+let cartaJugadorEnMesa = null;
+
+//Volvio a tirar pc o no
+let volvioaTirar = false;
+
+//Booleano de si se encontro carta
+let seEncontroCarta = false;
 
 //Verificar quien gano
 const verificacionGanador = ()=>{
@@ -97,11 +105,11 @@ const ronda = (estadoRonda,tipoEnvido) => {
             break;
 
         case "normal":
-            logicaRonda(numeroRonda);
+            tirarCartaComputadoraLogica(numeroRonda,seEncontroCarta);
     }
 }
 
-const logicaRonda = (numeroRonda) =>{
+const tirarCartaComputadoraLogica = (numeroRonda,seEncontroCarta) =>{
 
     //Busco la carta del mazo del jugador que coincida con el ID de la carta que esta en la mesa
     let cartasJugadorEnMesa = centroMesaLadoJugador.querySelectorAll('div'); //Me traigo todos los div dentro del centro de mesa lado jugador.
@@ -110,10 +118,22 @@ const logicaRonda = (numeroRonda) =>{
     console.log("----Numero de ronda: " + numeroRonda +"----");
     console.log("Carta jugador en mesa: " + cartaJugador.numero + " " + cartaJugador.palo);    
 
-    let seEncontroCarta = false;
+    
+    if(numeroRonda == 2 && ganador == "jugador") {
+        volvioaTirar = false;
+        return;
+    }
+
+    
+    if(rondasGanadasComputadora == 2 || rondasGanadasJugador == 2){
+        verificacionGanador();
+        volvioaTirar = false;
+        return;
+    }
 
     //Recorro las cartas del mazo de la computadora
     for(let cartaComputadora of mazoComputadora){
+
         //Si la carta del jugador es una negra
         if(esUnaNegra(cartaJugador.numero)) {
 
@@ -355,8 +375,9 @@ const logicaRonda = (numeroRonda) =>{
 
                 }
             }
-            //Si la carta de la computadora es un 1 falso
-            if(cartaComputadora.numero == 1){
+
+            //Si la carta del jugador es un 1 falso
+            if(cartaJugador.numero == 1){
 
                 //Si la carta del jugador es un falso
                  if(cartaJugador.palo=="Copas" || cartaJugador.palo=="Oro") {
@@ -380,7 +401,7 @@ const logicaRonda = (numeroRonda) =>{
                             }
 
                             //Si la carta de la computadora es un 7 oro o espada
-                            if(cartaComputadora == 7) {
+                            if(cartaComputadora.numero == 7) {
                                 if(cartaComputadora.palo=="Oro"){
                                     seEncontroCarta = true;
                                     colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
@@ -699,7 +720,7 @@ const logicaRonda = (numeroRonda) =>{
 
     if(!seEncontroCarta){
         let valorMinimo = 13;
-        let cartaCompu = 0;
+        let cartaCompu = null;
         for(let cartaComputadora of mazoComputadora){
             let cartaValorMasBajoID = 0;
             if(cartaComputadora.numero < valorMinimo){
@@ -708,8 +729,13 @@ const logicaRonda = (numeroRonda) =>{
                 cartaCompu = cartaComputadora;
             } 
         }
+
         colocarCartaComputadoraConDelay(numeroRonda-1,cartaCompu);
         rondasGanadasJugador++; 
+        // Habilitar los clics nuevamente después de 2 segundos
+        setTimeout(() => {
+            permitirClickCartas = true;
+        }, 1500); // 1.5 segundos
     }
 
     console.log("Rondas ganadas jugador: " + rondasGanadasJugador);
@@ -717,20 +743,66 @@ const logicaRonda = (numeroRonda) =>{
     if(numeroRonda>=1){
         verificacionGanador();
     }
+    setTimeout(()=>{
+        
+    if(seEncontroCarta){
+        seEncontroCarta = false;
+
+        let valorMinimo = 13;
+        let cartaCompu = null;
+
+       console.log("Numero de ronda: " + numeroRonda);
+       console.log("Cartas en el mazo antes de decidir:", mazoComputadora);
+        for(let cartaComputadora of mazoComputadora){
+            let cartaValorMasBajoID = 0;
+            if(cartaComputadora.numero < valorMinimo){
+                valorMinimo = cartaComputadora.numero;
+                cartaValorMasBajoID  = cartaComputadora.id;
+                cartaCompu = cartaComputadora;
+            } 
+        }
+
+        cartaComputadoraEnMesa = cartaCompu; //Actualizo la carta de la compu que esta en la mesa.
+        volvioaTirar = true;
+        colocarCartaComputadoraConDelay(numeroRonda,cartaCompu);
+        
+        // Habilitar los clics nuevamente después de 2 segundos
+        setTimeout(() => {
+        permitirClickCartas = true;
+        }, 1500); // 1.5 segundos
+       
+    }
+    },1500);
 
 }
 
 //Colocar carta en mesa con cierto tiempo de retardo.
 const colocarCartaComputadoraConDelay = (indiceCarta,cartaComputadora) => {
-    setTimeout(()=>{
-        colocarCartaComputadoraEnMesa(cartaComputadora.id)
-        let cartaComputadoraEnMesa = centroMesaLadoComputadora.querySelectorAll('div');
-        let cartaImg = cartaComputadoraEnMesa[indiceCarta].querySelector('img');
-        cartaImg.src = `${cartaComputadora.src}`;
-    },1000);
+
+        setTimeout(()=>{
+            colocarCartaComputadoraEnMesa(cartaComputadora.id);
+            let cartaComputadoraEnMesa = centroMesaLadoComputadora.querySelectorAll('div');
+
+            cartaComputadoraEnMesa.forEach((carta)=>{
+                if(carta.id == `carta${cartaComputadora.id}`){
+                    carta.querySelector('img').src = `${cartaComputadora.src}`;
+                }
+            })
+
+        },1000);
 }
 
 //Cantar truco
 const cantarTruco = ()=>{
     aceptarTrucoComputadora();
+}
+
+//Ganador ronda
+
+const ganadorRonda = ()=>{
+    if(cartaComputadoraEnMesa.numero > cartaJugadorEnMesa.numero){
+        return "computadora";
+    }else {
+        return "jugador";
+    }
 }

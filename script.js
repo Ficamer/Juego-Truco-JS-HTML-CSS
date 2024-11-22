@@ -12,6 +12,9 @@ let mazoJugador = [];
 let copiaMazoJugador = [];
 let copiaMazo;
 
+//ganador ronda
+let ganador = "";
+
 //Booleano para reconocer si se estan procesando los dialogos de envido, truco, etc.
 let estaRealizandoDialogoEnvidoTruco = false;
 
@@ -120,14 +123,20 @@ const colocarCartaJugadorEnMesa = (event) =>{
     if(!permitirClickCartas) return;
 
     permitirClickCartas = false;
-    numeroRonda++;
+
+    if(!volvioaTirar){
+        numeroRonda++;     
+    }
+
     const cartaDataName= event.currentTarget.getAttribute('data-name');
 
 
     if(!estaRealizandoDialogoEnvidoTruco && !termino) {
         copiaMazoJugador = mazoJugador.filter((carta) =>{
+
                 //Agrega la carta en la mesa;
                 if(carta.id==cartaDataName){
+                    cartaJugadorEnMesa = carta;
                     const elementoAMover = document.querySelector(`[data-name="${cartaDataName}"]`);
                     elementoAMover.style.animation = "moverse .5s";
          
@@ -141,21 +150,44 @@ const colocarCartaJugadorEnMesa = (event) =>{
             }
         );
 
-        ronda("normal","");
+        //Verificar ganador ronda
+        if(volvioaTirar){
+            ganador = ganadorRonda();
+
+            if(ganador == "jugador"){
+                rondasGanadasJugador++;
+                ronda("normal",""); 
+                // Habilitar los clics nuevamente después de 2 segundos
+                setTimeout(() => {
+                     permitirClickCartas = true;
+                }, 1500); // 1.5 segundos
+            }else {
+                rondasGanadasComputadora++;
+                ronda("normal",""); 
+                setTimeout(() => {
+                    permitirClickCartas = true;
+               }, 1500); // 1.5 segundos
+            }  
+        }else {
+            ronda("normal","");
+        }
+
+        
     }
 
     //Vuelvo a asignar la funcionalidad a las cartas (ya que se pierde al usar appendChild y mover un elemento)
     setTimeout(()=>{quitarListenersCartasEnMesa()},250);
-
-    // Habilitar los clics nuevamente después de 2 segundos
-    setTimeout(() => {
-        permitirClickCartas = true;
-    }, 1500); // 1.5 segundos
 }
 
 const colocarCartaComputadoraEnMesa = (id) =>{
-
+    
+    if(volvioaTirar){
+        numeroRonda++;
+    }
+    
+    console.log(numeroRonda);
     if(!estaRealizandoDialogoEnvidoTruco || !termino) {
+     
         mazoComputadora = mazoComputadora.filter((carta) =>{
                 //Agrega la carta en la mesa;
                 if(carta.id==id){
@@ -170,8 +202,9 @@ const colocarCartaComputadoraEnMesa = (id) =>{
                 }
             }
         );
+        console.log("Mazo actualizado:", mazoComputadora);
     }
-}
+};
 
 const clickCartasJugador = ()=>{ 
     const cartasJugador = document.querySelectorAll('.cartas-jugador');
@@ -230,6 +263,7 @@ const resetear = ()=> {
     indiceComputadora = 3;
     seCantoEnvido = false;
     seCantoTruco = false;
+    permitirClickCartas = true;
     mezclarMazo();
     repartirCartasJugador();
     repartirCartasComputadora();
