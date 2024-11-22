@@ -943,6 +943,7 @@ const cantarTruco = ()=>{
 //Ganador ronda
 
 const ganadorRonda = ()=>{
+    
     if(esUnaNegra(cartaComputadoraEnMesa.numero) && esUnaNegra(cartaJugadorEnMesa.numero)){
         if(cartaComputadoraEnMesa.numero>cartaJugadorEnMesa.numero){
             return "computadora";
