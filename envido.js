@@ -1,4 +1,4 @@
-//Tantos
+//Tantos por ronda
 let tantosComputadora = 0;
 let tantosJugador = 0;
 
@@ -136,6 +136,7 @@ const aceptarEnvidoLogicaComputadora = (tipoEnvido) =>{
             //reset de tantos
             resetearTantos();
             console.log("Ganador computadora")
+            setTimeout(()=>{permitirClickCartas = true;},1000);
         }
 
         if (ganador === "jugador"){
@@ -157,7 +158,9 @@ const aceptarEnvidoLogicaComputadora = (tipoEnvido) =>{
             console.log("Agregar un punto a Jugador por tanto no querido")
             estaRealizandoDialogoEnvidoTruco = false;
             agregarPuntosEnvido(ganador,false,tipoEnvido);
-        },2000);     
+        },2000);  
+        
+        setTimeout(()=>{permitirClickCartas = true;},1000);
     }
 }
 

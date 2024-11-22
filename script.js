@@ -298,10 +298,8 @@ botonEnvido.addEventListener('click', () =>{
         
         const cambiarEstilosBotones = contenedorBotonEnvido.querySelectorAll('button');
         cambiarEstilosBotones.forEach((boton)=> {boton.classList.add('boton-envido-activo')});
-        
-        if(window.innerWidth<600){
-            botonEnvido.classList.remove('boton-envido-activo');
-        }
+        botonEnvido.classList.remove('boton-envido-activo');
+   
         botonesEnvidoVisibles = true;
 
         botonReal.addEventListener('click',()=>{

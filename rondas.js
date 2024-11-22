@@ -547,8 +547,8 @@ const tirarCartaComputadoraLogica = (numeroRonda,seEncontroCarta) =>{
                     }
                 }
         
-                    //Si la carta de la computadora es un 1
-                if(cartaComputadora.numero==1){
+                //Si la carta de la computadora es un 1
+                if(cartaComputadora.numero == 1){
         
                     //Si es un 1 de basto
                     if(cartaComputadora.palo == "Basto") {
@@ -558,7 +558,7 @@ const tirarCartaComputadoraLogica = (numeroRonda,seEncontroCarta) =>{
                         rondasGanadasComputadora++;
                         break;
                     }
-        
+                    
                     //Si es un 1 de espada
                     if(cartaComputadora.palo == "Espada") {
                         seEncontroCarta = true;

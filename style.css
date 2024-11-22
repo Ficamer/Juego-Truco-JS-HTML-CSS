@@ -4,19 +4,23 @@ body {
     background-color:rgb(36, 33, 33);
 }
 .puntuacion {
+
     box-shadow:1px 1px 8px rgb(0, 0, 0);
     z-index:10;
     position:absolute;
-    left:15px;
     top:15px;
-    width:300px;
-    height: 50px;
     border:3px solid rgb(141, 103, 52);
     background-color:rgba(0, 0, 0,.7);
     display:flex;
     flex-direction: row;
     gap:5px;
+    width:200px;
+    height:35px;
+    font-size:11px;
+    left:50%;
+    transform:translateX(-50%);
 }
+
 .puntos-jugador {
     display:flex;
     flex-direction: column;
@@ -40,44 +44,49 @@ body {
     height:100%;
 }
 .botonera-jugador {
-    z-index:15;
-    width:350px;
-    position:absolute;
-    bottom:35px;
-    left:75px;
+    margin-top:0;
     display:flex;
+    height:55px;
+    position:relative;
+    width:100%;
+    left:0;
+    z-index:16;
+    bottom:35px;
     flex-direction:row;
     align-items: center;
     justify-content: center;
     gap:5px;
 }
+
 #foto-jugador {
     position:absolute;
-    bottom:15px;
-    left:15px;
+    top:10px;
+    left:5px;
+    width: 100px;
+    height:100px;
     z-index:11;
     border-radius:5px;
     border:4px solid rgb(44, 37, 17);
     text-align:center;
-    width:135px;
-    height:175px;
     box-shadow: 1px 2px 8px black;
 }
+
 #foto-jugador img {
+    height:75px;
     width:100%;
-    height:130px;
 }
+
 #nombre-jugador {
     color:rgb(10, 10, 10);
     text-shadow:0px 0px 3px rgb(65, 62, 62);
     font-weight: 800;
-    font-size:20px;
+    font-size:16px;
     display:flex;
     justify-content: center;
     align-items: center;
     margin:0;
-    width:135px;
-    height:45px;
+    width:100%;
+    height:25px;
     background-image: url(img/pedazoMadera.png);
     background-size: cover;
     background-repeat: no-repeat;
@@ -85,10 +94,10 @@ body {
 
 .dialogo-computadora { 
     position:absolute;
-    top:15px;
-    right:75px;
-    width:125px;
-    height:50px;
+    width:90px;
+    height:35px;
+    left:5px;
+    top:115px;
     background-color:white;
     border-radius:15px;
     color:black;
@@ -99,9 +108,11 @@ body {
     opacity:0;
     box-shadow:0px 0px 5px black;
 }
+
 .dialogo-computadora p {
     font-family:Arial;
     color:black;
+    font-size:14px;
 }
 
 #foto-computadora {
@@ -117,41 +128,48 @@ body {
     position:absolute;
     right:10px;
     top:10px;
-    width:135px;
-    height:175px;
+    width: 100px;
+    height:100px;
     border:4px solid rgb(44, 37, 17);
     font-weight: 600;
     color:rgb(255, 255, 255);
 }
 
 #foto-computadora img {
+    height:75px;
     width:100%;
-    height:130px;
 }
+
 #nombre-computadora {
     color:rgb(10, 10, 10);
     text-shadow:0px 0px 3px rgb(65, 62, 62);
     font-weight: 800;
-    font-size:19px;
+    font-size:16px;
     display:flex;
     justify-content: center;
     align-items: center;
     margin:0;
-    width:135px;
-    height:45px;
+    width:100%;
+    height:25px;
     background-image: url(img/pedazoMadera.png);
     background-size: cover;
     background-repeat: no-repeat;
 }
+
 .contenedor-botones {
     display:flex;
-    flex-direction:column;
+    width:95%;
+    height:50px;
+    flex-direction: row;
+    justify-content: center;
+    align-items:center;
     gap:5px;
 }
+
 .contenedor-botones button {
     cursor:pointer;
-    width:158px;
-    height: 35px;
+    width:85px;
+    height:50px;
     border:3px solid rgb(141, 103, 52);
     padding:5px;
     z-index:10;
@@ -160,28 +178,42 @@ body {
     font-weight: 600;
     color:rgb(255, 255, 255);
 }
+
 .contenedor-mesa {
+    background-image: url(img/fondo2.webp);
+    background-repeat: no-repeat;
+    background-size:200% 50%;
+    background-color: black;
     display:flex;
+    flex-direction:column;
     justify-content: center;
     align-items: center;
+    width:550px;
+    max-width: 550px;
+    min-height: 900px;
+    height:100vh;
     width:100%;
-    height:100%;
     perspective: 700px; /* Da sensación de profundidad */
+    gap:50px;
+    overflow: hidden;
 }
+
 .mesa {
     box-shadow: 0 3px 20px black;
     border:6px solid rgb(141, 103, 52);
     position:relative;
-    width:1000px;
-    height:800px;
+    width:100%;
+    height:75%;
+    max-height:100%;
+    max-width: 100%;
     background-image: url(img/maderaFondo.webp);
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
     border-radius:15px;
     transform: rotateX(50deg); /* Inclina el div hacia adentro */
-      transform-origin: center; /* El punto de rotación */
-      transform-style: preserve-3d; /* Asegura que cualquier contenido 3D dentro funcione correctamente */
+    transform-origin: center; /* El punto de rotación */
+    transform-style: preserve-3d; /* Asegura que cualquier contenido 3D dentro funcione correctamente */
 }
 
 .mano-computadora, .mano-jugador, .centro-mesa {
@@ -202,33 +234,43 @@ body {
 }
 
 .centro-mesa-lado-computadora {
-    height:50%;
+    background-color:red;
+    position:relative;
+    top:30%;
+    align-items:center;
+    min-height:130px;
+    height:130px;
     width:100%;
 }
 
 .centro-mesa-lado-jugador{
-    height:50%;
+    background-color:green;
+    align-items:center;
+    min-height:130px;
+    height:130px;
     width:100%;
+    position:relative;
+    top:30%;
 }
-
 
 .mano-jugador {
     position:absolute;
-    z-index:14;
-    bottom:0px;
+    z-index:-1;
+    bottom:100%;
+    height:175px;
+    left:0;
     width:100%;
-    height:225px;
     display:flex;
     transform-style: preserve-3d; /* Asegura que cualquier contenido 3D dentro funcione correctamente */
 }
+
 .mano-jugador > * {
     margin-right: -35px;  /* Ajusta el valor negativo según lo cerca que quieras los elementos */
 }
 
 .carta {
-    max-width:150px;
-    max-height:175px;
-    height:175px;
+    width:100px;
+    height:135px;
 }
 
 .carta img {
@@ -239,10 +281,10 @@ body {
 .dialogo-jugador {
     box-shadow:0px 0px 5px black;
     position:absolute;
+    width:90px;
+    height:35px;
     left:5px;
-    top:-40px;
-    width:125px;
-    height:50px;
+    top:115px;
     background-color:white;
     border-radius:15px;
     color:black;
@@ -253,8 +295,10 @@ body {
     opacity:0;
     font-family:Arial;
 }
+
 .dialogo-jugador p {
     color:black;
+    font-size:14px;
 }
 
 #carta1 {
@@ -321,18 +365,30 @@ body {
 .mano-computadora { 
     position:relative;
     width:100%;
-    height:325px;
+    top:35px;
+    height:125px;
     gap:25px;
     transform:rotateX(60deg) translateY(200px);
 }
 
 .botones-real-falta {
-    position:relative;
     width:110px;
-    display: none;
-    flex-direction: row; 
-    z-index: 15; 
+    bottom:100%;
+    position: absolute; /* Posiciona los botones encima del botón original */
+    left: 0; /* Alinea los botones con el botón original */
+    display: none; /* Inicialmente oculto */
+    flex-direction: column; /* Asegura que estén en columna */
+    z-index: 1; /* Asegura que estén por encima de otros elementos */
     gap:3px;
+    margin-bottom:3px;
+}
+
+.boton-real {
+    min-height: 50px;
+}
+
+.boton-falta {
+    min-height: 50px;
 }
 
 #boton-envido {
@@ -348,8 +404,12 @@ body {
     display:flex;
     align-items: center;
     justify-content: center;
-    font-size: 11px;
+    font-size:13px;
     width:45px;
+}
+
+#boton-envido {
+    min-height: 50px;
 }
 
 #boton-envido.boton-envido-activo {
@@ -390,174 +450,17 @@ body {
         transform: translateY(0px);
     }
 }
-
-
-@media (max-width: 550px) {
-
-    body {
-        background-image: url(img/fondo2.webp);
-        background-color: #523316;
-        background-repeat: no-repeat;
-        background-size:200% 50%;
-        background-color: black;
-    }
-
-    .mesa {
-        width:100%;
-        height:75%;
-        max-height:100%;
-        max-width: 100%;
-    }
-    .puntuacion {
-        width:200px;
-        height:35px;
-        font-size:11px;
-        left:50%;
-        transform:translateX(-50%);
-    }
-    .contenedor-mesa {
-        min-height:100vh;
-        width:100%;
-        overflow: hidden;
-    }
-    #foto-computadora {
-        width: 100px;
-        height:100px;
-    }
-
-    #foto-computadora img {
-        height:75px;
-        width:100%;
-    }
-
-    #nombre-computadora {
-    font-size:16px;
-        width:100%;
-        height:25px;
-    }
-
-    .mano-computadora {
-        top:35px;
-        height:175px;
-    }
-    .mano-jugador {
-        bottom:85px;
-        height:175px;
-    }
-    .carta {
-        width:100px;
-        height:135px;
-    }
-
-    .cartas-computadora {
-        width:80px;
-        height:115px;
-    }
-    .centro-mesa-lado-computadora .cartas-computadora {
-        width:100px;
-        height:135px;
-    }
     
-    .centro-mesa-lado-computadora {
-        align-items:center;
-        height:130px;
-    }
-    .centro-mesa-lado-jugador {
-        align-items:center;
-        height:130px;
-    }
-
-    .botonera-jugador {
-        display:flex;
-        justify-content: center;
-        height:55px;
-        position:absolute;
-        width:100%;
-        bottom:15px;
-        left:0;
-        z-index:14;
-    }
-    .contenedor-botones {
-        width:95%;
-        height:50px;
-        flex-direction: row;
-        justify-content: center;
-        align-items:center;
-    }
-
-    .contenedor-botones button {
-        width:85px;
-        height:50px;
-    }
-    .contenedor-boton-envido {
-        position: relative; /* Contenedor relativo para posicionar elementos dentro */
-        display: inline-block; /* Para mantener el botón y los nuevos botones juntos */
-    }
-    .botones-real-falta {
-        bottom:100%;
-        position: absolute; /* Posiciona los botones encima del botón original */
-        left: 0; /* Alinea los botones con el botón original */
-        display: none; /* Inicialmente oculto */
-        flex-direction: column; /* Asegura que estén en columna */
-        z-index: 1; /* Asegura que estén por encima de otros elementos */
-        gap:3px;
-        margin-bottom:3px;
-    }
-    .boton-envido-activo {
-        font-size:13px;
-    }
-
-    #foto-jugador {
-        position:absolute;
-        top:10px;
-        left:5px;
-        width: 100px;
-        height:100px;
-    }
-
-    #foto-jugador img {
-        height:75px;
-        width:100%;
-    }
-
-    #nombre-jugador {
-        font-size:16px;
-        width:100%;
-        height:25px;
-    }
-    .dialogo-jugador {
-        width:90px;
-        height:35px;
-        left:5px;
-        top:115px;
-        font-size:14px;
-    }
-
-    .dialogo-computadora {
-        width:90px;
-        height:35px;
-        left:5px;
-        top:115px;
-        font-size:14px;
-    }
-    #boton-envido {
-        min-height: 50px;
-    }
-
-    .mano-computadora { 
-
-        height:125px;
-    }
-
-    .boton-real {
-        min-height: 50px;
-    }
-
-    .boton-falta {
-        min-height: 50px;
-    }
+.cartas-computadora {
+    width:80px;
+    height:115px;
 }
 
+.centro-mesa-lado-computadora .cartas-computadora {
+    width:100px;
+    height:135px;
+}
+    
 @media (max-width: 450px) {
     .puntuacion {
         width:160px;
