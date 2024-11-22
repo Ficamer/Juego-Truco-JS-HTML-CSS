@@ -208,10 +208,10 @@ const agregarPuntosEnvido = (jugador,quizo,tipoEnvido)=>{
             if(jugador=="computadora"){
 
                 htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
-                 <p>${puntosParaAgregarPC}</p>` 
+                 <p>${puntosComputadora + puntosParaAgregarPC}</p>` 
             }else {
                 htmlPuntosJugador.innerHTML = `<p>Jugador</p>
-                 <p>${puntosParaAgregarJugador}</p>` 
+                 <p>${puntosJugador + puntosParaAgregarJugador}</p>` 
             }
         }
 
