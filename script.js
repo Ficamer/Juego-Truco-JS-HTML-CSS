@@ -1,3 +1,18 @@
+botonComenzar = document.getElementById("boton-comenzar");
+pantallaInicial = document.getElementsByClassName("pantalla-inicio");
+
+botonComenzar.addEventListener('click',()=>{
+    pantallaInicial[0].style.animation = "desaparecer 1.5s";
+    
+    let sound = new Audio('sonidofondo.mp3');
+    sound.loop = true;
+    sound.play();
+
+    pantallaInicial[0].addEventListener('animationend',()=>{
+        pantallaInicial[0].style.display="none";
+    })     
+});
+
 //Elementos traidos del index
 const manoJugadorHTML = document.querySelector('.mano-jugador');
 const manoComputadoraHTML = document.querySelector('.mano-computadora');
