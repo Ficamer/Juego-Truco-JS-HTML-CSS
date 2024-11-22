@@ -183,6 +183,7 @@ body {
 }
 
 .contenedor-mesa {
+    border-radius:5px;
     background-image: url(img/fondo2.webp);
     background-repeat: no-repeat;
     background-size:200% 50%;
@@ -461,8 +462,17 @@ body {
     width:100px;
     height:135px;
 }
-    
+
+@media (max-width: 550px) {
+    .contenedor-mesa {
+        border-radius:0px;
+    }
+}
+
 @media (max-width: 450px) {
+    .contenedor-mesa {
+        border-radius:0px;
+    }
     .puntuacion {
         width:160px;
     }
