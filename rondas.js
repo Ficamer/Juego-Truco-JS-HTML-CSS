@@ -383,24 +383,16 @@ const tirarCartaComputadoraLogica = (numeroRonda,seEncontroCarta) =>{
                 }
 
             //Si la carta del jugador es un 1 de basto
-            if(cartaJugador.numero == 1) {
-
-                //Si la carta del jugador es un 1 de basto
-                if(cartaJugador.palo = "Basto"){
-
-                    //Si la carta es un 1
-                    if(cartaComputadora.numero == 1){
-
-                        //De espada
-                        if(cartaComputadora.palo == "Espada") {
-                            seEncontroCarta = true;
-                            colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
-                            console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
-                            rondasGanadasComputadora++;
-                            break;
-                        }
+            if(cartaJugador.numero == 1 && cartaJugador.palo == "Basto") {
+                if(cartaComputadora.numero == 1){
+                    //De espada
+                    if(cartaComputadora.palo == "Espada") {
+                        seEncontroCarta = true;
+                        colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
+                        console.log("Carta computadora en mesa: " + cartaComputadora.numero + " " + cartaComputadora.palo);
+                        rondasGanadasComputadora++;
+                        break;
                     }
-
                 }
             }
 
