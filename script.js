@@ -9,6 +9,7 @@ let nombreJugador = "";
 botonComenzar.addEventListener('click',()=>{
 
     let textoIngresado = botonIngresarNombre.value.trim();;
+
     if(textoIngresado.length >1 && textoIngresado.length <= 12){
         nombreJugador = textoIngresado;
         nombreJugadorHTML.innerHTML = `${nombreJugador}`;
@@ -16,8 +17,7 @@ botonComenzar.addEventListener('click',()=>{
         contenedorPuntosJugador[0].innerHTML = `<p>${nombreJugador}</p>
         <p>0</p>`
     }else{
-        nombreJugador = "Jugador";
-        nombreJugadorHTML.innerHTML = `${nombreJugador}`;
+        return;
     }
     
     pantallaInicial[0].style.animation = "desaparecer 1.5s";
