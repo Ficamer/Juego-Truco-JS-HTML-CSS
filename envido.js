@@ -189,7 +189,7 @@ const agregarPuntosEnvido = (jugador,quizo,tipoEnvido)=>{
                 htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
                  <p>${puntosComputadora+2}</p>` 
             }else {
-                htmlPuntosJugador.innerHTML = `<p>Jugador</p>
+                htmlPuntosJugador.innerHTML = `<p>${nombreJugador}</p>
                  <p>${puntosJugador+2}</p>` 
             }
         }
@@ -199,7 +199,7 @@ const agregarPuntosEnvido = (jugador,quizo,tipoEnvido)=>{
                 htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
                  <p>${puntosComputadora+3}</p>` 
             }else {
-                htmlPuntosJugador.innerHTML = `<p>Jugador</p>
+                htmlPuntosJugador.innerHTML = `<p>${nombreJugador}</p>
                  <p>${puntosJugador+3}</p>` 
             }
         }
@@ -213,13 +213,13 @@ const agregarPuntosEnvido = (jugador,quizo,tipoEnvido)=>{
                 htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
                  <p>${puntosComputadora + puntosParaAgregarPC}</p>` 
             }else {
-                htmlPuntosJugador.innerHTML = `<p>Jugador</p>
+                htmlPuntosJugador.innerHTML = `<p>${nombreJugador}</p>
                  <p>${puntosJugador + puntosParaAgregarJugador}</p>` 
             }
         }
 
     }else {
-        htmlPuntosJugador.innerHTML = `<p>Jugador</p>
+        htmlPuntosJugador.innerHTML = `<p>${nombreJugador}</p>
         <p>${puntosJugador+1}</p>` 
     }
 }

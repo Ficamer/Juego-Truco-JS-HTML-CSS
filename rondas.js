@@ -55,7 +55,7 @@ const agregarPuntosRonda = (jugador,seCantoTruco,seAcepto)=>{
                     <p>${puntosComputadora}</p>` 
             }else {
                 puntosJugador +=2;
-                htmlPuntosJugador.innerHTML = `<p>Jugador</p>
+                htmlPuntosJugador.innerHTML = `<p>${nombreJugador}</p>
                     <p>${puntosJugador}</p>` 
             }
         }else {
@@ -65,7 +65,7 @@ const agregarPuntosRonda = (jugador,seCantoTruco,seAcepto)=>{
                     <p>${puntosComputadora}</p>` 
             }else {
                 puntosJugador +=1;
-                htmlPuntosJugador.innerHTML = `<p>Jugador</p>
+                htmlPuntosJugador.innerHTML = `<p>${nombreJugador}</p>
                     <p>${puntosJugador}</p>` 
             } 
         }
@@ -79,7 +79,7 @@ const agregarPuntosRonda = (jugador,seCantoTruco,seAcepto)=>{
                 <p>${puntosComputadora}</p>` 
         }else {
             puntosJugador++;
-            htmlPuntosJugador.innerHTML = `<p>Jugador</p>
+            htmlPuntosJugador.innerHTML = `<p>${nombreJugador}</p>
                 <p>${puntosJugador}</p>` 
         }
     }

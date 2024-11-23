@@ -1,7 +1,25 @@
 botonComenzar = document.getElementById("boton-comenzar");
 pantallaInicial = document.getElementsByClassName("pantalla-inicio");
+botonIngresarNombre = document.getElementById('boton-ingresar-nombre');
+nombreJugadorHTML = document.getElementById('nombre-jugador');
+contenedorPuntosJugador = document.getElementsByClassName('puntos-jugador');
+
+let nombreJugador = "";
 
 botonComenzar.addEventListener('click',()=>{
+
+    let textoIngresado = botonIngresarNombre.value.trim();;
+    if(textoIngresado.length >1 && textoIngresado.length <= 12){
+        nombreJugador = textoIngresado;
+        nombreJugadorHTML.innerHTML = `${nombreJugador}`;
+        console.log(contenedorPuntosJugador);
+        contenedorPuntosJugador[0].innerHTML = `<p>${nombreJugador}</p>
+        <p>0</p>`
+    }else{
+        nombreJugador = "Jugador";
+        nombreJugadorHTML.innerHTML = `${nombreJugador}`;
+    }
+    
     pantallaInicial[0].style.animation = "desaparecer 1.5s";
     
     let sound = new Audio('sonidofondo.mp3');
