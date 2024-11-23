@@ -498,6 +498,23 @@ body {
     align-items: center;
 }
 
+.dentro-pantalla-inicio {
+    overflow: hidden;
+    width:90%;
+    height:90%;
+    gap:15px;
+    display:flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    border: 3px solid rgb(245, 245, 102);
+    border-radius:15px;
+}
+
+.pantalla-inicio input {
+    padding:10px 5px;
+}
+
 .pantalla-inicio button {
     height:50px;
     width:100px;
@@ -509,4 +526,22 @@ body {
     font-size:16px;
     font-family:Arial;
     font-weight: 600;
+}
+
+.contenedor-logo {
+    width:100%;
+    min-width:350px;
+    min-height:350px;
+    height:400px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.contenedor-logo img {
+    width:100%;
+    height:100%;
+    display:flex;
+    justify-content: center;
+    align-items: center;
 }
