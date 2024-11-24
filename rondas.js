@@ -848,7 +848,6 @@ const tirarCartaComputadoraLogica = (numeroRonda,seEncontroCarta) =>{
 
     //Si las cartas son iguales
     if(!seEncontroCarta){
-        console.log("Entre acá 1");
         for(let cartaComputadora of mazoComputadora){
             if(cartaJugador.numero === cartaComputadora.numero){
                 colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
@@ -862,7 +861,6 @@ const tirarCartaComputadoraLogica = (numeroRonda,seEncontroCarta) =>{
 
     //Luego de recorrer todo el for si no encontro carta, elijo la carta mas baja del mazo de la computadora
     if(!seEncontroCarta){
-        console.log("Entre acá 2");
         let valorMinimo = 13;
         let cartaCompu = null;
         for(let cartaComputadora of mazoComputadora){
@@ -889,38 +887,37 @@ const tirarCartaComputadoraLogica = (numeroRonda,seEncontroCarta) =>{
     if(numeroRonda>=1){
         verificacionGanador();
     }
-    setTimeout(()=>{
-        
+
     if(seEncontroCarta && numeroRonda != 3){
-        console.log("ENTRE ACAAAAAAAAAAAAAAAAAAAAAAA");
         seEncontroCarta = false;
 
-        let valorMinimo = 13;
-        let cartaCompu = null;
+        setTimeout(()=>{
+            let valorMinimo = 13;
+            let cartaCompu = null;
 
-       console.log("Numero de ronda: " + numeroRonda);
+            console.log("Numero de ronda: " + numeroRonda);
 
-       console.log("Cartas en el mazo antes de decidir:", mazoComputadora);
-        for(let cartaComputadora of mazoComputadora){
-            let cartaValorMasBajoID = 0;
-            if(cartaComputadora.numero < valorMinimo){
-                valorMinimo = cartaComputadora.numero;
-                cartaValorMasBajoID  = cartaComputadora.id;
-                cartaCompu = cartaComputadora;
-            } 
-        }
+            for(let cartaComputadora of mazoComputadora){
+                let cartaValorMasBajoID = 0;
+                if(cartaComputadora.numero < valorMinimo){
+                    valorMinimo = cartaComputadora.numero;
+                    cartaValorMasBajoID  = cartaComputadora.id;
+                    cartaCompu = cartaComputadora;
+                } 
+            }
 
-        cartaComputadoraEnMesa = cartaCompu; //Actualizo la carta de la compu que esta en la mesa.
-        volvioaTirar = true;
-        colocarCartaComputadoraConDelay(numeroRonda,cartaComputadoraEnMesa);
-        
+            cartaComputadoraEnMesa = cartaCompu; //Actualizo la carta de la compu que esta en la mesa.
+            volvioaTirar = true;
+            colocarCartaComputadoraConDelay(numeroRonda,cartaComputadoraEnMesa);
+        },1500);
+
         // Habilitar los clics nuevamente después de 2 segundos
         setTimeout(() => {
-        permitirClickCartas = true;
-        }, 1500); // 1.5 segundos
+            permitirClickCartas = true;
+        }, 2500); // 2.5 segundos
        
     }
-    },1500);
+    
 }
 
 //Colocar carta en mesa con cierto tiempo de retardo.

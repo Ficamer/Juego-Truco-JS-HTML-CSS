@@ -20,10 +20,17 @@ const aceptarTrucoComputadora = () =>{
                     estaRealizandoDialogoEnvidoTruco = false;
                 },1500);
             }else {
+                permitirClickCartas = false;
                 setTimeout(()=>{
                     dialogo("computadora","No quiero :(")
                     estaRealizandoDialogoEnvidoTruco = false;
                 },1500);
+
+                // Habilitar los clics nuevamente después de 2 segundos
+                setTimeout(() => {
+                    permitirClickCartas = true;
+               }, 3500); // 1.5 segundos
+
                 setTimeout(()=>{agregarPuntosRonda("jugador",seCantoTruco,false)},2500);
                 setTimeout(()=>{resetear()},3500);     
             }

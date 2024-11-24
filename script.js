@@ -155,6 +155,7 @@ const quitarListenersCartasEnMesa = ()=>{
 }
 
 const colocarCartaJugadorEnMesa = (event) =>{
+    
 
     if(!permitirClickCartas) return;
 
@@ -385,8 +386,6 @@ botonTruco.addEventListener('click',()=>{
 botonNoQuiero.addEventListener('click',()=>{
 
     dialogo("jugador", "No quiero..");
-
-    console.log(puntosComputadora);
     puntosComputadora++;
     htmlPuntosComputadora.innerHTML = `<p>Juan</p>
         <p>${puntosComputadora}</p>` 
