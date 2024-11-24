@@ -22,25 +22,25 @@ const verificacionGanador = ()=>{
         setTimeout(()=>{
              termino=true;
                 agregarPuntosRonda("computadora",seCantoTruco,true)},1500);
-            setTimeout(()=>{resetear()},4000);         
+            setTimeout(()=>{resetear()},2000);         
     }
     if(rondasGanadasJugador==2 && rondasGanadasComputadora<2){
              setTimeout(()=>{
             termino=true;
             agregarPuntosRonda("jugador",seCantoTruco,true)},1500);
-        setTimeout(()=>{resetear()},4000);
+        setTimeout(()=>{resetear()},2000);
     }
     if(rondasGanadasComputadora==3 && rondasGanadasJugador==2){
         setTimeout(()=>{
             termino=true;
             agregarPuntosRonda("computadora",seCantoTruco,true)},1500);
-        setTimeout(()=>{resetear()},4000);
+        setTimeout(()=>{resetear()},2000);
     }
     if(rondasGanadasComputadora==2 && rondasGanadasJugador==3){
         setTimeout(()=>{
             termino=true;
             agregarPuntosRonda("jugador",seCantoTruco,true)},1500);
-        setTimeout(()=>{resetear()},4000);
+        setTimeout(()=>{resetear()},2000);
     }
 
 }
@@ -51,7 +51,7 @@ const agregarPuntosRonda = (jugador,seCantoTruco,seAcepto)=>{
         if(seAcepto) {
             if(jugador=="computadora"){
                 puntosComputadora +=2;
-                htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
+                htmlPuntosComputadora.innerHTML = `<p>Juan</p>
                     <p>${puntosComputadora}</p>` 
             }else {
                 puntosJugador +=2;
@@ -61,7 +61,7 @@ const agregarPuntosRonda = (jugador,seCantoTruco,seAcepto)=>{
         }else {
             if(jugador=="computadora"){
                 puntosComputadora +=1;
-                htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
+                htmlPuntosComputadora.innerHTML = `<p>Juan</p>
                     <p>${puntosComputadora}</p>` 
             }else {
                 puntosJugador +=1;
@@ -75,7 +75,7 @@ const agregarPuntosRonda = (jugador,seCantoTruco,seAcepto)=>{
     if(seCantoTruco == false) {
         if(jugador=="computadora"){
             puntosComputadora++;
-            htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
+            htmlPuntosComputadora.innerHTML = `<p>Juan</p>
                 <p>${puntosComputadora}</p>` 
         }else {
             puntosJugador++;
@@ -852,9 +852,10 @@ const tirarCartaComputadoraLogica = (numeroRonda,seEncontroCarta) =>{
         for(let cartaComputadora of mazoComputadora){
             if(cartaJugador.numero === cartaComputadora.numero){
                 colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadora);
-                rondasGanadasComputadora++;
                 rondasGanadasJugador++;
-                seEncontroCarta = true;
+                if(numeroRonda != 2){
+                    seEncontroCarta = true;
+                }
             }
         }
     }
@@ -873,7 +874,8 @@ const tirarCartaComputadoraLogica = (numeroRonda,seEncontroCarta) =>{
             } 
         }
 
-        colocarCartaComputadoraConDelay(numeroRonda-1,cartaCompu);
+        cartaComputadoraEnMesa = cartaCompu;
+        colocarCartaComputadoraConDelay(numeroRonda-1,cartaComputadoraEnMesa);
         rondasGanadasJugador++; 
         // Habilitar los clics nuevamente después de 2 segundos
         setTimeout(() => {
@@ -883,18 +885,21 @@ const tirarCartaComputadoraLogica = (numeroRonda,seEncontroCarta) =>{
 
     console.log("Rondas ganadas jugador: " + rondasGanadasJugador);
     console.log("Rondas ganadas computadora: " + rondasGanadasComputadora);
+
     if(numeroRonda>=1){
         verificacionGanador();
     }
     setTimeout(()=>{
         
-    if(seEncontroCarta){
+    if(seEncontroCarta && numeroRonda != 3){
+        console.log("ENTRE ACAAAAAAAAAAAAAAAAAAAAAAA");
         seEncontroCarta = false;
 
         let valorMinimo = 13;
         let cartaCompu = null;
 
        console.log("Numero de ronda: " + numeroRonda);
+
        console.log("Cartas en el mazo antes de decidir:", mazoComputadora);
         for(let cartaComputadora of mazoComputadora){
             let cartaValorMasBajoID = 0;
@@ -907,7 +912,7 @@ const tirarCartaComputadoraLogica = (numeroRonda,seEncontroCarta) =>{
 
         cartaComputadoraEnMesa = cartaCompu; //Actualizo la carta de la compu que esta en la mesa.
         volvioaTirar = true;
-        colocarCartaComputadoraConDelay(numeroRonda,cartaCompu);
+        colocarCartaComputadoraConDelay(numeroRonda,cartaComputadoraEnMesa);
         
         // Habilitar los clics nuevamente después de 2 segundos
         setTimeout(() => {
@@ -951,17 +956,48 @@ const ganadorRonda = ()=>{
         }
         
     }
+
+    if(esUnaNegra(cartaComputadoraEnMesa.numero) && !esUnaNegra(cartaJugadorEnMesa.numero)){
+        if(cartaJugadorEnMesa.numero == 1 || cartaJugadorEnMesa.numero == 2 || cartaJugadorEnMesa.numero == 3){
+            return "jugador";
+        } 
+
+        if(cartaJugadorEnMesa.numero == 4 || cartaJugadorEnMesa.numero == 5 || cartaJugadorEnMesa.numero == 6 ){
+            return "computadora";
+        } 
+
+        if(cartaJugadorEnMesa.numero == 7){
+            if(cartaComputadoraEnMesa.palo == "Espada" || cartaComputadoraEnMesa.palo == "Oro"){
+                return "jugador";
+            }else{
+                return "computadora";
+            }  
+        } 
+        
+    }
     
-    if(cartaComputadoraEnMesa.numero == 4 && cartaJugadorEnMesa.numero > 4) {
-        return "jugador";
+    if(cartaComputadoraEnMesa.numero == 4) {
+        if(cartaJugadorEnMesa.numero == 1 || cartaJugadorEnMesa.numero == 2 || cartaJugadorEnMesa.numero == 3 || cartaJugadorEnMesa.numero >=5){
+            return "jugador";
+        }else {
+            return "computadora";
+        }
     }
 
-    if(cartaComputadoraEnMesa.numero == 5 && cartaJugadorEnMesa.numero > 5) {
-        return "jugador";
+    if(cartaComputadoraEnMesa.numero == 5) {
+        if(cartaJugadorEnMesa.numero == 1 || cartaJugadorEnMesa.numero == 2 || cartaJugadorEnMesa.numero == 3  || cartaJugadorEnMesa.numero >=6){
+            return "jugador";
+        }else {
+            return "computadora";
+        }
     }
 
-    if(cartaComputadoraEnMesa.numero == 6 && cartaJugadorEnMesa.numero > 6) {
-        return "jugador";
+    if(cartaComputadoraEnMesa.numero == 6) {
+        if(cartaJugadorEnMesa.numero == 1 || cartaJugadorEnMesa.numero == 2 || cartaJugadorEnMesa.numero == 3 || cartaJugadorEnMesa.numero >=7){
+            return "jugador";
+        }else {
+            return "computadora";
+        }
     }
 
     if(cartaComputadoraEnMesa.numero == 3){

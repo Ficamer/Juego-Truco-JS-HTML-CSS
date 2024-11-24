@@ -143,6 +143,7 @@ body {
     height:75px;
     width:100%;
     border-top-right-radius:3px;
+    border-top-left-radius:3px;
 }
 
 #nombre-computadora {
@@ -545,19 +546,34 @@ body {
 }
 
 
-
-
-/*.cartas-computadora {
-    animation:reArmar 1s;
-}
-
 @keyframes reArmar {
     from {
-        transform:rotate(0deg);
+        transform:scale(.1);
         width:0;
+        height:0;
     }
     to {
         width:55px;
     }
 }
-*/
+
+@keyframes reArmar2 {
+    from {
+        transform:scale(.1);
+    }
+}
+
+#valor-puntos-computadora {
+    animation: cambioPuntos 1.5s;
+}
+
+@keyframes cambioPuntos {
+    from {
+        transform:scale(2);
+    }
+    to {
+        from {
+            transform:scale(1);
+        }
+    }
+}

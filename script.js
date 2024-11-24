@@ -1,8 +1,10 @@
-botonComenzar = document.getElementById("boton-comenzar");
-pantallaInicial = document.getElementsByClassName("pantalla-inicio");
-botonIngresarNombre = document.getElementById('boton-ingresar-nombre');
-nombreJugadorHTML = document.getElementById('nombre-jugador');
-contenedorPuntosJugador = document.getElementsByClassName('puntos-jugador');
+const botonComenzar = document.getElementById("boton-comenzar");
+const pantallaInicial = document.getElementsByClassName("pantalla-inicio");
+const botonIngresarNombre = document.getElementById('boton-ingresar-nombre');
+const nombreJugadorHTML = document.getElementById('nombre-jugador');
+const contenedorPuntosJugador = document.getElementsByClassName('puntos-jugador');
+const htmlValorPuntosJugador = document.getElementById('valor-puntos-jugador');
+const htmlValorPuntosComputadora = document.getElementById("valor-puntos-computadora");
 
 let nombreJugador = "";
 
@@ -13,7 +15,6 @@ botonComenzar.addEventListener('click',()=>{
     if(textoIngresado.length >1 && textoIngresado.length <= 12){
         nombreJugador = textoIngresado;
         nombreJugadorHTML.innerHTML = `${nombreJugador}`;
-        console.log(contenedorPuntosJugador);
         contenedorPuntosJugador[0].innerHTML = `<p>${nombreJugador}</p>
         <p>0</p>`
     }else{
@@ -119,15 +120,17 @@ const repartirCartasComputadora = () => {
 
 const renderizarCartas = ({src,dorso}, index, esComputadora = false)=>{
     const imagenSrc = esComputadora ? dorso : src;
+    const animacion = esComputadora ? "animation: reArmar .7s" : "animation: reArmar2 .7s";
     const id = esComputadora ? ++indiceComputadora : ++indiceJugador;
     const cartasDe = esComputadora ? "cartas-computadora" : "cartas-jugador";
 
-    return `<div class="carta ${cartasDe}" data-name="${id}" id="carta${id}"><img src="${imagenSrc}"></img></div>`;
+    return `<div class="carta ${cartasDe}" data-name="${id}" style="${animacion}" id="carta${id}"><img src="${imagenSrc}"></img></div>`;
 }
 
 const manoJugador = ()=>{
     const manoJugador = mazoJugador.map((carta,index)=>{return renderizarCartas(carta,index)}).join('');
     manoJugadorHTML.innerHTML = manoJugador;
+   
 }
 
 const manoComputadora = ()=>{
@@ -218,7 +221,6 @@ const colocarCartaComputadoraEnMesa = (id) =>{
         numeroRonda++;
     }
     
-    console.log(numeroRonda);
     if(!estaRealizandoDialogoEnvidoTruco || !termino) {
      
         mazoComputadora = mazoComputadora.filter((carta) =>{
@@ -372,11 +374,21 @@ botonTruco.addEventListener('click',()=>{
     cantarTruco();
 })
 
+
+//Logica para envido
+
+
+
+
+
+
 botonNoQuiero.addEventListener('click',()=>{
 
     dialogo("jugador", "No quiero..");
-    puntosComputadora +=1;
-    htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
+
+    console.log(puntosComputadora);
+    puntosComputadora++;
+    htmlPuntosComputadora.innerHTML = `<p>Juan</p>
         <p>${puntosComputadora}</p>` 
     resetear();
 })

@@ -17,7 +17,6 @@ const envido = (tipoEnvido) =>{
             estaRealizandoDialogoEnvidoTruco = true;
             dialogo("jugador",`${tipoEnvido}!!`)
 
-
             //-----Calcular tantos de jugador-----
             obtenerTantos("jugador");
             
@@ -117,12 +116,12 @@ const ganadorEnvido = ()=>{
 
 const aceptarEnvidoLogicaComputadora = (tipoEnvido) =>{
 
-    let tantosComputadoraActual = tantosComputadora;
-    let tantosJugadorActual = tantosJugador;
+    console.log("Tantos Jugador: ", tantosJugador);
+    console.log("Tantos Computadora: ", tantosComputadora);
 
     if(tantosComputadora >= 27 || Math.random() < .22) {  //22% DE QUE ACEPTE
     
-        setTimeout(()=>{dialogo("computadora","Quieroo!" + " " + tantosComputadoraActual)},1500);
+        setTimeout(()=>{dialogo("computadora","Quieroo!" + " " + tantosComputadora)},1500);
         let ganador = ganadorEnvido();
 
         if (ganador==="computadora") {
@@ -131,25 +130,26 @@ const aceptarEnvidoLogicaComputadora = (tipoEnvido) =>{
                 dialogo("computadora","Jaja! Que facil.")
                 estaRealizandoDialogoEnvidoTruco = false;
                 agregarPuntosEnvido(ganador,true,tipoEnvido);
+                
+                //reset de tantos
+                resetearTantos();
+                console.log("Ganador computadora")
             },4000);
 
-            //reset de tantos
-            resetearTantos();
-            console.log("Ganador computadora")
             setTimeout(()=>{permitirClickCartas = true;},1000);
         }
 
         if (ganador === "jugador"){
-            setTimeout(()=>{dialogo("jugador","" + tantosJugadorActual)},3000);
+            setTimeout(()=>{dialogo("jugador","" + tantosJugador)},3000);
             setTimeout(()=>{ 
                 dialogo("computadora","Son buenas.")
                 estaRealizandoDialogoEnvidoTruco = false;
                 agregarPuntosEnvido(ganador,true,tipoEnvido);
+        
+                //reset de tantos
+                resetearTantos();
             },3500);
             console.log("Ganador Jugador")
-
-            //reset de tantos
-            resetearTantos();
         }
     }else {
         setTimeout(()=>{
@@ -186,21 +186,25 @@ const agregarPuntosEnvido = (jugador,quizo,tipoEnvido)=>{
 
         if(tipoEnvido == "Envido") {
             if(jugador=="computadora"){
-                htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
-                 <p>${puntosComputadora+2}</p>` 
+                puntosComputadora += 2;
+                htmlPuntosComputadora.innerHTML = `<p>Juan</p>
+                 <p>${puntosComputadora}</p>` 
             }else {
+                puntosJugador+=2;
                 htmlPuntosJugador.innerHTML = `<p>${nombreJugador}</p>
-                 <p>${puntosJugador+2}</p>` 
+                 <p>${puntosJugador}</p>` 
             }
         }
 
         if(tipoEnvido == "Real envido") {
             if(jugador=="computadora"){
-                htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
-                 <p>${puntosComputadora+3}</p>` 
+                puntosComputadora += 3;
+                htmlPuntosComputadora.innerHTML = `<p>Juan</p>
+                 <p>${puntosComputadora}</p>` 
             }else {
+                puntosJugador+=3;
                 htmlPuntosJugador.innerHTML = `<p>${nombreJugador}</p>
-                 <p>${puntosJugador+3}</p>` 
+                 <p>${puntosJugador}</p>` 
             }
         }
 
@@ -209,18 +213,21 @@ const agregarPuntosEnvido = (jugador,quizo,tipoEnvido)=>{
 
         if(tipoEnvido == "Falta envido") {
             if(jugador=="computadora"){
-
-                htmlPuntosComputadora.innerHTML = `<p>Computadora</p>
-                 <p>${puntosComputadora + puntosParaAgregarPC}</p>` 
+                puntosComputadora += puntosParaAgregarPC;
+                htmlPuntosComputadora.innerHTML = `<p>Juan</p>
+                 <p>${puntosComputadora}</p>` 
             }else {
+                puntosJugador += puntosParaAgregarJugador;
                 htmlPuntosJugador.innerHTML = `<p>${nombreJugador}</p>
-                 <p>${puntosJugador + puntosParaAgregarJugador}</p>` 
+                 <p>${puntosJugador}</p>` 
             }
         }
 
     }else {
+        puntosJugador +=1;
         htmlPuntosJugador.innerHTML = `<p>${nombreJugador}</p>
-        <p>${puntosJugador+1}</p>` 
+        <p>${puntosJugador}</p>` 
+        
     }
 }
 
